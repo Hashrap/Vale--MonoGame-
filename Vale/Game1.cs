@@ -12,6 +12,8 @@ namespace Vale
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Player player;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,9 +28,9 @@ namespace Vale
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            player = new Player();
+            player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
         }
 
         /// <summary>
@@ -76,6 +78,11 @@ namespace Vale
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            player.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
