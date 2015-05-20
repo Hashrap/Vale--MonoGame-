@@ -70,7 +70,6 @@ namespace Vale
             {
                 y = Input.CurrentGamePadState.ThumbSticks.Left.Y;
             }
-            //Console.WriteLine(y);
             return y;
         }
 
@@ -88,16 +87,13 @@ namespace Vale
             {
                 x = Input.CurrentGamePadState.ThumbSticks.Left.X;
             }
-            //Console.WriteLine(x);
             return x;
         }
 
         public static Vector2 getRawVector()
-        {
-            Console.WriteLine("X:"+getX()+" Y:"+getY());
-            return new Vector2(getX(), getY());
-        }
-
+        { return new Vector2(getX(), getY()); }
+        
+        //doesn't work, no idea why. typically returns { NaN, NaN }
         public static Vector2 getVector()
         {
             Vector2 fwd = getRawVector();

@@ -33,6 +33,7 @@ namespace Vale
             player = new Player();
             player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
             Input.Initialize(Input.Mode.KBAM);
+            /*
             Vector2 test = new Vector2(1, 1);
             Console.WriteLine(test.ToString());
             test.Normalize();
@@ -45,6 +46,7 @@ namespace Vale
             Console.WriteLine(Input.getRawVector());
             Console.WriteLine(Input.getVector());
             Console.WriteLine("----------");
+            */
             
         }
 
