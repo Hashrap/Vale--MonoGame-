@@ -13,7 +13,6 @@ namespace Vale
             get { return inputMode; }
             set { inputMode = value; }
         }
-
         private static KeyboardState currentKeyboardState;
         private static KeyboardState previousKeyboardState;
         private static GamePadState currentGamePadState;
@@ -68,7 +67,7 @@ namespace Vale
             }
             else
             {
-                y = Input.CurrentGamePadState.ThumbSticks.Left.Y;
+                y = Input.CurrentGamePadState.ThumbSticks.Left.Y * -1;
             }
             return y;
         }
@@ -105,10 +104,27 @@ namespace Vale
         { return CurrentKeyboardState.IsKeyDown(key); }
         public static bool KeyUp(Keys key)
         { return CurrentKeyboardState.IsKeyUp(key); }
-        public static bool KeyRelease(Keys key)
-        { return CurrentKeyboardState.IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key); }
         public static bool KeyPress(Keys key)
         { return CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key); }
+        public static bool KeyRelease(Keys key)
+        { return CurrentKeyboardState.IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key); }
+        public static bool KeyDown(char key)
+        { return KeyDown((Keys)((int)(char.ToUpper(key)))); }
+        public static bool KeyUp(char key)
+        { return KeyUp((Keys)((int)(char.ToUpper(key)))); }
+        public static bool KeyPress(char key)
+        { return KeyPress((Keys)((int)(char.ToUpper(key)))); }
+        public static bool KeyRelease(char key)
+        { return KeyRelease((Keys)((int)(char.ToUpper(key)))); }
+
+        public static bool ButtonDown(Buttons button)
+        { return CurrentGamePadState.IsButtonDown(button);}
+        public static bool ButtonUp(Buttons button)
+        { return CurrentGamePadState.IsButtonUp(button);}
+        public static bool ButtonPress(Buttons button)
+        { return CurrentGamePadState.IsButtonDown(button) && PreviousGamePadState.IsButtonUp(button);}
+        public static bool ButtonRelease(Buttons button)
+        { return CurrentGamePadState.IsButtonUp(button) && PreviousGamePadState.IsButtonDown(button); }
         #endregion
 
         public static void Update()
@@ -125,6 +141,20 @@ namespace Vale
             if (Input.KeyRelease(Keys.K))
                 Console.WriteLine("K Released");
             #endregion
+
+            if (KeyPress(Keys.G))
+            {
+                if (inputMode == Mode.KBAM)
+                {
+                    inputMode = Mode.Pad;
+                    Console.WriteLine("GAMEPAD CONTROL");
+                }
+                else
+                {
+                    inputMode = Mode.KBAM;
+                    Console.WriteLine("KEYBOARD CONTROL");
+                }
+            }
 
             previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;
