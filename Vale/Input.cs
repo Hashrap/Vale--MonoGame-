@@ -100,16 +100,31 @@ namespace Vale
                 return Vector2.Zero;
             return Vector2.Normalize(vector);
         }
+
+        public static bool KeyDown(Keys key)
+        { return CurrentKeyboardState.IsKeyDown(key); }
+        public static bool KeyUp(Keys key)
+        { return CurrentKeyboardState.IsKeyUp(key); }
+        public static bool KeyRelease(Keys key)
+        { return CurrentKeyboardState.IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key); }
+        public static bool KeyPress(Keys key)
+        { return CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key); }
         #endregion
 
         public static void Update()
         {
-            if (CurrentKeyboardState.IsKeyDown(Keys.E))
+            #region Debug strings
+            if (Input.KeyPress(Keys.I))
             {
                 Console.WriteLine("X:"+Input.getX()+" Y:"+Input.getY());
                 Console.WriteLine("Raw:"+getRawVector().ToString());
                 Console.WriteLine("Normalized:"+getVector().ToString());
             }
+            if (Input.KeyPress(Keys.K))
+                Console.WriteLine("K Pressed");
+            if (Input.KeyRelease(Keys.K))
+                Console.WriteLine("K Released");
+            #endregion
 
             previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;

@@ -21,7 +21,7 @@ namespace Vale
                 Position += Vector2.Multiply(Input.getVector(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
             }
             base.Update();
-            if (Input.CurrentKeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+            if (Input.CurrentKeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P))
                 Console.WriteLine(Position.X+" "+Position.Y);
         }
 
