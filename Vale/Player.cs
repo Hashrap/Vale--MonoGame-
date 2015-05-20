@@ -1,34 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Vale
 {
     class Player : GameActor
     {
+        private bool controllable = true;
 
         public void Initialize(Texture2D texture)
         {
             base.Initialize(texture, new Vector2(100, 100));
+            Speed = 300;
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-
+            if(controllable)
+            {
+                Position += Vector2.Multiply(Input.getRawVector(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
+            }
+            
         }
 
-        private void getInput()
+        public void Draw(SpriteBatch spriteBatch)
         {
-
-        }
-
-        public void Draw()
-        {
-
+            base.Draw(spriteBatch);
         }
     }
 }

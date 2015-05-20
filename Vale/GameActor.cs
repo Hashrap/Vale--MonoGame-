@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Vale
@@ -14,6 +10,12 @@ namespace Vale
         {
             get { return position; }
             set { position = value; }
+        }
+        protected float speed;
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
         }
 
         protected Texture2D texture;

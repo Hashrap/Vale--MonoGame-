@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -31,6 +32,20 @@ namespace Vale
             base.Initialize();
             player = new Player();
             player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
+            Input.Initialize(Input.Mode.KBAM);
+            Vector2 test = new Vector2(1, 1);
+            Console.WriteLine(test.ToString());
+            test.Normalize();
+            Console.WriteLine(test.ToString());
+            Console.WriteLine("----------");
+            Console.WriteLine((int)Input.InputMode);
+            Console.WriteLine("----------");
+            Console.WriteLine(Input.getX());
+            Console.WriteLine(Input.getX());
+            Console.WriteLine(Input.getRawVector());
+            Console.WriteLine(Input.getVector());
+            Console.WriteLine("----------");
+            
         }
 
         /// <summary>
@@ -65,7 +80,8 @@ namespace Vale
                 Exit();
 
             // TODO: Add your update logic here
-
+            Input.Update();
+            player.Update(gameTime);
             base.Update(gameTime);
         }
 
