@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Vale
 {
@@ -17,9 +18,11 @@ namespace Vale
         {
             if(controllable)
             {
-                Position += Vector2.Multiply(Input.getRawVector(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
+                Position += Vector2.Multiply(Input.getVector(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
             }
-            
+            base.Update();
+            if (Input.CurrentKeyboardState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.E))
+                Console.WriteLine(Position.X+" "+Position.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch)

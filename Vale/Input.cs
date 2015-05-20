@@ -93,18 +93,24 @@ namespace Vale
         public static Vector2 getRawVector()
         { return new Vector2(getX(), getY()); }
         
-        //doesn't work, no idea why. typically returns { NaN, NaN }
         public static Vector2 getVector()
         {
-            Vector2 fwd = getRawVector();
-            fwd.Normalize();
-            //Console.WriteLine(fwd.ToString());
-            return fwd;
+            Vector2 vector = getRawVector();
+            if (vector == Vector2.Zero)
+                return Vector2.Zero;
+            return Vector2.Normalize(vector);
         }
         #endregion
 
         public static void Update()
         {
+            if (CurrentKeyboardState.IsKeyDown(Keys.E))
+            {
+                Console.WriteLine("X:"+Input.getX()+" Y:"+Input.getY());
+                Console.WriteLine("Raw:"+getRawVector().ToString());
+                Console.WriteLine("Normalized:"+getVector().ToString());
+            }
+
             previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;
             previousGamePadState = currentGamePadState;

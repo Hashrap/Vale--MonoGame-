@@ -11,6 +11,12 @@ namespace Vale
             get { return position; }
             set { position = value; }
         }
+        protected Vector2 previousPosition;
+        public Vector2 PreviousPosition
+        {
+            get { return previousPosition; }
+            set { previousPosition = value; }
+        }
         protected float speed;
         public float Speed
         {
@@ -23,12 +29,11 @@ namespace Vale
         public void Initialize(Texture2D tex, Vector2 pos)
         {
             texture = tex;
-            Position = pos;
+            position = pos;
         }
 
         public void Update()
         {
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
