@@ -95,8 +95,8 @@ namespace Vale
         public static Vector2 getVector()
         {
             Vector2 vector = getRawVector();
-            if (vector == Vector2.Zero)
-                return Vector2.Zero;
+            if (vector.Length() <= 1)
+                return vector;
             return Vector2.Normalize(vector);
         }
 
