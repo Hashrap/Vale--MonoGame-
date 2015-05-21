@@ -125,6 +125,14 @@ namespace Vale
         { return CurrentGamePadState.IsButtonDown(button) && PreviousGamePadState.IsButtonUp(button);}
         public static bool ButtonRelease(Buttons button)
         { return CurrentGamePadState.IsButtonUp(button) && PreviousGamePadState.IsButtonDown(button); }
+        public static bool ButtonDown(int button)
+        { return ButtonDown((Buttons)button); }
+        public static bool ButtonUp(int button)
+        { return ButtonUp((Buttons)button); }
+        public static bool ButtonPress(int button)
+        { return ButtonPress((Buttons)button); }
+        public static bool ButtonRelease(int button)
+        { return ButtonRelease((Buttons)button); }
         #endregion
 
         public static void Update()
@@ -136,10 +144,14 @@ namespace Vale
                 Console.WriteLine("Raw:"+getRawVector().ToString());
                 Console.WriteLine("Normalized:"+getVector().ToString());
             }
-            if (Input.KeyPress(Keys.K))
+            if (Input.KeyPress('K'))
                 Console.WriteLine("K Pressed");
-            if (Input.KeyRelease(Keys.K))
+            if (Input.KeyRelease('K'))
                 Console.WriteLine("K Released");
+            if (Input.ButtonPress(16))
+                Console.WriteLine("Start Pressed");
+            if (Input.ButtonRelease(16))
+                Console.WriteLine("Start Released");
             #endregion
 
             if (KeyPress(Keys.G))
