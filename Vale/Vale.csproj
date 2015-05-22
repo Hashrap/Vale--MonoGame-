@@ -38,6 +38,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\IDrawable.cs" />
+    <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="GameObjects\Actors\Hero.cs" />
     <Compile Include="Game1.cs" />

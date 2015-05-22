@@ -1,10 +1,14 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
 
 namespace Vale.GameObjects.Skills
 {
-    internal class LineProjectile : IUpdatable
+    /// <summary>
+    /// A projectile that moves in a line
+    /// </summary>
+    internal class LineProjectile : IUpdatable, IDrawable
     {
         public enum ProjectileStates
         {
@@ -90,6 +94,11 @@ namespace Vale.GameObjects.Skills
             // this.Owner.ApplyDamage(collided, damage)
             // this.Owner.ApplyModifier(collided, stun)
             // this.Owner.Destroy(barricade)
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            //draw projectile
         }
     }
 }

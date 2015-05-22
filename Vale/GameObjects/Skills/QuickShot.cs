@@ -3,6 +3,9 @@ using Vale.GameObjects.Actors;
 
 namespace Vale.GameObjects.Skills
 {
+    /// <summary>
+    /// Fires an arrow in the direction of the cursor.
+    /// </summary>
     class QuickShot : Skill
     {
         public const double ProjectileSpeed = 10;
@@ -26,7 +29,7 @@ namespace Vale.GameObjects.Skills
         public QuickShot(GameActor owner)
             : base(owner)
         {
-
+            // probably set some values here? parse a file? maybe parse BEFORE and pull that info now?
         }
     }
 }

@@ -4,29 +4,32 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Vale.GameObjects.Actors
 {
+    /// <summary>
+    /// The player-controlled Hero
+    /// </summary>
     class Hero : GameActor
     {
-        private bool controllable = true;
-        
         public void Initialize(Texture2D texture)
         {
             base.Initialize(texture, new Vector2(100, 100));
             Speed = 300;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            if(controllable)
+            if (Controllable)
             {
                 Position += Vector2.Multiply(Input.Input.getInput(), (float)gameTime.ElapsedGameTime.TotalSeconds * Speed);
+                // input should be handled by Player class maybe? Player moves the hero
             }
             base.Update(gameTime);
             if (Input.Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
+            //do we need to draw anything special for the Hero? probably.
             base.Draw(spriteBatch);
         }
     }
