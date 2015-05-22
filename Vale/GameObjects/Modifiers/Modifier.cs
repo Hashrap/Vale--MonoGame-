@@ -17,6 +17,8 @@ namespace Vale.GameObjects.Modifiers
         private int elapsedTime; //MODIFIER KEEPS TRACK OF ITSELF, LIKE PROJECTILES?
         private EffectType effectType; // THIS SHOULD PROBABLY BE A LIST SO THAT MODIFIERS CAN DO MORE THAN ONE THING?
 
+        //Event when expired?
+
 
         public Modifier(EffectType effectType, int duration)
         {

@@ -67,9 +67,11 @@ namespace Vale.GameObjects.Skills
             double xDelta = destination.X - origin.X;
             double yDelta = destination.Y - origin.Y;
 
-            double angleInDegrees = Math.Atan2(yDelta, xDelta) * 180 / Math.PI; // degrees? radians?
+            //double angleInDegrees = Math.Atan2(yDelta, xDelta) * 180 / Math.PI; // degrees? radians?
             
             //Velocity = new Vector2(xSpeed, ySpeed);
+
+            // i need to brush up on my trig god damn
 
             State = ProjectileStates.Moving;
             ElapsedTime = 0;
@@ -90,10 +92,13 @@ namespace Vale.GameObjects.Skills
 
         protected virtual void OnCollision(GameActor collided)
         {
-            // cause damage, knockback, apply modifier, lifesteal?
-            // this.Owner.ApplyDamage(collided, damage)
-            // this.Owner.ApplyModifier(collided, stun)
-            // this.Owner.Destroy(barricade)
+            if (State == ProjectileStates.Moving)
+            {
+                // cause damage, knockback, apply modifier?
+                // this.Owner.ApplyDamage(collided, damage)
+                // this.Owner.ApplyModifier(collided, stun)
+                // this.Owner.Destroy(barricade)
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Vale.GameObjects
 {
     /// <summary>
-    /// Represents an object that has a sprite or graphic associated with it.
+    ///     Represents an object that has a sprite or graphic associated with it.
     /// </summary>
-    interface IDrawable
+    internal interface IDrawable
     {
+        /// <summary>
+        ///     All classes inheriting this interface must be able to draw.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch to use for drawing.</param>
         void Draw(SpriteBatch spriteBatch);
     }
 }

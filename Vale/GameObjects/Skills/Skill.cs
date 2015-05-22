@@ -8,6 +8,8 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal abstract class Skill : IUpdatable
     {
+        // maybe there should be a SKillPool class that holds all of the different ability types and gives them to GameActors by cloning them?
+
         private const int Ready = 0;
 
         private readonly int cooldown;

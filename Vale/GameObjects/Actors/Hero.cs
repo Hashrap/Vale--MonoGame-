@@ -19,7 +19,7 @@ namespace Vale.GameObjects.Actors
         {
             if (Controllable)
             {
-                Position += Vector2.Multiply(Input.Input.getInput(), (float)gameTime.ElapsedGameTime.TotalSeconds * Speed);
+                Position += Vector2.Multiply(Input.Input.GetInput(), (float)(gameTime.ElapsedGameTime.TotalSeconds * Speed));
                 // input should be handled by Player class maybe? Player moves the hero
             }
             base.Update(gameTime);
@@ -29,7 +29,7 @@ namespace Vale.GameObjects.Actors
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //do we need to draw anything special for the Hero? probably.
+            //do we need to draw anything special for the Hero? if not, delegate drawing to parent.
             base.Draw(spriteBatch);
         }
     }
