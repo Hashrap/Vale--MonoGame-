@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-
-namespace Vale
+﻿namespace Vale
 {
     internal abstract class Skill
     {
         private const int Ready = 0;
 
         private readonly double cooldown;
-        private double cooldownRecharge = 0.0;
+        private double cooldownRecharge;
 
         /// <summary>
         /// Force children to use this constructor
@@ -48,6 +42,7 @@ namespace Vale
         protected virtual bool DoAction(params object[] list)
         {
             // do things using list of params
+            return true;
         }
 
         private void BeginCooldown()

@@ -4,7 +4,7 @@ using System;
 
 namespace Vale
 {
-    class Player : GameActor
+    class Hero : GameActor
     {
         private bool controllable = true;
 

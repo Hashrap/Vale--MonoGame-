@@ -13,7 +13,7 @@ namespace Vale
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Player player;
+        Hero player;
 
         public Game1()
         {
@@ -31,7 +31,7 @@ namespace Vale
         {
             base.Initialize();
             Input.Initialize(Input.Mode.KBAM);
-            player = new Player();
+            player = new Hero();
             player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
         }
 
