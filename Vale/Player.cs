@@ -25,6 +25,12 @@ namespace Vale
                 Console.WriteLine(Position.X+" "+Position.Y);
         }
 
+        public void DoMainAttack()
+        {
+            //do the attack in your m1 slot
+        }
+
+
         public void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);
