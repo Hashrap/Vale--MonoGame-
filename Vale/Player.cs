@@ -18,11 +18,11 @@ namespace Vale
         {
             if(controllable)
             {
-                Position += Vector2.Multiply(Input.getVector(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
+                Position += Vector2.Multiply(Input.getInput(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
             }
             base.Update();
             if (Input.KeyPress('P'))
-                Console.WriteLine(Position.X+" "+Position.Y);
+                Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
         }
 
         public void DoMainAttack()
