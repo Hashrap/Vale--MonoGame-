@@ -44,7 +44,9 @@
     <Compile Include="GameActor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skill.cs" />
+    <Compile Include="Skills\LineProjectile.cs" />
+    <Compile Include="Skills\QuickShot.cs" />
+    <Compile Include="Skills\Skill.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

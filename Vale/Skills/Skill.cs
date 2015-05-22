@@ -1,4 +1,4 @@
-﻿namespace Vale
+﻿namespace Vale.Skills
 {
     internal abstract class Skill
     {
@@ -7,12 +7,15 @@
         private readonly double cooldown;
         private double cooldownRecharge;
 
+        public GameActor Owner { get; private set; }
+
         /// <summary>
         /// Force children to use this constructor
         /// </summary>
-        /// <param name="list"></param>
-        protected Skill(params object[] list)
+        /// <param name="owner">The actor that owns this skill.</param>
+        protected Skill(GameActor owner)
         {
+            this.Owner = owner;
             //can set default cooldown here?
         }
 
@@ -39,11 +42,7 @@
             return true;
         }
 
-        protected virtual bool DoAction(params object[] list)
-        {
-            // do things using list of params
-            return true;
-        }
+        protected abstract bool DoAction(params object[] list);
 
         private void BeginCooldown()
         {
