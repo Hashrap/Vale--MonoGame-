@@ -20,7 +20,7 @@ namespace Vale
             {
                 Position += Vector2.Multiply(Input.getInput(), (float)gameTime.ElapsedGameTime.TotalSeconds * speed);
             }
-            base.Update();
+            base.Update(gameTime);
             if (Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
         }

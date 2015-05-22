@@ -1,6 +1,8 @@
-﻿namespace Vale.Skills
+﻿using Microsoft.Xna.Framework;
+
+namespace Vale.Skills
 {
-    internal abstract class Skill
+    internal abstract class Skill : IUpdatable
     {
         private const int Ready = 0;
 
@@ -52,6 +54,12 @@
         public void ResetCooldown()
         {
             cooldownRecharge = Ready;
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if (cooldownRecharge > Ready)
+                cooldownRecharge -= gameTime.ElapsedGameTime.Milliseconds;
         }
     }
 }

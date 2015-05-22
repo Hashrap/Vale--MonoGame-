@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace Vale.Skills
 {
-    class LineProjectile
+    class LineProjectile : IUpdatable
     {
         public enum ProjectileStates { Dormant, Moving, Dead }
 

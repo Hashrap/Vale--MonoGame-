@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Vale
 {
-    class GameActor
+    class GameActor : IUpdatable
     {
         protected Vector2 position;
         public Vector2 Position
@@ -32,13 +32,15 @@ namespace Vale
             position = pos;
         }
 
-        public void Update()
-        {
-        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, Position, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            
         }
     }
 }
