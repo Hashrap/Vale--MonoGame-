@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using Vale.GameObjects.Actors;
 
-namespace Vale.Skills
+namespace Vale.GameObjects.Skills
 {
     internal abstract class Skill : IUpdatable
     {

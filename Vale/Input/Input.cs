@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
 
-namespace Vale
+namespace Vale.Input
 {
     static class Input
     {
