@@ -23,7 +23,7 @@ namespace Vale.GameObjects.Actors
         {
             if (Controllable)
             {
-                Velocity = Vector2.Multiply(Input.Input.NormalizedInput, (float)(gameTime.ElapsedGameTime.Milliseconds * Speed));
+                Velocity = Vector2.Multiply(Input.Input.NormalizedInput, (float) Speed);
                 // input should be handled by Player class maybe? Player moves the hero
 
                 if (Input.Input.MouseButtonPress(Input.Input.MouseButtons.Left)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
@@ -40,14 +40,15 @@ namespace Vale.GameObjects.Actors
                 }
             }
 
-
             SkillOne.Update(gameTime);
             SkillTwo.Update(gameTime);
             SkillThree.Update(gameTime);
             
-            base.Update(gameTime);
             if (Input.Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
+
+            // always call base
+            base.Update(gameTime);
         }
 
 

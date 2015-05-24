@@ -8,7 +8,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     /// A projectile that moves in a line
     /// </summary>
-    internal class LineProjectile : IUpdatable, IDrawable
+    internal class LineProjectile : MoveableGameObject, IDrawable
     {
         private const int Duration = 1500;
         private readonly Game1 game;
@@ -44,13 +44,10 @@ namespace Vale.GameObjects.Skills
 
         public GameActor Owner { get; private set; }
 
-        public Vector2 Position { get; private set; }
-
         public double Speed { get; set; }
 
         public ProjectileStates State { get; private set; }
 
-        public Vector2 Velocity { get; protected set; }
 
         public bool Visible { get; private set; }
 
@@ -70,6 +67,7 @@ namespace Vale.GameObjects.Skills
         /// </summary>
         public void Destroy()
         {
+            Velocity = Vector2.Zero;
             State = ProjectileStates.Dead;
         }
 
@@ -106,7 +104,7 @@ namespace Vale.GameObjects.Skills
             Speed = speed;
         }
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -120,13 +118,11 @@ namespace Vale.GameObjects.Skills
                     break;
 
                 case ProjectileStates.Moving:
-                    Move(gameTime);
+                    //Move(gameTime);
                     break;
             }
-        }
-        protected virtual void Move(GameTime gameTime)
-        {
-            Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
+
+            base.Update(gameTime);
         }
 
         protected virtual void OnCollision(GameActor collided)

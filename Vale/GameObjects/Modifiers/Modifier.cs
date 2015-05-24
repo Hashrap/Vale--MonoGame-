@@ -11,7 +11,7 @@ namespace Vale.GameObjects.Modifiers
     /// <summary>
     /// A modifier is buff/debuff that applies an effect to its owner
     /// </summary>
-    class Modifier : IUpdatable // AKA BUFF/DEBUFF
+    class Modifier : IUpdateable // AKA BUFF/DEBUFF
     {
         private readonly int duration; 
         private int elapsedTime; //MODIFIER KEEPS TRACK OF ITSELF, LIKE PROJECTILES?
@@ -32,5 +32,10 @@ namespace Vale.GameObjects.Modifiers
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
         }
+
+        public bool Enabled { get; private set; }
+        public int UpdateOrder { get; private set; }
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
     }
 }

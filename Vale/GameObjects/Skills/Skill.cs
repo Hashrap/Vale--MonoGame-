@@ -8,7 +8,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     /// Represents a skill that can be used by a Hero or Enemy
     /// </summary>
-    internal abstract class Skill : IUpdatable, IDrawable
+    internal abstract class Skill : IUpdateable, IDrawable
     {
         enum SkillTimeline { Available, InUse, OnCooldown}
 
@@ -92,7 +92,13 @@ namespace Vale.GameObjects.Skills
                 if(cooldownRecharge == Ready)
                     Status = SkillTimeline.Available;
             }
-        } 
+        }
+
+        public bool Enabled { get; private set; }
+        public int UpdateOrder { get; private set; }
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
+
         /// <summary>
         /// Begins the action. Disables other commands while using this action (channeling for shots).
         /// </summary>

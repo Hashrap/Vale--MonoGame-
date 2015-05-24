@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
+    <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
     <Compile Include="GameObjects\Skills\SplitShot.cs" />
@@ -46,7 +47,6 @@
     <Compile Include="GameObjects\Actors\Hero.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Actors\GameActor.cs" />
-    <Compile Include="GameObjects\IUpdatable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\LineProjectile.cs" />

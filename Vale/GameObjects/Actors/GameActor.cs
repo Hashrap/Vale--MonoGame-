@@ -10,7 +10,7 @@ namespace Vale.GameObjects.Actors
     /// <summary>
     /// Represents any moving character.
     /// </summary>
-    class GameActor : IUpdatable, IDrawable
+    class GameActor : MoveableGameObject, IDrawable
     {
         public Game1 Game { get; private set; }
         public SpriteBatch SprtBatch { get; private set; }
@@ -21,11 +21,7 @@ namespace Vale.GameObjects.Actors
 
         private List<Modifier> modifiers; // list of modifiers effecting this unit. 
         
-        public Vector2 Position { get; set; }
 
-        public Vector2 PreviousPosition { get; set; }
-
-        public Vector2 Velocity { get; set; }
 
         public double Speed { get; set; }
 
@@ -75,15 +71,9 @@ namespace Vale.GameObjects.Actors
         public event EventHandler<EventArgs> DrawOrderChanged;
         public event EventHandler<EventArgs> VisibleChanged;
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            Move();
-        }
-
-
-        private void Move()
-        {
-            Position += Velocity;
+            base.Update(gameTime);
         }
 
 
