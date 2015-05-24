@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Vale.GameObjects.Skills;
 
 namespace Vale.GameObjects.Actors
@@ -10,7 +11,7 @@ namespace Vale.GameObjects.Actors
     /// </summary>
     class Hero : GameActor
     {
-        private Skill SkillOne;
+        private Skill SkillOne, SkillTwo, SkillThree;
 
         public void Initialize(Texture2D texture)
         {
@@ -29,10 +30,20 @@ namespace Vale.GameObjects.Actors
                 {
                     SkillOne.Execute(Input.Input.MousePosition);
                 }
+                if (Input.Input.MouseButtonPress(Input.Input.MouseButtons.Right)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                {
+                    SkillTwo.Execute(Input.Input.MousePosition);
+                }
+                if (Input.Input.KeyPress(Keys.B)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                {
+                    SkillThree.Execute(Input.Input.MousePosition);
+                }
             }
 
 
             SkillOne.Update(gameTime);
+            SkillTwo.Update(gameTime);
+            SkillThree.Update(gameTime);
 
             base.Update(gameTime);
             if (Input.Input.KeyPress('P'))
@@ -45,11 +56,15 @@ namespace Vale.GameObjects.Actors
             base.Draw(gameTime);
 
             SkillOne.Draw(gameTime);
+            SkillTwo.Draw(gameTime);
+            SkillThree.Draw(gameTime);
         }
 
         public Hero(Game1 game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
             SkillOne = new QuickShot(game, spriteBatch, this);
+            SkillTwo = new SplitShot(game, spriteBatch, this);
+            SkillThree = new ReturnShot(game, spriteBatch, this);
         }
     }
 }

@@ -50,13 +50,14 @@ namespace Vale.GameObjects.Skills
 
         public ProjectileStates State { get; private set; }
 
-        public Vector2 Velocity { get; private set; }
+        public Vector2 Velocity { get; protected set; }
 
         public bool Visible { get; private set; }
 
-        private double Rotation
+        public double Rotation
         {
-            set { rotation = value % 360; }
+            get {  return rotation;}
+            protected set { rotation = value % 360; }
         }
 
         public static bool ProjectileIsDead(LineProjectile projectile)
@@ -104,7 +105,8 @@ namespace Vale.GameObjects.Skills
             Rotation = rotation;
             Speed = speed;
         }
-        public void Update(GameTime gameTime)
+
+        public virtual void Update(GameTime gameTime)
         {
             ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
 
@@ -118,11 +120,11 @@ namespace Vale.GameObjects.Skills
                     break;
 
                 case ProjectileStates.Moving:
-                    Move();
+                    Move(gameTime);
                     break;
             }
         }
-        protected virtual void Move()
+        protected virtual void Move(GameTime gameTime)
         {
             Position += Velocity;
         }
