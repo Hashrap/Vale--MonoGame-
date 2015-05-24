@@ -17,12 +17,13 @@ namespace Vale.Input
 
             if (KeyPress('I'))
             {
-                Console.WriteLine("X-axis:" + GetX() + " Y-axis:" + GetY());
-                Console.WriteLine("Raw:" + GetRawInput());
-                Console.WriteLine("Normalized:" + GetInput());
+                Console.WriteLine("X-axis:" + XAxisInput + " Y-axis:" + YAxisInput);
+                Console.WriteLine("Raw:" + RawInput);
+                Console.WriteLine("Normalized:" + NormalizedInput);
             }
+
             if (KeyPress('M'))
-                Console.WriteLine("mX:" + MouseX() + " mY:" + MouseY());
+                Console.WriteLine("mX:" + MouseX + " mY:" + MouseY);
             if (KeyPress('K'))
                 Console.WriteLine("K Pressed");
             if (KeyRelease('K'))
@@ -108,21 +109,21 @@ namespace Vale.Input
         /// Returns a float between -1 (up) and 1 (down).  0 indicates no input.
         /// </summary>
         /// <returns></returns>
-        public static float GetY()
+        public static float YAxisInput
         {
-            float y = 0;
-            if (InputMode == Mode.KBAM)
+            get
             {
+                if (InputMode != Mode.KBAM)
+                    return CurrentGamePadState.ThumbSticks.Left.Y * -1;
+
+                float y = 0;
                 if (CurrentKeyboardState.IsKeyDown(Keys.W))
                     y -= 1;
                 if (CurrentKeyboardState.IsKeyDown(Keys.S))
                     y += 1;
+
+                return y;
             }
-            else
-            {
-                y = CurrentGamePadState.ThumbSticks.Left.Y * -1;
-            }
-            return y;
         }
 
         /// <summary>
@@ -130,30 +131,32 @@ namespace Vale.Input
         /// Returns a float between -1 (left) and 1 (right).  0 indicates no input.
         /// </summary>
         /// <returns></returns>
-        public static float GetX()
+        public static float XAxisInput
         {
-            float x = 0;
-            if (InputMode == Mode.KBAM)
+            get
             {
+                if (InputMode != Mode.KBAM)
+                    return CurrentGamePadState.ThumbSticks.Left.X;
+
+                float x = 0;
                 if (CurrentKeyboardState.IsKeyDown(Keys.D))
                     x += 1;
                 if (CurrentKeyboardState.IsKeyDown(Keys.A))
                     x -= 1;
+
+                return x;
             }
-            else
-            {
-                x = CurrentGamePadState.ThumbSticks.Left.X;
-            }
-            return x;
         }
+
+
 
         /// <summary>
         /// Returns a Vector2 containing X and Y axis input.
         /// </summary>
         /// <returns></returns>
-        public static Vector2 GetRawInput()
+        public static Vector2 RawInput
         {
-            return new Vector2(GetX(), GetY());
+            get { return new Vector2(XAxisInput, YAxisInput); }
         }
 
         /// <summary>
@@ -161,10 +164,13 @@ namespace Vale.Input
         /// Returns a Vector2 containing X and Y axis input clamped to a length of 1
         /// </summary>
         /// <returns></returns>
-        public static Vector2 GetInput()
+        public static Vector2 NormalizedInput
         {
-            Vector2 vector = GetRawInput();
-            return vector.Length() <= 1 ? vector : Vector2.Normalize(vector);
+            get
+            {
+                var vector = RawInput;
+                return vector.Length() <= 1 ? vector : Vector2.Normalize(vector);
+            }
         }
 
         #region Keyboard
@@ -352,28 +358,19 @@ namespace Vale.Input
         /// Returns the current position of the mouse cursor on the X axis
         /// </summary>
         /// <returns></returns>
-        public static int MouseX()
-        {
-            return CurrentMouseState.X;
-        }
+        public static int MouseX { get { return CurrentMouseState.X; } }
 
         /// <summary>
         /// Returns the current position of the mouse cursor on the Y axis
         /// </summary>
         /// <returns></returns>
-        public static int MouseY()
-        {
-            return CurrentMouseState.Y;
-        }
+        public static int MouseY { get { return CurrentMouseState.Y; } }
 
         /// <summary>
         ///  Returns the current position of the mouse cursor as a Vector2(X,Y)
         /// </summary>
         /// <returns></returns>
-        public static Vector2 MousePos()
-        {
-            return new Vector2(MouseX(), MouseY());
-        }
+        public static Vector2 MousePosition { get { return new Vector2(MouseX, MouseY); } }
 
         /// <summary>
         /// Accepts a MouseButton to check

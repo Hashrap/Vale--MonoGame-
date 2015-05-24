@@ -12,14 +12,15 @@ namespace Vale.GameObjects.Actors
     /// </summary>
     class GameActor : IUpdatable, IDrawable
     {
+        public Game1 Game { get; private set; }
+        public SpriteBatch SprtBatch { get; private set; }
+
         public enum ActorState { Standing, Moving, Dead } //this probably needs to be more sophisticated
 
         private ActorState state;
 
         private List<Modifier> modifiers; // list of modifiers effecting this unit. 
-
-        private List<Skill> skillSet; // might not be the best way to store skills?
-
+        
         public Vector2 Position { get; set; }
 
         public Vector2 PreviousPosition { get; set; }
@@ -49,6 +50,12 @@ namespace Vale.GameObjects.Actors
 
         protected Texture2D texture;
 
+        public GameActor(Game1 game, SpriteBatch spriteBatch)
+        {
+            this.Game = game;
+            this.SprtBatch = spriteBatch;
+        }
+
         public void Initialize(Texture2D tex, Vector2 pos)
         {
             texture = tex;
@@ -56,20 +63,21 @@ namespace Vale.GameObjects.Actors
         }
 
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, Position, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            SprtBatch.Draw(texture, Position, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
+
+        public int DrawOrder { get; private set; }
+        public bool Visible { get; private set; }
+        public event EventHandler<EventArgs> DrawOrderChanged;
+        public event EventHandler<EventArgs> VisibleChanged;
 
         public virtual void Update(GameTime gameTime)
         {
 
         }
 
-        public void ExecuteSkill(int skillIndex, params object[] list)
-        {
-            skillSet[skillIndex].Execute(list);
-        }
 
         public bool Controllable
         {

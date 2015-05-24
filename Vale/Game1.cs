@@ -32,7 +32,7 @@ namespace Vale
         {
             base.Initialize();
             Input.Input.Initialize(Input.Input.Mode.KBAM);
-            player = new Hero();
+            player = new Hero(this, spriteBatch);
             player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
         }
 
@@ -84,7 +84,9 @@ namespace Vale
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            player.Draw(spriteBatch);
+            spriteBatch.Draw(Content.Load<Texture2D>("Art\\bksq20x20"), Input.Input.MousePosition, Color.White);
+
+            player.Draw(gameTime);
 
             spriteBatch.End();
 

@@ -1,4 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Vale.GameObjects.Actors;
 
 namespace Vale.GameObjects.Skills
@@ -6,9 +10,34 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     /// Fires an arrow in the direction of the cursor.
     /// </summary>
-    class QuickShot : Skill
+    internal class QuickShot : Skill
     {
-        public const double ProjectileSpeed = 10;
+        public readonly double ProjectileSpeed = 10; // this should be read in from a parsed file
+
+        private readonly List<LineProjectile> arrows;
+
+        public QuickShot(Game1 game, SpriteBatch spriteBatch, GameActor owner)
+            : base(game, spriteBatch, owner)
+        {
+            arrows = new List<LineProjectile>();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+
+            foreach (var arrow in arrows.Where(arrow => arrow.State == LineProjectile.ProjectileStates.Moving))
+                arrow.Draw(gameTime);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            foreach (var arrow in arrows)
+                arrow.Update(gameTime);
+
+            arrows.RemoveAll(LineProjectile.ProjectileIsDead);
+            base.Update(gameTime);
+        }
 
         /// <summary>
         /// Fires a projectile.
@@ -17,19 +46,16 @@ namespace Vale.GameObjects.Skills
         /// <returns></returns>
         protected override bool DoAction(params object[] list)
         {
-            Vector2 target = (Vector2)list[0]; //assumes list[0] is the target
-            Vector2 origin = Owner.Position;
+            var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
+            var origin = Owner.Position;
+            var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
 
-            var arrow = new LineProjectile(this.Owner, origin, target, ProjectileSpeed);
+            var arrow = new LineProjectile(Owner.Game, Owner.SprtBatch, "Art\\bksq20x20");
+            arrow.Initialize(Owner, origin, rotation, ProjectileSpeed);
             arrow.Discharge();
+            arrows.Add(arrow);
 
             return true;
-        }
-
-        public QuickShot(GameActor owner)
-            : base(owner)
-        {
-            // probably set some values here? parse a file? maybe parse BEFORE and pull that info now?
         }
     }
 }
