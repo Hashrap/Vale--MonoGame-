@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Vale.GameObjects.Actors;
+using Input = Vale.Control.Input;
 
 namespace Vale
 {
@@ -31,7 +32,7 @@ namespace Vale
         protected override void Initialize()
         {
             base.Initialize();
-            Input.Input.Initialize(Input.Input.Mode.KBAM);
+            Input.Initialize(Input.Mode.KBAM);
             player = new Hero(this, spriteBatch);
             player.Initialize(Content.Load<Texture2D>("Art\\bksq20x20"));
         }
@@ -69,7 +70,7 @@ namespace Vale
             
             // TODO: Add your update logic here
             player.Update(gameTime);
-            Input.Input.Update();
+            Input.Update();
             base.Update(gameTime);
         }
 
@@ -84,7 +85,7 @@ namespace Vale
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Content.Load<Texture2D>("Art\\bksq20x20"), Input.Input.MousePosition, Color.White);
+            spriteBatch.Draw(Content.Load<Texture2D>("Art\\bksq20x20"), Input.MousePosition, Color.White);
 
             player.Draw(gameTime);
 

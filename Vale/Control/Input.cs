@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Vale.Input
+namespace Vale.Control
 {
     public static class Input
     {
@@ -106,9 +106,8 @@ namespace Vale.Input
 
         /// <summary>
         ///  Calculates vertical axis input based on input mode.
-        /// Returns a float between -1 (up) and 1 (down).  0 indicates no input.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Float between -1 (up) and 1 (down).  0 indicates no input.</returns>
         public static float YAxisInput
         {
             get
@@ -128,9 +127,8 @@ namespace Vale.Input
 
         /// <summary>
         /// Calculates horizontal axis input based on input mode.
-        /// Returns a float between -1 (left) and 1 (right).  0 indicates no input.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Float between -1 (left) and 1 (right).  0 indicates no input.</returns>
         public static float XAxisInput
         {
             get
@@ -151,19 +149,18 @@ namespace Vale.Input
 
 
         /// <summary>
-        /// Returns a Vector2 containing X and Y axis input.
+        /// Unclamped X and Y input
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Vector2 containing X and Y axis input.</returns>
         public static Vector2 RawInput
         {
             get { return new Vector2(XAxisInput, YAxisInput); }
         }
 
         /// <summary>
-        /// Normalizes axis input values if the length of the vector exceeds 1
-        /// Returns a Vector2 containing X and Y axis input clamped to a length of 1
+        /// X and Y input, clamped to a max length of 1.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Vector2 containing X and Y axis input clamped to a length of 1</returns>
         public static Vector2 NormalizedInput
         {
             get
@@ -176,88 +173,80 @@ namespace Vale.Input
         #region Keyboard
 
         /// <summary>
-        ///  Accepts an Input.Keys object to check
-        /// Returns true if key is currently pressed, false if released
+        /// Check if keyboard key is currently down
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Input.Keys object to check</param>
+        /// <returns>true if key is currently pressed, false if released</returns>
         public static bool KeyDown(Keys key)
         {
             return CurrentKeyboardState.IsKeyDown(key);
         }
 
         /// <summary>
-        /// Accepts an Input.Keys object to check
-        /// Returns true if key is currently released, false if pressed
+        /// Check if keyboard key is currently up
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Input.Keys object to check</param>
+        /// <returns>true if key is currently released, false if pressed.</returns>
         public static bool KeyUp(Keys key)
         {
             return CurrentKeyboardState.IsKeyUp(key);
         }
 
         /// <summary>
-        /// Accepts an Input.Keys object to check
-        /// Returns true if key has just been pressed, false otherwise 
+        /// Check if keyboard key is being pressed
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Input.Keys object to check</param>
+        /// <returns>true if key has just been pressed, false otherwise.</returns>
         public static bool KeyPress(Keys key)
         {
             return CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
         }
 
         /// <summary>
-        ///  Accepts an Input.Keys object to check
-        /// Returns true if key has just been released, false otherwise 
+        /// Check if keyboard key is being released
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Input.Keys object to check</param>
+        /// <returns>true if key has just been released, false otherwise. </returns>
         public static bool KeyRelease(Keys key)
         {
             return CurrentKeyboardState.IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key);
         }
 
         /// <summary>
-        ///  Accepts a character to cast as an Input.Keys object
-        /// Returns the result of passing the object to KeyDown(Keys)
+        /// Check if keyboard key is currently down 
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">char to cast as an Input.Keys object</param>
+        /// <returns>result of passing cast to KeyDown(Keys)</returns>
         public static bool KeyDown(char key)
         {
             return KeyDown((Keys)char.ToUpper(key));
         }
 
         /// <summary>
-        ///  Accepts a character to cast as an Input.Keys object
-        /// Returns the result of passing the object to KeyUp(Keys)
+        /// Check if keyboard key is currently up 
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">char to cast as an Input.Keys object</param>
+        /// <returns>result of passing cast to KeyUp(Keys)</returns>
         public static bool KeyUp(char key)
         {
             return KeyUp((Keys)char.ToUpper(key));
         }
 
         /// <summary>
-        /// Accepts a character to cast as an Input.Keys object
-        /// Returns the result of passing the object to KeyPress(Keys)
+        /// Check if keyboard key is being pressed
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">char to cast as an Input.Keys object</param>
+        /// <returns>result of passing cast to KeyPress(Keys)</returns>
         public static bool KeyPress(char key)
         {
             return KeyPress((Keys)char.ToUpper(key));
         }
 
         /// <summary>
-        ///  Accepts a character to cast as an Input.Keys object
-        /// Returns the result of passing the object to KeyRelease(Keys)
+        /// Check if keyboard key is being released. 
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">char to cast as an Input.Keys object</param>
+        /// <returns>result of passing cast to KeyRelease(Keys)</returns>
         public static bool KeyRelease(char key)
         {
             return KeyRelease((Keys)char.ToUpper(key));
@@ -268,83 +257,80 @@ namespace Vale.Input
         #region Gamepad
 
         /// <summary>
-        /// Accepts an Input.Buttons object to check
-        /// Returns true if button is currently pressed, false if released
+        /// Checks if a gamepad button is currently down
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">Input.Buttons object to check</param>
+        /// <returns>true if button is currently pressed, false if released</returns>
         public static bool ButtonDown(Buttons button)
         {
             return CurrentGamePadState.IsButtonDown(button);
         }
 
         /// <summary>
-        ///  Accepts an Input.Buttons object to check
-        /// Returns true if button is currently released, false if pressed
+        /// Checks if a gamepad button is currently up
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">Input.Buttons object to check</param>
+        /// <returns>true if button is currently released, false if pressed</returns>
         public static bool ButtonUp(Buttons button)
         {
             return CurrentGamePadState.IsButtonUp(button);
         }
 
         /// <summary>
-        /// Accepts an Input.Buttons object to check
-        /// Returns true if button has just been pressed, false otherwise
+        /// Checks if a gamepad button is being pressed
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">Input.Buttons object to check</param>
+        /// <returns>true if button has just been pressed, false otherwise</returns>
         public static bool ButtonPress(Buttons button)
         {
             return CurrentGamePadState.IsButtonDown(button) && PreviousGamePadState.IsButtonUp(button);
         }
 
         /// <summary>
-        /// Accepts an int to cast as an Input.Buttons object
-        /// Returns true if button has just been released, false otherwise
+        /// Checks if a gamepad button is being released
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">Input.Buttons object to check</param>
+        /// <returns>true if button has just been released, false otherwise</returns>
         public static bool ButtonRelease(Buttons button)
         {
             return CurrentGamePadState.IsButtonUp(button) && PreviousGamePadState.IsButtonDown(button);
         }
 
         /// <summary>
-        ///  Accepts an int to cast as an Input.Buttons object
-        /// Returns the result of passing the object to ButtonDown(Buttons)
+        /// Check if a gamepad button is currently down.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">int to cast as an Input.Buttons</param>
+        /// <returns>result of passing the cast to ButtonDown(Buttons)</returns>
         public static bool ButtonDown(int button)
         {
             return ButtonDown((Buttons)button);
         }
 
-        // Accepts an int to cast as an Input.Buttons object
-        // Returns the result of passing the object to ButtonUp(Buttons)
+        /// <summary>
+        /// Check if a gamepad button is currently up.
+        /// </summary>
+        /// <param name="button">int to cast as an Input.Buttons</param>
+        /// <returns>result of passing the cast to ButtonUp(Buttons)</returns>
         public static bool ButtonUp(int button)
         {
             return ButtonUp((Buttons)button);
         }
 
         /// <summary>
-        /// Accepts an int to cast as an Input.Buttons object
-        /// Returns the result of passing the object to ButtonPress(Buttons)
+        /// Check if a gamepad button is being pressed.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">int to cast as an Input.Buttons</param>
+        /// <returns>result of passing the cast to ButtonPress(Buttons)</returns>
         public static bool ButtonPress(int button)
         {
             return ButtonPress((Buttons)button);
         }
 
         /// <summary>
-        /// Accepts an Input.Buttons object to check.  Returns the result of passing the object to ButtonRelease(Buttons)
+        /// Check if a gamepad button is being released.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns></returns>
+        /// <param name="button">int to cast as an Input.Buttons</param>
+        /// <returns>result of passing the cast to ButtonRelease(Buttons)</returns>
         public static bool ButtonRelease(int button)
         {
             return ButtonRelease((Buttons)button);
@@ -355,28 +341,28 @@ namespace Vale.Input
         #region Mouse & Cursor
 
         /// <summary>
-        /// Returns the current position of the mouse cursor on the X axis
+        /// Calculates X position of the mouse cursor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>current position of the mouse cursor on the X axis</returns>
         public static int MouseX { get { return CurrentMouseState.X; } }
 
         /// <summary>
-        /// Returns the current position of the mouse cursor on the Y axis
+        /// Calculates Y position of the mouse cursor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>current position of the mouse cursor on the Y axis</returns>
         public static int MouseY { get { return CurrentMouseState.Y; } }
 
         /// <summary>
-        ///  Returns the current position of the mouse cursor as a Vector2(X,Y)
+        /// Calculates the position of the mouse cursor
         /// </summary>
-        /// <returns></returns>
+        /// <returns>current position of the mouse cursor as a Vector2(X,Y)</returns>
         public static Vector2 MousePosition { get { return new Vector2(MouseX, MouseY); } }
 
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button is currently down
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns> Returns true if the button is being pressed</returns>
+        /// <param name="button">MouseButton object to check</param>
+        /// <returns>true if the button is down</returns>
         private static bool MouseButtonCurrentlyDown(MouseButtons button)
         {
             switch (button)
@@ -396,10 +382,10 @@ namespace Vale.Input
         }
 
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button was previously down
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns true if the button was being pressed in the previous frame</returns>
+        /// <param name="button">MouseButton object to check</param>
+        /// <returns>true if the button was down last frame</returns>
         private static bool MouseButtonPreviouslyDown(MouseButtons button)
         {
             switch (button)
@@ -419,38 +405,39 @@ namespace Vale.Input
         }
 
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button is currently down
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns true if the button is being pressed</returns>
+        /// <param name="button">MouseButton object to check</param>
+        /// <returns>true if the button is down</returns>
         public static bool MouseButtonDown(MouseButtons button)
         {
             return MouseButtonCurrentlyDown(button);
         }
 
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button is currently up
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns true if the button is not being pressed</returns>
+        /// <param name="button">MouseButton object to check</param>
+        /// <returns>true if the button is up</returns>
         public static bool MouseButtonUp(MouseButtons button)
         {
             return !MouseButtonCurrentlyDown(button);
         }
 
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button is being pressed
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="button">MouseButton object to check</param>
         /// <returns>Returns true if the button has just been pressed, false otherwise</returns>
         public static bool MouseButtonPress(MouseButtons button)
         {
             return MouseButtonCurrentlyDown(button) && !MouseButtonPreviouslyDown(button);
         }
+
         /// <summary>
-        /// Accepts a MouseButton to check
+        /// Check if a mouse button is being released
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="button">MouseButton object to check</param>
         /// <returns>Returns true if the button has just been released, false otherwise</returns>
         public static bool MouseButtonRelease(MouseButtons button)
         {
@@ -458,40 +445,40 @@ namespace Vale.Input
         }
 
         /// <summary>
-        /// Accepts a string to cast as a MouseButton object
+        /// Check if a mouse button is currently down.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns the result of passing the object to MouseButtonDown(MouseButton)</returns>
+        /// <param name="button">String to cast as a MouseButton object.</param>
+        /// <returns>Result of passing the cast to MouseButtonDown(MouseButton).</returns>
         public static bool MouseButtonDown(string button)
         {
             return MouseButtonDown((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
 
         /// <summary>
-        /// Accepts a string to cast as a MouseButton object
+        /// Check if a mouse button is currently up.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns the result of passing the object to MouseButtonUp(MouseButton)</returns>
+        /// <param name="button">String to cast as a MouseButton object.</param>
+        /// <returns>Result of passing the cast to MouseButtonUp(MouseButton).</returns>
         public static bool MouseButtonUp(string button)
         {
             return MouseButtonUp((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
 
         /// <summary>
-        /// Accepts a string to cast as a MouseButton object
+        /// Check if a mouse button is being pressed.
         /// </summary>
-        /// <param name="button"></param>
-        /// <returns>Returns the result of passing the object to MouseButtonPress(MouseButton)</returns>
+        /// <param name="button">String to cast as a MouseButton object.</param>
+        /// <returns>Result of passing the cast to MouseButtonPress(MouseButton).</returns>
         public static bool MouseButtonPress(string button)
         {
             return MouseButtonPress((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
 
         /// <summary>
-        ///     Accepts a string to cast as a MouseButton object
+        /// Check if a mouse button is being released.
         /// </summary>
-        /// <param name="button">The button.</param>
-        /// <returns>Returns the result of passing the object to MouseButtonRelease(MouseButton)</returns>
+        /// <param name="button">String to cast as a MouseButton object.</param>
+        /// <returns>Result of passing the cast to MouseButtonRelease(MouseButton).</returns>
         public static bool MouseButtonRelease(string button)
         {
             return MouseButtonRelease((MouseButtons)Enum.Parse(typeof(MouseButtons), button));

@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Vale.GameObjects.Skills;
+using Input = Vale.Control.Input;
 
 namespace Vale.GameObjects.Actors
 {
@@ -23,20 +23,20 @@ namespace Vale.GameObjects.Actors
         {
             if (Controllable)
             {
-                Velocity = Vector2.Multiply(Input.Input.NormalizedInput, (float) Speed);
+                Velocity = Vector2.Multiply(Input.NormalizedInput, (float) Speed);
                 // input should be handled by Player class maybe? Player moves the hero
 
-                if (Input.Input.MouseButtonPress(Input.Input.MouseButtons.Left)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (Input.MouseButtonPress("Left")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
-                    SkillOne.Execute(Input.Input.MousePosition);
+                    SkillOne.Execute(Input.MousePosition);
                 }
-                if (Input.Input.MouseButtonPress(Input.Input.MouseButtons.Right)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (Input.MouseButtonPress("Right")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
-                    SkillTwo.Execute(Input.Input.MousePosition);
+                    SkillTwo.Execute(Input.MousePosition);
                 }
-                if (Input.Input.KeyPress(Keys.Space)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (Input.KeyPress(' ')) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
-                    SkillThree.Execute(Input.Input.MousePosition);
+                    SkillThree.Execute(Input.MousePosition);
                 }
             }
 
@@ -44,7 +44,7 @@ namespace Vale.GameObjects.Actors
             SkillTwo.Update(gameTime);
             SkillThree.Update(gameTime);
             
-            if (Input.Input.KeyPress('P'))
+            if (Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
 
             // always call base

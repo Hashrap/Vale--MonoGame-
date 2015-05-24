@@ -43,7 +43,7 @@
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
     <Compile Include="GameObjects\Skills\SplitShot.cs" />
-    <Compile Include="Input\Input.cs" />
+    <Compile Include="Control\Input.cs" />
     <Compile Include="GameObjects\Actors\Hero.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Actors\GameActor.cs" />
