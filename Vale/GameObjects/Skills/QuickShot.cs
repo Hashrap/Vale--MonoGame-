@@ -12,7 +12,7 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal class QuickShot : Skill
     {
-        public readonly double ProjectileSpeed = 10; // this should be read in from a parsed file
+        public readonly double ProjectileSpeed = .75; // this should be read in from a parsed file
 
         protected readonly List<LineProjectile> arrows;
 

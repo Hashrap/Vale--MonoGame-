@@ -126,7 +126,7 @@ namespace Vale.GameObjects.Skills
         }
         protected virtual void Move(GameTime gameTime)
         {
-            Position += Velocity;
+            Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
         }
 
         protected virtual void OnCollision(GameActor collided)
