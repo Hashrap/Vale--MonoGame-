@@ -25,6 +25,8 @@ namespace Vale.GameObjects.Actors
 
         public Vector2 PreviousPosition { get; set; }
 
+        public Vector2 Velocity { get; set; }
+
         public double Speed { get; set; }
 
         private double maxHealth;
@@ -75,7 +77,13 @@ namespace Vale.GameObjects.Actors
 
         public virtual void Update(GameTime gameTime)
         {
+            Move();
+        }
 
+
+        private void Move()
+        {
+            Position += Velocity;
         }
 
 

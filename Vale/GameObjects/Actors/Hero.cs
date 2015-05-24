@@ -16,14 +16,14 @@ namespace Vale.GameObjects.Actors
         public void Initialize(Texture2D texture)
         {
             base.Initialize(texture, new Vector2(100, 100));
-            Speed = 300;
+            Speed = .3;
         }
 
         public override void Update(GameTime gameTime)
         {
             if (Controllable)
             {
-                Position += Vector2.Multiply(Input.Input.NormalizedInput, (float)(gameTime.ElapsedGameTime.TotalSeconds * Speed));
+                Velocity = Vector2.Multiply(Input.Input.NormalizedInput, (float)(gameTime.ElapsedGameTime.Milliseconds * Speed));
                 // input should be handled by Player class maybe? Player moves the hero
 
                 if (Input.Input.MouseButtonPress(Input.Input.MouseButtons.Left)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
@@ -34,7 +34,7 @@ namespace Vale.GameObjects.Actors
                 {
                     SkillTwo.Execute(Input.Input.MousePosition);
                 }
-                if (Input.Input.KeyPress(Keys.B)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (Input.Input.KeyPress(Keys.Space)) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
                     SkillThree.Execute(Input.Input.MousePosition);
                 }
@@ -44,11 +44,12 @@ namespace Vale.GameObjects.Actors
             SkillOne.Update(gameTime);
             SkillTwo.Update(gameTime);
             SkillThree.Update(gameTime);
-
+            
             base.Update(gameTime);
             if (Input.Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
         }
+
 
         public override void Draw(GameTime gameTime)
         {
