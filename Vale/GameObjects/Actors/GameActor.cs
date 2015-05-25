@@ -20,8 +20,8 @@ namespace Vale.GameObjects.Actors
         private ActorState state;
 
         private List<Modifier> modifiers; // list of modifiers effecting this unit. 
-        
 
+        private float spriteWidth = 20, spriteHeight = 20;
 
         public float Speed { get; set; }
 
@@ -60,10 +60,13 @@ namespace Vale.GameObjects.Actors
             Position = pos;
         }
 
+        protected Vector2 DrawingOrigin { get { return new Vector2(spriteWidth / 2, spriteHeight / 2); } }
+
+        protected Vector2 DrawingPosition { get { return Position - DrawingOrigin; } }
 
         public virtual void Draw(GameTime gameTime)
         {
-            SprtBatch.Draw(texture, Position, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            SprtBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None, 0f);
         }
 
         public int DrawOrder { get; private set; }

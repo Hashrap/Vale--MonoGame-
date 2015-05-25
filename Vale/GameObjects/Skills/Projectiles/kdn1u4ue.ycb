@@ -10,12 +10,6 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal class LineProjectile : MoveableGameObject, IDrawable
     {
-        protected Vector2 DrawingOrigin { get { return new Vector2(spriteWidth / 2, spriteHeight / 2); } }
-
-        protected Vector2 DrawingPosition { get { return Position - DrawingOrigin; } }
-
-        private float spriteWidth = 20, spriteHeight = 20;
-
         private const int Duration = 1500;
         private readonly Game1 game;
         private readonly SpriteBatch spriteBatch;
@@ -90,7 +84,7 @@ namespace Vale.GameObjects.Skills
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, Position, null, Color.Black, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
         public void Initialize(GameActor owner, Vector2 origin, float rotation, double speed)

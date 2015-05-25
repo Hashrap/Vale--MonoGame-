@@ -33,7 +33,7 @@ namespace Vale.GameObjects.Skills
             var origin = Owner.Position;
             var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
             var arrow = new ReturnProjectile(Owner.Game, Owner.SprtBatch, "Art\\bksq20x20");
-            arrow.Initialize(Owner, Owner.Position, rotation, ProjectileSpeed);
+            arrow.Initialize(Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }

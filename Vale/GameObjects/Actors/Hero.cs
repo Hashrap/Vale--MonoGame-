@@ -28,7 +28,7 @@ namespace Vale.GameObjects.Actors
 
                 if (Input.MouseButtonPress("Left")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
-                    SkillOne.Execute(Input.MousePosition);
+                    SkillOne.Execute(Input.MousePosition + Vector2.One);
                 }
                 if (Input.MouseButtonPress("Right")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 {
@@ -38,7 +38,11 @@ namespace Vale.GameObjects.Actors
                 {
                     SkillThree.Execute(Input.MousePosition);
                 }
+
+                Rotation = (float) Math.Atan2(Input.MouseY - Position.Y, Input.MouseX - Position.X);
             }
+
+            
 
             SkillOne.Update(gameTime);
             SkillTwo.Update(gameTime);
@@ -54,7 +58,6 @@ namespace Vale.GameObjects.Actors
 
         public override void Draw(GameTime gameTime)
         {
-            //do we need to draw anything special for the Hero? if not, delegate drawing to parent.
             base.Draw(gameTime);
 
             SkillOne.Draw(gameTime);

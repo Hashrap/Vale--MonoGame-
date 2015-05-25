@@ -62,8 +62,8 @@ namespace Vale.GameObjects.Skills
 
         protected void CreateProjectile(double rotation)
         {
-            var arrow = new LineProjectile(Owner.Game, Owner.SprtBatch, "Art\\bksq20x20");
-            arrow.Initialize(Owner, Owner.Position, rotation, ProjectileSpeed);
+            var arrow = new LineProjectile(Owner.Game, Owner.SprtBatch, "Art\\arrow20x20");
+            arrow.Initialize(Owner, Owner.Position, (float) rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }
