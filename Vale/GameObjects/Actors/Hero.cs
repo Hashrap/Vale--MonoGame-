@@ -16,7 +16,7 @@ namespace Vale.GameObjects.Actors
         public void Initialize(Texture2D texture)
         {
             base.Initialize(texture, new Vector2(100, 100));
-            Speed = .3;
+            Speed = 0.3f;
         }
 
         public override void Update(GameTime gameTime)

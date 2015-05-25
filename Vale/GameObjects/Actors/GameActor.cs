@@ -23,7 +23,7 @@ namespace Vale.GameObjects.Actors
         
 
 
-        public double Speed { get; set; }
+        public float Speed { get; set; }
 
         private double maxHealth;
 
