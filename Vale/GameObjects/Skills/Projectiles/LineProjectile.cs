@@ -6,41 +6,25 @@ using Vale.GameObjects.Actors;
 namespace Vale.GameObjects.Skills
 {
     /// <summary>
-    /// A projectile that moves in a line
+    ///     A projectile that moves in a line
     /// </summary>
     internal class LineProjectile : MoveableGameObject, IDrawable
     {
-        protected Vector2 DrawingOrigin { get { return new Vector2(spriteWidth / 2, spriteHeight / 2); } }
-
-        protected Vector2 DrawingPosition { get { return Position - DrawingOrigin; } }
-
-        private float spriteWidth = 20, spriteHeight = 20;
-
-        private const int Duration = 1500;
-        private readonly Game1 game;
-        private readonly SpriteBatch spriteBatch;
-        private readonly string textureName;
-
-
-        private Texture2D texture;
-
-        public LineProjectile(Game1 game, SpriteBatch spriteBatch, string textureName)
-        {
-            this.game = game;
-            this.spriteBatch = spriteBatch;
-            this.textureName = textureName;
-        }
-
-        public event EventHandler<EventArgs> DrawOrderChanged;
-
-        public event EventHandler<EventArgs> VisibleChanged;
-
         public enum ProjectileStates
         {
             Dormant,
             Moving,
             Dead
         }
+
+        private const int Duration = 1500;
+        private readonly Game1 game;
+        private readonly SpriteBatch spriteBatch;
+        private readonly float spriteHeight = 20;
+        private readonly float spriteWidth = 20;
+        private readonly string textureName;
+        private Texture2D texture;
+
         public int DrawOrder { get; private set; }
 
         public int ElapsedTime { get; private set; }
@@ -53,9 +37,28 @@ namespace Vale.GameObjects.Skills
 
         public ProjectileStates State { get; private set; }
 
-
         public bool Visible { get; private set; }
 
+        protected Vector2 DrawingOrigin
+        {
+            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
+        }
+
+        protected Vector2 DrawingPosition
+        {
+            get { return Position - DrawingOrigin; }
+        }
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public LineProjectile(Game1 game, SpriteBatch spriteBatch, string textureName)
+        {
+            this.game = game;
+            this.spriteBatch = spriteBatch;
+            this.textureName = textureName;
+        }
 
         public static bool ProjectileIsDead(LineProjectile projectile)
         {
@@ -90,7 +93,8 @@ namespace Vale.GameObjects.Skills
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+                SpriteEffects.None, 0f);
         }
 
         public void Initialize(GameActor owner, Vector2 origin, float rotation, double speed)
@@ -106,19 +110,15 @@ namespace Vale.GameObjects.Skills
 
         public override void Update(GameTime gameTime)
         {
-            ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
-
-            if (ElapsedTime >= Duration)
-                Destroy();
-
             switch (State)
             {
                 case ProjectileStates.Dormant:
                 case ProjectileStates.Dead:
-                    break;
-
                 case ProjectileStates.Moving:
-                    //Move(gameTime);
+                    ElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+
+                    if (ElapsedTime >= Duration)
+                        Destroy();
                     break;
             }
 

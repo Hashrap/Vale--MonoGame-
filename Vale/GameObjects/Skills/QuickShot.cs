@@ -8,7 +8,7 @@ using Vale.GameObjects.Actors;
 namespace Vale.GameObjects.Skills
 {
     /// <summary>
-    /// Fires an arrow in the direction of the cursor.
+    ///     Fires an arrow in the direction of the cursor.
     /// </summary>
     internal class QuickShot : Skill
     {
@@ -40,7 +40,7 @@ namespace Vale.GameObjects.Skills
         }
 
         /// <summary>
-        /// Fires a projectile.
+        ///     Fires a projectile.
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
@@ -63,7 +63,7 @@ namespace Vale.GameObjects.Skills
         protected void CreateProjectile(double rotation)
         {
             var arrow = new LineProjectile(Owner.Game, Owner.SprtBatch, "Art\\arrow20x20");
-            arrow.Initialize(Owner, Owner.Position, (float) rotation, ProjectileSpeed);
+            arrow.Initialize(Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }

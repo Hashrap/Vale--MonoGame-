@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Vale.Control;
 using Vale.GameObjects.Skills;
-using Input = Vale.Control.Input;
 
 namespace Vale.GameObjects.Actors
 {
     /// <summary>
-    /// The player-controlled Hero
+    ///     The player-controlled Hero
     /// </summary>
-    class Hero : GameActor
+    internal class Hero : GameActor
     {
         private Skill SkillOne, SkillTwo, SkillThree;
 
@@ -23,38 +23,38 @@ namespace Vale.GameObjects.Actors
         {
             if (Controllable)
             {
-                Velocity = Vector2.Multiply(Input.NormalizedInput, (float) Speed);
-                // input should be handled by Player class maybe? Player moves the hero
+                Velocity = Vector2.Multiply(Input.NormalizedInput, Speed);
 
-                if (Input.MouseButtonPress("Left")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+
+                //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (Input.MouseButtonPress("Left"))
                 {
                     SkillOne.Execute(Input.MousePosition + Vector2.One);
                 }
-                if (Input.MouseButtonPress("Right")) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+
+                if (Input.MouseButtonPress("Right"))
                 {
                     SkillTwo.Execute(Input.MousePosition);
                 }
-                if (Input.KeyPress(' ')) //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+
+                if (Input.KeyPress(' '))
                 {
                     SkillThree.Execute(Input.MousePosition);
                 }
 
-                Rotation = (float) Math.Atan2(Input.MouseY - Position.Y, Input.MouseX - Position.X);
+                Rotation = (float)Math.Atan2(Input.MouseY - Position.Y, Input.MouseX - Position.X);
             }
-
-            
 
             SkillOne.Update(gameTime);
             SkillTwo.Update(gameTime);
             SkillThree.Update(gameTime);
-            
+
             if (Input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
 
             // always call base
             base.Update(gameTime);
         }
-
 
         public override void Draw(GameTime gameTime)
         {
@@ -65,7 +65,8 @@ namespace Vale.GameObjects.Actors
             SkillThree.Draw(gameTime);
         }
 
-        public Hero(Game1 game, SpriteBatch spriteBatch) : base(game, spriteBatch)
+        public Hero(Game1 game, SpriteBatch spriteBatch)
+            : base(game, spriteBatch)
         {
             SkillOne = new QuickShot(game, spriteBatch, this);
             SkillTwo = new SplitShot(game, spriteBatch, this);

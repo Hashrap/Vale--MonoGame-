@@ -1,29 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Vale.GameObjects
 {
-    abstract class MoveableGameObject : IUpdateable
+    internal abstract class MoveableGameObject : IUpdateable
     {
-        public Vector2 Position { get; set; }
-        public Vector2 PreviousPosition { get; set; }
-        public Vector2 Velocity { get; set; }
+        protected float rotation;
 
         protected float speed;
 
-        /// <summary>
-        /// The magnitude of this game object's velocity
-        /// </summary>
-        public float Speed
-        {
-            get { return speed; }
-            set { speed = Math.Max(0.0f, value); }
-        }
+        public bool Enabled { get; private set; }
 
-        protected float rotation;
+        public Vector2 Position { get; set; }
+
+        public Vector2 PreviousPosition { get; set; }
 
         public float Rotation
         {
@@ -31,6 +21,22 @@ namespace Vale.GameObjects
             protected set { rotation = value % 360; }
         }
 
+        /// <summary>
+        ///     The magnitude of this game object's velocity
+        /// </summary>
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = Math.Max(0.0f, value); }
+        }
+
+        public int UpdateOrder { get; private set; }
+
+        public Vector2 Velocity { get; set; }
+
+        public event EventHandler<EventArgs> EnabledChanged;
+
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         public virtual void Update(GameTime gameTime)
         {
@@ -43,10 +49,5 @@ namespace Vale.GameObjects
 
             return Position;
         }
-
-        public bool Enabled { get; private set; }
-        public int UpdateOrder { get; private set; }
-        public event EventHandler<EventArgs> EnabledChanged;
-        public event EventHandler<EventArgs> UpdateOrderChanged;
     }
 }

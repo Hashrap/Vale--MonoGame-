@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace Vale.GameObjects.Modifiers
 {
-    enum EffectType { Stun, Slow, Root, Disarm } // EXPAND UPON LATER
-
     internal enum EffectState
     {
         Dormant,
@@ -15,17 +10,45 @@ namespace Vale.GameObjects.Modifiers
         Expired
     }
 
+    internal enum EffectType
+    {
+        Stun,
+        Slow,
+        Root,
+        Disarm
+    } // EXPAND UPON LATER
+
     /// <summary>
-    /// A modifier is buff/debuff that applies an effect to its owner
+    ///     A modifier is buff/debuff that applies an effect to its owner
     /// </summary>
-    class Modifier : IUpdateable // AKA BUFF/DEBUFF
+    internal class Modifier : IUpdateable // AKA BUFF/DEBUFF
     {
         private readonly int duration;
+        private EffectType effectType;
         private int elapsedTime; //MODIFIER KEEPS TRACK OF ITSELF, LIKE PROJECTILES?
-        private EffectType effectType; // THIS SHOULD PROBABLY BE A LIST SO THAT MODIFIERS CAN DO MORE THAN ONE THING?
+
+        // THIS SHOULD PROBABLY BE A LIST SO THAT MODIFIERS CAN DO MORE THAN ONE THING?
         private EffectState state;
+
         //Event when expired?
 
+        public EffectType Effect
+        {
+            get { return effectType; }
+        }
+
+        public bool Enabled { get; private set; }
+
+        public bool Expired
+        {
+            get { return state == EffectState.Expired; }
+        }
+
+        public int UpdateOrder { get; private set; }
+
+        public event EventHandler<EventArgs> EnabledChanged;
+
+        public event EventHandler<EventArgs> UpdateOrderChanged;
 
         public Modifier(EffectType effectType, int duration)
         {
@@ -41,11 +64,6 @@ namespace Vale.GameObjects.Modifiers
             state = EffectState.Active;
         }
 
-
-        public bool Expired { get { return state == EffectState.Expired; } }
-
-
-        public EffectType Effect { get { return effectType; } }
         public void Update(GameTime gameTime)
         {
             elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -53,10 +71,5 @@ namespace Vale.GameObjects.Modifiers
             if (elapsedTime > duration)
                 state = EffectState.Expired;
         }
-
-        public bool Enabled { get; private set; }
-        public int UpdateOrder { get; private set; }
-        public event EventHandler<EventArgs> EnabledChanged;
-        public event EventHandler<EventArgs> UpdateOrderChanged;
     }
 }

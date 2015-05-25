@@ -1,33 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using Vale.GameObjects.Modifiers;
-using Vale.GameObjects.Skills;
 
 namespace Vale.GameObjects.Actors
 {
     /// <summary>
-    /// Represents any moving character.
+    ///     Represents any moving character.
     /// </summary>
-    class GameActor : MoveableGameObject, IDrawable
+    internal class GameActor : MoveableGameObject, IDrawable
     {
-        public Game1 Game { get; private set; }
-        public SpriteBatch SprtBatch { get; private set; }
+        public enum ActorState
+        {
+            Standing,
+            Moving,
+            Dead
+        }
 
-        public enum ActorState { Standing, Moving, Dead } //this probably needs to be more sophisticated
+        protected Texture2D texture;
 
-        private ActorState state;
-
-        private List<Modifier> modifiers; // list of modifiers effecting this unit. 
-
-        private float spriteWidth = 20, spriteHeight = 20;
-
-        public float Speed { get; set; }
+        private double health;
 
         private double maxHealth;
 
-        private double health; // maybe attributes that can modifed by buffs, such as Health, should be in a special Attribute class?
+        private List<Modifier> modifiers;
+
+        private float spriteWidth = 20, spriteHeight = 20;
+
+        private ActorState state;
+
+        public bool Controllable
+        {
+            get { return true; } // eventually loop through and check for Stun modifiers?
+        }
+
+        public int DrawOrder { get; private set; }
+
+        public Game1 Game { get; private set; }
 
         public double Health
         {
@@ -46,12 +56,39 @@ namespace Vale.GameObjects.Actors
             }
         }
 
-        protected Texture2D texture;
+        //this probably needs to be more sophisticated
+        // list of modifiers effecting this unit.
+        public float Speed { get; set; }
 
+        public SpriteBatch SprtBatch { get; private set; }
+
+        public bool Visible { get; private set; }
+
+        protected Vector2 DrawingOrigin
+        {
+            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
+        }
+
+        protected Vector2 DrawingPosition
+        {
+            get { return Position - DrawingOrigin; }
+        }
+
+        public event EventHandler<EventArgs> DrawOrderChanged;
+
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        // maybe attributes that can modifed by buffs, such as Health, should be in a special Attribute class?
         public GameActor(Game1 game, SpriteBatch spriteBatch)
         {
-            this.Game = game;
-            this.SprtBatch = spriteBatch;
+            Game = game;
+            SprtBatch = spriteBatch;
+        }
+
+        public virtual void Draw(GameTime gameTime)
+        {
+            SprtBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None,
+                0f);
         }
 
         public void Initialize(Texture2D tex, Vector2 pos)
@@ -60,39 +97,19 @@ namespace Vale.GameObjects.Actors
             Position = pos;
         }
 
-        protected Vector2 DrawingOrigin { get { return new Vector2(spriteWidth / 2, spriteHeight / 2); } }
-
-        protected Vector2 DrawingPosition { get { return Position - DrawingOrigin; } }
-
-        public virtual void Draw(GameTime gameTime)
-        {
-            SprtBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None, 0f);
-        }
-
-        public int DrawOrder { get; private set; }
-        public bool Visible { get; private set; }
-        public event EventHandler<EventArgs> DrawOrderChanged;
-        public event EventHandler<EventArgs> VisibleChanged;
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
-
-        public bool Controllable
-        {
-            get { return true; } // eventually loop through and check for Stun modifiers? 
-        }
-
-        public double ReceiveDamage(GameActor source, double rawDamage) //maybe there should be a "Damage" struct which holds raw damage value, damage type, modifiers?
+        public double ReceiveDamage(GameActor source, double rawDamage)
+        //maybe there should be a "Damage" struct which holds raw damage value, damage type, modifiers?
         {
             //apply modifers: damage increase/decrease %
             // if immune, do no damage
             health -= rawDamage;
 
-
             return rawDamage; //eventually return actual damage after mitigations/modifiers
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
         }
     }
 }

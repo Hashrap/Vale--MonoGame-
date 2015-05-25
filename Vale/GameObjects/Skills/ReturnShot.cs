@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Vale.GameObjects.Actors;
 using Vale.GameObjects.Skills.Projectiles;
 
 namespace Vale.GameObjects.Skills
 {
-    class ReturnShot : QuickShot
+    internal class ReturnShot : QuickShot
     {
         public ReturnShot(Game1 game, SpriteBatch spriteBatch, GameActor owner)
             : base(game, spriteBatch, owner)
@@ -17,7 +14,7 @@ namespace Vale.GameObjects.Skills
         }
 
         /// <summary>
-        /// Fires a projectile.
+        ///     Fires a projectile.
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
@@ -38,5 +35,4 @@ namespace Vale.GameObjects.Skills
             arrows.Add(arrow);
         }
     }
-
 }
