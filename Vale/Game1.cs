@@ -14,6 +14,7 @@ namespace Vale
         private GraphicsDeviceManager graphics;
         private Hero player;
         private SpriteBatch spriteBatch;
+        private Texture2D cursorTexture;
 
         public Game1()
         {
@@ -32,7 +33,7 @@ namespace Vale
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(Content.Load<Texture2D>("Art\\cursor10x10.png"), Input.MousePosition, Color.White);
+            spriteBatch.Draw(cursorTexture, Input.MousePosition, Color.White);
 
             player.Draw(gameTime);
 
@@ -63,8 +64,7 @@ namespace Vale
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            cursorTexture = Content.Load<Texture2D>("Art/cursor10x10.png");
         }
 
         /// <summary>
