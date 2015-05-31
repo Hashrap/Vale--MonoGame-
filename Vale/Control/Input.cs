@@ -4,7 +4,7 @@ using System;
 
 namespace Vale.Control
 {
-    public class Input : IUpdateable
+    public class Input
     {
         #region Singleton
         private Input() { }
@@ -19,11 +19,6 @@ namespace Vale.Control
         }
         #endregion
 
-
-        public bool Enabled { get; private set; }
-        public int UpdateOrder { get; private set; }
-        public event EventHandler<EventArgs> EnabledChanged;
-        public event EventHandler<EventArgs> UpdateOrderChanged;
         public enum Mode
         {
             KeyboardMouse,
