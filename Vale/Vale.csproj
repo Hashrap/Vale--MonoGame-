@@ -38,6 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Content\Map\CaveMap.cs" />
+    <Compile Include="Content\Map\DungeonMap.cs" />
+    <Compile Include="Content\Map\Generator.cs" />
+    <Compile Include="Content\Map\Map.cs" />
+    <Compile Include="Content\Map\MersenneTwister.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
