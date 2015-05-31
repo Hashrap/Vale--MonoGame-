@@ -11,6 +11,9 @@ namespace Vale
     /// </summary>
     public class Game1 : Game
     {
+        private const int SCREEN_WIDTH = 1280;
+        private const int SCREEN_HEIGHT = 720;
+
         private GraphicsDeviceManager graphics;
         private Hero player;
         private SpriteBatch spriteBatch;
@@ -18,7 +21,17 @@ namespace Vale
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            Window.Title = "Vale";
+            Window.AllowUserResizing = false;
+            this.graphics = new GraphicsDeviceManager(this);
+            this.graphics.PreferMultiSampling = true;
+            this.graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            this.graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
+
+            this.IsMouseVisible = false;
+            this.IsFixedTimeStep = true;
+            this.graphics.IsFullScreen = false;
+
             Content.RootDirectory = "Content";
         }
 
