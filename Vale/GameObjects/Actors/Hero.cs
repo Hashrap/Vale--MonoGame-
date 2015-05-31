@@ -10,13 +10,13 @@ namespace Vale.GameObjects.Actors
     /// <summary>
     ///     The player-controlled Hero
     /// </summary>
-    internal class Hero : GameActor
+    internal class Hero : CombatUnit
     {
         private Skill SkillOne, SkillTwo, SkillThree;
 
         public override void LoadContent()
         {
-            ContentManager content = new ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+            ContentManager content = new ContentManager(Screen.ScreenManager.Game.Services, "Content");
             this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
         }
 

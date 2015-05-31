@@ -42,16 +42,10 @@ namespace Vale.GameObjects.Skills
 
         public bool Visible { get; private set; }
 
-        protected GameScreen GameScreen
+        protected GameScreen Screen
         {
-            get { return Owner.GameScreen; }
+            get { return Owner.Screen; }
         }
-
-        protected SpriteBatch SpriteBatch
-        {
-            get { return Owner.SprtBatch; }
-        }
-
 
         public event EventHandler<EventArgs> EnabledChanged;
         public event EventHandler<EventArgs> VisibleChanged;
@@ -77,6 +71,7 @@ namespace Vale.GameObjects.Skills
         public virtual void Draw(GameTime gameTime)
         {
         }
+
         /// <summary>
         ///     Execute the ability.
         /// </summary>

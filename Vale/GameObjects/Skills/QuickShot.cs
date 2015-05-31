@@ -66,10 +66,10 @@ namespace Vale.GameObjects.Skills
         {
             if (texture == null)
             {
-                var content = new Microsoft.Xna.Framework.Content.ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+                var content = new Microsoft.Xna.Framework.Content.ContentManager(Screen.ScreenManager.Game.Services, "Content");
                 texture = content.Load<Texture2D>("Art/arrow20x20");
             }
-            var arrow = new LineProjectile(Owner.GameScreen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new LineProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using Vale.GameObjects.Actors;
 using Vale.ScreenSystem;
 
 namespace Vale.GameObjects.Skills
@@ -9,7 +8,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     ///     A projectile that moves in a line
     /// </summary>
-    internal class LineProjectile : MoveableGameObject
+    internal class LineProjectile : GameActor
     {
         public enum ProjectileStates
         {
@@ -34,23 +33,10 @@ namespace Vale.GameObjects.Skills
 
         public ProjectileStates State { get; private set; }
 
-        public bool Visible { get; private set; }
 
-        protected Vector2 DrawingOrigin
-        {
-            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
-        }
-
-        protected Vector2 DrawingPosition
-        {
-            get { return Position - DrawingOrigin; }
-        }
-
-        public event EventHandler<EventArgs> DrawOrderChanged;
-
-        public event EventHandler<EventArgs> VisibleChanged;
 
         public LineProjectile(GameScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
+            : base(gameScreen)
         {
             this.gameScreen = gameScreen;
             this.texture = texture;

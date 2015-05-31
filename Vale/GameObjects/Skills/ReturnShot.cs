@@ -26,10 +26,10 @@ namespace Vale.GameObjects.Skills
 
         private void CreateReturnProjectile(Vector2 targetPosition)
         {
-            var content = new Microsoft.Xna.Framework.Content.ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+            var content = new Microsoft.Xna.Framework.Content.ContentManager(Screen.ScreenManager.Game.Services, "Content");
             var origin = Owner.Position;
             var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
-            var arrow = new ReturnProjectile(Owner.GameScreen, content.Load<Texture2D>("Art/bksq20x20"), Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new ReturnProjectile(Owner.Screen, content.Load<Texture2D>("Art/bksq20x20"), Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }
