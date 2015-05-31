@@ -21,35 +21,36 @@ namespace Vale.GameObjects.Actors
 
         public override void Update(GameTime gameTime)
         {
+            Input input = Input.Instance;
+
             if (Controllable)
             {
-                Velocity = Vector2.Multiply(Input.NormalizedInput, Speed);
-
+                Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
 
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
-                if (Input.MouseButtonPress("Left"))
+                if (input.MouseButtonPress("Left"))
                 {
-                    SkillOne.Execute(Input.MousePosition + Vector2.One);
+                    SkillOne.Execute(input.MousePosition + Vector2.One);
                 }
 
-                if (Input.MouseButtonPress("Right"))
+                if (input.MouseButtonPress("Right"))
                 {
-                    SkillTwo.Execute(Input.MousePosition);
+                    SkillTwo.Execute(input.MousePosition);
                 }
 
-                if (Input.KeyPress(' '))
+                if (input.KeyPress(' '))
                 {
-                    SkillThree.Execute(Input.MousePosition);
+                    SkillThree.Execute(input.MousePosition);
                 }
 
-                Rotation = (float)Math.Atan2(Input.MouseY - Position.Y, Input.MouseX - Position.X);
+                Rotation = (float)Math.Atan2(input.MouseY - Position.Y, input.MouseX - Position.X);
             }
 
             SkillOne.Update(gameTime);
             SkillTwo.Update(gameTime);
             SkillThree.Update(gameTime);
 
-            if (Input.KeyPress('P'))
+            if (input.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
 
             // always call base

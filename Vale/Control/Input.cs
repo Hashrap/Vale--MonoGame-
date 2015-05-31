@@ -4,8 +4,26 @@ using System;
 
 namespace Vale.Control
 {
-    public static class Input
+    public class Input : IUpdateable
     {
+        #region Singleton
+        private Input() { }
+        public static Input Instance { get { return Nested.instance; } }
+        private class Nested
+        {
+            // Explicit static constructor to tell C# compiler
+            // not to mark type as beforefieldinit
+            static Nested() { }
+
+            internal static readonly Input instance = new Input();
+        }
+        #endregion
+
+
+        public bool Enabled { get; private set; }
+        public int UpdateOrder { get; private set; }
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
         public enum Mode
         {
             KeyboardMouse,
@@ -21,25 +39,25 @@ namespace Vale.Control
             X2
         };
 
-        public static GamePadState CurrentGamePadState { get; private set; }
+        public GamePadState CurrentGamePadState { get; private set; }
 
-        public static KeyboardState CurrentKeyboardState { get; private set; }
+        public KeyboardState CurrentKeyboardState { get; private set; }
 
-        public static MouseState CurrentMouseState { get; private set; }
+        public MouseState CurrentMouseState { get; private set; }
 
-        public static GamePadState PreviousGamePadState { get; private set; }
+        public GamePadState PreviousGamePadState { get; private set; }
 
-        public static KeyboardState PreviousKeyboardState { get; private set; }
+        public KeyboardState PreviousKeyboardState { get; private set; }
 
-        public static MouseState PreviousMouseState { get; private set; }
+        public MouseState PreviousMouseState { get; private set; }
 
-        public static Mode InputMode { get; set; }
+        public Mode InputMode { get; set; }
 
         /// <summary>
         ///     X and Y input, clamped to a max length of 1.
         /// </summary>
         /// <returns>Vector2 containing X and Y axis input clamped to a length of 1</returns>
-        public static Vector2 NormalizedInput
+        public Vector2 NormalizedInput
         {
             get
             {
@@ -52,7 +70,7 @@ namespace Vale.Control
         ///     Unclamped X and Y input
         /// </summary>
         /// <returns>Vector2 containing X and Y axis input.</returns>
-        public static Vector2 RawInput
+        public Vector2 RawInput
         {
             get { return new Vector2(XAxisInput, YAxisInput); }
         }
@@ -61,7 +79,7 @@ namespace Vale.Control
         ///     Calculates horizontal axis input based on input mode.
         /// </summary>
         /// <returns>Float between -1 (left) and 1 (right).  0 indicates no input.</returns>
-        public static float XAxisInput
+        public float XAxisInput
         {
             get
             {
@@ -82,7 +100,7 @@ namespace Vale.Control
         ///     Calculates vertical axis input based on input mode.
         /// </summary>
         /// <returns>Float between -1 (up) and 1 (down).  0 indicates no input.</returns>
-        public static float YAxisInput
+        public float YAxisInput
         {
             get
             {
@@ -99,12 +117,12 @@ namespace Vale.Control
             }
         }
 
-        public static void Initialize(Mode mode)
+        public void Initialize(Mode mode)
         {
             InputMode = mode;
         }
 
-        public static void Update()
+        public void Update(GameTime gameTime)
         {
             #region Debug strings
 
@@ -163,7 +181,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">Input.Keys object to check</param>
         /// <returns>true if key is currently pressed, false if released</returns>
-        public static bool KeyDown(Keys key)
+        public bool KeyDown(Keys key)
         {
             return CurrentKeyboardState.IsKeyDown(key);
         }
@@ -173,7 +191,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">char to cast as an Input.Keys object</param>
         /// <returns>result of passing cast to KeyDown(Keys)</returns>
-        public static bool KeyDown(char key)
+        public bool KeyDown(char key)
         {
             return KeyDown((Keys)char.ToUpper(key));
         }
@@ -183,7 +201,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">Input.Keys object to check</param>
         /// <returns>true if key has just been pressed, false otherwise.</returns>
-        public static bool KeyPress(Keys key)
+        public bool KeyPress(Keys key)
         {
             return CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
         }
@@ -193,7 +211,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">char to cast as an Input.Keys object</param>
         /// <returns>result of passing cast to KeyPress(Keys)</returns>
-        public static bool KeyPress(char key)
+        public bool KeyPress(char key)
         {
             return KeyPress((Keys)char.ToUpper(key));
         }
@@ -203,7 +221,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">Input.Keys object to check</param>
         /// <returns>true if key has just been released, false otherwise. </returns>
-        public static bool KeyRelease(Keys key)
+        public bool KeyRelease(Keys key)
         {
             return CurrentKeyboardState.IsKeyUp(key) && PreviousKeyboardState.IsKeyDown(key);
         }
@@ -213,7 +231,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">char to cast as an Input.Keys object</param>
         /// <returns>result of passing cast to KeyRelease(Keys)</returns>
-        public static bool KeyRelease(char key)
+        public bool KeyRelease(char key)
         {
             return KeyRelease((Keys)char.ToUpper(key));
         }
@@ -223,7 +241,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">Input.Keys object to check</param>
         /// <returns>true if key is currently released, false if pressed.</returns>
-        public static bool KeyUp(Keys key)
+        public bool KeyUp(Keys key)
         {
             return CurrentKeyboardState.IsKeyUp(key);
         }
@@ -233,7 +251,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="key">char to cast as an Input.Keys object</param>
         /// <returns>result of passing cast to KeyUp(Keys)</returns>
-        public static bool KeyUp(char key)
+        public bool KeyUp(char key)
         {
             return KeyUp((Keys)char.ToUpper(key));
         }
@@ -247,7 +265,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">Input.Buttons object to check</param>
         /// <returns>true if button is currently pressed, false if released</returns>
-        public static bool ButtonDown(Buttons button)
+        public bool ButtonDown(Buttons button)
         {
             return CurrentGamePadState.IsButtonDown(button);
         }
@@ -257,7 +275,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">int to cast as an Input.Buttons</param>
         /// <returns>result of passing the cast to ButtonDown(Buttons)</returns>
-        public static bool ButtonDown(int button)
+        public bool ButtonDown(int button)
         {
             return ButtonDown((Buttons)button);
         }
@@ -267,7 +285,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">Input.Buttons object to check</param>
         /// <returns>true if button has just been pressed, false otherwise</returns>
-        public static bool ButtonPress(Buttons button)
+        public bool ButtonPress(Buttons button)
         {
             return CurrentGamePadState.IsButtonDown(button) && PreviousGamePadState.IsButtonUp(button);
         }
@@ -277,7 +295,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">int to cast as an Input.Buttons</param>
         /// <returns>result of passing the cast to ButtonPress(Buttons)</returns>
-        public static bool ButtonPress(int button)
+        public bool ButtonPress(int button)
         {
             return ButtonPress((Buttons)button);
         }
@@ -287,7 +305,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">Input.Buttons object to check</param>
         /// <returns>true if button has just been released, false otherwise</returns>
-        public static bool ButtonRelease(Buttons button)
+        public bool ButtonRelease(Buttons button)
         {
             return CurrentGamePadState.IsButtonUp(button) && PreviousGamePadState.IsButtonDown(button);
         }
@@ -297,7 +315,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">int to cast as an Input.Buttons</param>
         /// <returns>result of passing the cast to ButtonRelease(Buttons)</returns>
-        public static bool ButtonRelease(int button)
+        public bool ButtonRelease(int button)
         {
             return ButtonRelease((Buttons)button);
         }
@@ -307,7 +325,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">Input.Buttons object to check</param>
         /// <returns>true if button is currently released, false if pressed</returns>
-        public static bool ButtonUp(Buttons button)
+        public bool ButtonUp(Buttons button)
         {
             return CurrentGamePadState.IsButtonUp(button);
         }
@@ -317,7 +335,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">int to cast as an Input.Buttons</param>
         /// <returns>result of passing the cast to ButtonUp(Buttons)</returns>
-        public static bool ButtonUp(int button)
+        public bool ButtonUp(int button)
         {
             return ButtonUp((Buttons)button);
         }
@@ -330,7 +348,7 @@ namespace Vale.Control
         ///     Calculates the position of the mouse cursor
         /// </summary>
         /// <returns>current position of the mouse cursor as a Vector2(X,Y)</returns>
-        public static Vector2 MousePosition
+        public Vector2 MousePosition
         {
             get { return new Vector2(MouseX, MouseY); }
         }
@@ -339,7 +357,7 @@ namespace Vale.Control
         ///     Calculates X position of the mouse cursor
         /// </summary>
         /// <returns>current position of the mouse cursor on the X axis</returns>
-        public static int MouseX
+        public int MouseX
         {
             get { return CurrentMouseState.X; }
         }
@@ -348,7 +366,7 @@ namespace Vale.Control
         ///     Calculates Y position of the mouse cursor
         /// </summary>
         /// <returns>current position of the mouse cursor on the Y axis</returns>
-        public static int MouseY
+        public int MouseY
         {
             get { return CurrentMouseState.Y; }
         }
@@ -358,7 +376,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>true if the button is down</returns>
-        public static bool MouseButtonDown(MouseButtons button)
+        public bool MouseButtonDown(MouseButtons button)
         {
             return MouseButtonCurrentlyDown(button);
         }
@@ -368,7 +386,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">String to cast as a MouseButton object.</param>
         /// <returns>Result of passing the cast to MouseButtonDown(MouseButton).</returns>
-        public static bool MouseButtonDown(string button)
+        public bool MouseButtonDown(string button)
         {
             return MouseButtonDown((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
@@ -378,7 +396,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>Returns true if the button has just been pressed, false otherwise</returns>
-        public static bool MouseButtonPress(MouseButtons button)
+        public bool MouseButtonPress(MouseButtons button)
         {
             return MouseButtonCurrentlyDown(button) && !MouseButtonPreviouslyDown(button);
         }
@@ -388,7 +406,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">String to cast as a MouseButton object.</param>
         /// <returns>Result of passing the cast to MouseButtonPress(MouseButton).</returns>
-        public static bool MouseButtonPress(string button)
+        public bool MouseButtonPress(string button)
         {
             return MouseButtonPress((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
@@ -398,7 +416,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>Returns true if the button has just been released, false otherwise</returns>
-        public static bool MouseButtonRelease(MouseButtons button)
+        public bool MouseButtonRelease(MouseButtons button)
         {
             return !MouseButtonCurrentlyDown(button) && MouseButtonPreviouslyDown(button);
         }
@@ -408,7 +426,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">String to cast as a MouseButton object.</param>
         /// <returns>Result of passing the cast to MouseButtonRelease(MouseButton).</returns>
-        public static bool MouseButtonRelease(string button)
+        public bool MouseButtonRelease(string button)
         {
             return MouseButtonRelease((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
@@ -418,7 +436,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>true if the button is up</returns>
-        public static bool MouseButtonUp(MouseButtons button)
+        public bool MouseButtonUp(MouseButtons button)
         {
             return !MouseButtonCurrentlyDown(button);
         }
@@ -428,7 +446,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">String to cast as a MouseButton object.</param>
         /// <returns>Result of passing the cast to MouseButtonUp(MouseButton).</returns>
-        public static bool MouseButtonUp(string button)
+        public bool MouseButtonUp(string button)
         {
             return MouseButtonUp((MouseButtons)Enum.Parse(typeof(MouseButtons), button));
         }
@@ -438,7 +456,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>true if the button is down</returns>
-        private static bool MouseButtonCurrentlyDown(MouseButtons button)
+        private bool MouseButtonCurrentlyDown(MouseButtons button)
         {
             switch (button)
             {
@@ -465,7 +483,7 @@ namespace Vale.Control
         /// </summary>
         /// <param name="button">MouseButton object to check</param>
         /// <returns>true if the button was down last frame</returns>
-        private static bool MouseButtonPreviouslyDown(MouseButtons button)
+        private bool MouseButtonPreviouslyDown(MouseButtons button)
         {
             switch (button)
             {

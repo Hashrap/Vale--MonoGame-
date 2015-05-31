@@ -33,7 +33,7 @@ namespace Vale
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            spriteBatch.Draw(cursorTexture, Input.MousePosition, Color.White);
+            spriteBatch.Draw(cursorTexture, Input.Instance.MousePosition, Color.White);
 
             player.Draw(gameTime);
 
@@ -51,7 +51,7 @@ namespace Vale
         protected override void Initialize()
         {
             base.Initialize();
-            Input.Initialize(Input.Mode.KeyboardMouse);
+            Input.Instance.Initialize(Input.Mode.KeyboardMouse);
             player = new Hero(this, spriteBatch);
             player.Initialize(Content.Load<Texture2D>("Art\\arrow20x20.png"));
         }
@@ -89,7 +89,7 @@ namespace Vale
 
             // TODO: Add your update logic here
             player.Update(gameTime);
-            Input.Update();
+            Input.Instance.Update(gameTime);
             base.Update(gameTime);
         }
     }
