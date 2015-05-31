@@ -47,11 +47,17 @@
     <Compile Include="GameObjects\Actors\Hero.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects\Actors\GameActor.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\LineProjectile.cs" />
     <Compile Include="GameObjects\Skills\QuickShot.cs" />
     <Compile Include="GameObjects\Skills\Skill.cs" />
+    <Compile Include="ScreenSystem\GameScreen.cs" />
+    <Compile Include="ScreenSystem\ScreenManager.cs" />
+    <Compile Include="ScreenSystem\Screens\BackgroundScreen.cs" />
+    <Compile Include="ScreenSystem\Screens\GameplayScreen.cs" />
+    <Compile Include="ScreenSystem\Screens\SplashScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -77,6 +83,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\squishy hit.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Common\arrow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Common\cursor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Common\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Common\slider.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Common\titlescreen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
