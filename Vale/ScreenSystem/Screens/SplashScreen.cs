@@ -51,6 +51,7 @@ namespace Vale.ScreenSystem.Screens
             duration -= gameTime.ElapsedGameTime;
             if (duration <= TimeSpan.Zero)
             {
+                ScreenManager.Add(new GameplayScreen());
                 Exit();
             }
             base.Update(gameTime);

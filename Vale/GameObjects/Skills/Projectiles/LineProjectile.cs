@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Vale.GameObjects.Actors;
+using Vale.ScreenSystem;
 
 namespace Vale.GameObjects.Skills
 {
@@ -18,12 +19,10 @@ namespace Vale.GameObjects.Skills
         }
 
         private const int Duration = 1500;
-        private readonly Game1 game;
-        private readonly SpriteBatch spriteBatch;
         private readonly float spriteHeight = 20;
         private readonly float spriteWidth = 20;
-        private readonly string textureName;
-        private Texture2D texture;
+        private readonly Texture2D texture;
+        private readonly GameScreen gameScreen;
 
         public int DrawOrder { get; private set; }
 
@@ -32,8 +31,6 @@ namespace Vale.GameObjects.Skills
         public Vector2 Origin { get; private set; }
 
         public GameActor Owner { get; private set; }
-
-        public double Speed { get; set; }
 
         public ProjectileStates State { get; private set; }
 
@@ -53,11 +50,16 @@ namespace Vale.GameObjects.Skills
 
         public event EventHandler<EventArgs> VisibleChanged;
 
-        public LineProjectile(Game1 game, SpriteBatch spriteBatch, string textureName)
+        public LineProjectile(GameScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
         {
-            this.game = game;
-            this.spriteBatch = spriteBatch;
-            this.textureName = textureName;
+            this.gameScreen = gameScreen;
+            this.texture = texture;
+            State = ProjectileStates.Dormant;
+            Owner = owner;
+            Origin = origin;
+            Position = origin;
+            Rotation = rotation;
+            Speed = speed;
         }
 
         public static bool ProjectileIsDead(LineProjectile projectile)
@@ -93,19 +95,8 @@ namespace Vale.GameObjects.Skills
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+            gameScreen.SpriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
                 SpriteEffects.None, 0f);
-        }
-
-        public void Initialize(GameActor owner, Vector2 origin, float rotation, double speed)
-        {
-            texture = game.Content.Load<Texture2D>(textureName);
-            State = ProjectileStates.Dormant;
-            Owner = owner;
-            Origin = origin;
-            Position = origin;
-            Rotation = rotation;
-            Speed = speed;
         }
 
         public override void Update(GameTime gameTime)

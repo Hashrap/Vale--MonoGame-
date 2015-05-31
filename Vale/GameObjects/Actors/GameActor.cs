@@ -9,7 +9,7 @@ namespace Vale.GameObjects.Actors
     /// <summary>
     ///     Represents any moving character.
     /// </summary>
-    internal class GameActor : MoveableGameObject, IDrawable
+    internal class GameActor : MoveableGameObject
     {
         public enum ActorState
         {
@@ -37,8 +37,6 @@ namespace Vale.GameObjects.Actors
 
         public int DrawOrder { get; private set; }
 
-        public Game1 Game { get; private set; }
-
         public double Health
         {
             get { return health; }
@@ -56,9 +54,11 @@ namespace Vale.GameObjects.Actors
             }
         }
 
+        public Vale.ScreenSystem.GameScreen GameScreen { get; set; }
+
         //this probably needs to be more sophisticated
         // list of modifiers effecting this unit.
-        public float Speed { get; set; }
+        //public float Speed { get; set; }
 
         public SpriteBatch SprtBatch { get; private set; }
 
@@ -74,27 +74,18 @@ namespace Vale.GameObjects.Actors
             get { return Position - DrawingOrigin; }
         }
 
-        public event EventHandler<EventArgs> DrawOrderChanged;
-
-        public event EventHandler<EventArgs> VisibleChanged;
-
         // maybe attributes that can modifed by buffs, such as Health, should be in a special Attribute class?
-        public GameActor(Game1 game, SpriteBatch spriteBatch)
+        public GameActor(Vale.ScreenSystem.GameScreen gameScreen)
         {
-            Game = game;
-            SprtBatch = spriteBatch;
+            GameScreen = gameScreen;
         }
+
+        public virtual void LoadContent() { }
 
         public virtual void Draw(GameTime gameTime)
         {
-            SprtBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None,
+            GameScreen.SpriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f, SpriteEffects.None,
                 0f);
-        }
-
-        public void Initialize(Texture2D tex, Vector2 pos)
-        {
-            texture = tex;
-            Position = pos;
         }
 
         public double ReceiveDamage(GameActor source, double rawDamage)

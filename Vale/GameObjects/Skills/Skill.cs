@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
+using Vale.ScreenSystem;
 
 namespace Vale.GameObjects.Skills
 {
@@ -41,9 +42,9 @@ namespace Vale.GameObjects.Skills
 
         public bool Visible { get; private set; }
 
-        protected Game1 Game
+        protected GameScreen GameScreen
         {
-            get { return Owner.Game; }
+            get { return Owner.GameScreen; }
         }
 
         protected SpriteBatch SpriteBatch
@@ -63,7 +64,7 @@ namespace Vale.GameObjects.Skills
         ///     Force children to use this constructor
         /// </summary>
         /// <param name="owner">The actor that owns this skill.</param>
-        protected Skill(Game1 game, SpriteBatch spriteBatch, GameActor owner)
+        protected Skill(GameScreen gameScreen, GameActor owner)
         {
             Status = SkillTimeline.Available;
             Owner = owner;

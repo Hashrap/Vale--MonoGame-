@@ -18,7 +18,6 @@ namespace Vale.ScreenSystem.Screens
         ContentManager content;
 
         private Texture2D backgroundTexture;
-        private Rectangle viewport;
 
         public BackgroundScreen() { }
 

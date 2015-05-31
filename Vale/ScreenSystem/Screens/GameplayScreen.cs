@@ -11,10 +11,12 @@ namespace Vale.ScreenSystem.Screens
     public class GameplayScreen : GameScreen
     {
         ContentManager content;
+        Hero player;
         Texture2D cursorTexture;
 
         public GameplayScreen()
         {
+            player = new Hero(this);
         }
 
         public override void LoadContent()
@@ -23,7 +25,10 @@ namespace Vale.ScreenSystem.Screens
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
+
             cursorTexture = content.Load<Texture2D>("Art/cursor10x10.png");
+            player.LoadContent();
+
             ScreenManager.Game.ResetElapsedTime();
         }
 
@@ -35,16 +40,15 @@ namespace Vale.ScreenSystem.Screens
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
             // TODO: Handle screen state
-
-            // Delegate to the components
+            player.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
 
             SpriteBatch.Draw(cursorTexture, Vale.Control.Input.Instance.MousePosition, Color.White);
+            player.Draw(gameTime);
 
             base.Draw(gameTime);
 

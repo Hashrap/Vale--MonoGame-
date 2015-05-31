@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
+using Vale.ScreenSystem;
 
 namespace Vale.GameObjects.Skills
 {
     internal class SplitShot : QuickShot
     {
-        public SplitShot(Game1 game, SpriteBatch spriteBatch, GameActor owner)
-            : base(game, spriteBatch, owner)
+        public SplitShot(GameScreen gameScreen, GameActor owner)
+            : base(gameScreen, owner)
         {
         }
 

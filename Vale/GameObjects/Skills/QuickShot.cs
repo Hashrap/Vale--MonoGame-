@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vale.GameObjects.Actors;
+using Vale.ScreenSystem;
 
 namespace Vale.GameObjects.Skills
 {
@@ -12,12 +13,13 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal class QuickShot : Skill
     {
-        public readonly double ProjectileSpeed = .75; // this should be read in from a parsed file
+        public readonly float ProjectileSpeed = .75f; // this should be read in from a parsed file
 
         protected readonly List<LineProjectile> arrows;
+        private static Texture2D texture;
 
-        public QuickShot(Game1 game, SpriteBatch spriteBatch, GameActor owner)
-            : base(game, spriteBatch, owner)
+        public QuickShot(GameScreen gameScreen, GameActor owner)
+            : base(gameScreen, owner)
         {
             arrows = new List<LineProjectile>();
         }
@@ -62,8 +64,12 @@ namespace Vale.GameObjects.Skills
 
         protected void CreateProjectile(double rotation)
         {
-            var arrow = new LineProjectile(Owner.Game, Owner.SprtBatch, "Art\\arrow20x20");
-            arrow.Initialize(Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            if (texture == null)
+            {
+                var content = new Microsoft.Xna.Framework.Content.ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+                texture = content.Load<Texture2D>("Art/arrow20x20");
+            }
+            var arrow = new LineProjectile(Owner.GameScreen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
         }

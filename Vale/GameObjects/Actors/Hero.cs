@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Vale.Control;
@@ -13,14 +14,15 @@ namespace Vale.GameObjects.Actors
     {
         private Skill SkillOne, SkillTwo, SkillThree;
 
-        public void Initialize(Texture2D texture)
+        public override void LoadContent()
         {
-            base.Initialize(texture, new Vector2(100, 100));
-            Speed = 0.3f;
+            ContentManager content = new ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
         }
 
         public override void Update(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine("Updating. The hero.");
             Input input = Input.Instance;
 
             if (Controllable)
@@ -59,6 +61,7 @@ namespace Vale.GameObjects.Actors
 
         public override void Draw(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine("Drawing the hero :)");
             base.Draw(gameTime);
 
             SkillOne.Draw(gameTime);
@@ -66,12 +69,15 @@ namespace Vale.GameObjects.Actors
             SkillThree.Draw(gameTime);
         }
 
-        public Hero(Game1 game, SpriteBatch spriteBatch)
-            : base(game, spriteBatch)
+        public Hero(Vale.ScreenSystem.GameScreen gameScreen)
+            : base(gameScreen)
         {
-            SkillOne = new QuickShot(game, spriteBatch, this);
-            SkillTwo = new SplitShot(game, spriteBatch, this);
-            SkillThree = new ReturnShot(game, spriteBatch, this);
+            Position = new Vector2(100f, 100f);
+            Speed = 0.3f;
+
+            SkillOne = new QuickShot(gameScreen, this);
+            SkillTwo = new SplitShot(gameScreen, this);
+            SkillThree = new ReturnShot(gameScreen, this);
         }
     }
 }
