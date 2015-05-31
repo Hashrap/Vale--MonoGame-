@@ -94,11 +94,13 @@ namespace Vale.ScreenSystem
 
         public override void Draw(GameTime gameTime)
         {
+            SpriteBatch.Begin();
             foreach (var screen in screenStack)
             {
                 // TODO: If the screen is not hidden
                 screen.Draw(gameTime);
             }
+            SpriteBatch.End();
         }
     }
 }

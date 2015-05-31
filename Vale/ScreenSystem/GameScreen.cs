@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Vale.ScreenSystem
@@ -9,6 +10,11 @@ namespace Vale.ScreenSystem
         {
             get;
             set;
+        }
+
+        public SpriteBatch SpriteBatch
+        {
+            get { return ScreenManager.SpriteBatch; }
         }
 
         public abstract void LoadContent();

@@ -11,6 +11,7 @@ namespace Vale.ScreenSystem.Screens
     public class GameplayScreen : GameScreen
     {
         ContentManager content;
+        Texture2D cursorTexture;
 
         public GameplayScreen()
         {
@@ -22,6 +23,7 @@ namespace Vale.ScreenSystem.Screens
             {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
+            cursorTexture = content.Load<Texture2D>("Art/cursor10x10.png");
             ScreenManager.Game.ResetElapsedTime();
         }
 
@@ -41,12 +43,9 @@ namespace Vale.ScreenSystem.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            var spriteBatch = ScreenManager.SpriteBatch;
-            spriteBatch.Begin();
 
-            // TODO: Draw
+            SpriteBatch.Draw(cursorTexture, Vale.Control.Input.Instance.MousePosition, Color.White);
 
-            spriteBatch.End();
             base.Draw(gameTime);
 
         }

@@ -44,13 +44,10 @@ namespace Vale.ScreenSystem.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
-            spriteBatch.End();
+            SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
         }
     }
 }
