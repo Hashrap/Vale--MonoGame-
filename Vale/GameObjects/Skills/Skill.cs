@@ -9,7 +9,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     ///     Represents a skill that can be used by a Hero or Enemy
     /// </summary>
-    internal abstract class Skill : IUpdateable, IDrawable
+    internal abstract class Skill : IUpdate, IDraw
     {
         private enum SkillTimeline
         {
@@ -52,12 +52,8 @@ namespace Vale.GameObjects.Skills
             get { return Owner.SprtBatch; }
         }
 
-        public event EventHandler<EventArgs> DrawOrderChanged;
 
         public event EventHandler<EventArgs> EnabledChanged;
-
-        public event EventHandler<EventArgs> UpdateOrderChanged;
-
         public event EventHandler<EventArgs> VisibleChanged;
 
         /// <summary>

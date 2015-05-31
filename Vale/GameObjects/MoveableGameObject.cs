@@ -3,7 +3,7 @@ using System;
 
 namespace Vale.GameObjects
 {
-    internal abstract class MoveableGameObject : IUpdateable
+    internal abstract class MoveableGameObject : IUpdate, IDraw
     {
         protected float rotation;
 
@@ -36,8 +36,6 @@ namespace Vale.GameObjects
 
         public event EventHandler<EventArgs> EnabledChanged;
 
-        public event EventHandler<EventArgs> UpdateOrderChanged;
-
         public virtual void Update(GameTime gameTime)
         {
             Move(gameTime);
@@ -48,6 +46,17 @@ namespace Vale.GameObjects
             Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
 
             return Position;
+        }
+
+        public bool Visible
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public event EventHandler<EventArgs> VisibleChanged;
+
+        public virtual void Draw(GameTime gameTime)
+        {
         }
     }
 }

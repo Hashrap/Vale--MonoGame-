@@ -43,6 +43,8 @@
     <Compile Include="Content\Map\Generator.cs" />
     <Compile Include="Content\Map\Map.cs" />
     <Compile Include="Content\Map\MersenneTwister.cs" />
+    <Compile Include="GameObjects\IDraw.cs" />
+    <Compile Include="GameObjects\IUpdate.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />

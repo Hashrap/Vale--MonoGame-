@@ -9,7 +9,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     ///     A projectile that moves in a line
     /// </summary>
-    internal class LineProjectile : MoveableGameObject, IDrawable
+    internal class LineProjectile : MoveableGameObject
     {
         public enum ProjectileStates
         {

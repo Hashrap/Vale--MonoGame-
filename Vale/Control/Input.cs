@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Vale.GameObjects;
 
 namespace Vale.Control
 {
-    public class Input
+    public class Input : IUpdate
     {
         #region Singleton
         private Input() { }
