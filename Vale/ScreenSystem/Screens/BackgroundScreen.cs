@@ -46,7 +46,8 @@ namespace Vale.ScreenSystem.Screens
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
-            SpriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
+            ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+            //SpriteBatch.Draw(backgroundTexture, fullscreen, Color.Black);
         }
     }
 }

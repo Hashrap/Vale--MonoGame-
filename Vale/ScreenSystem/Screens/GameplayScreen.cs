@@ -46,12 +46,9 @@ namespace Vale.ScreenSystem.Screens
 
         public override void Draw(GameTime gameTime)
         {
-
-            SpriteBatch.Draw(cursorTexture, Vale.Control.Input.Instance.MousePosition, Color.White);
             player.Draw(gameTime);
-
+            SpriteBatch.Draw(cursorTexture, Vale.Control.Input.Instance.MousePosition, Color.White);
             base.Draw(gameTime);
-
         }
     }
 }
