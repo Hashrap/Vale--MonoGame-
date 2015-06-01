@@ -70,10 +70,7 @@ namespace Vale.GameObjects.Skills
             // start at the origin
             Position = Origin;
 
-            var xSpeed = (float)(Math.Cos(rotation) * Speed);
-            var ySpeed = (float)(Math.Sin(rotation) * Speed);
-
-            Velocity = new Vector2(xSpeed, ySpeed);
+            Velocity = new Vector2((float)(Math.Cos(Rotation) * Speed), (float)(Math.Sin(Rotation) * Speed));
 
             State = ProjectileStates.Moving;
             ElapsedTime = 0;

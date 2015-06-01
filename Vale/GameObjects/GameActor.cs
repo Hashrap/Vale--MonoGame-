@@ -14,7 +14,7 @@ namespace Vale.GameObjects
             Neutral
         }
 
-        protected float rotation;
+        private float rotation;
 
         protected float speed;
 
