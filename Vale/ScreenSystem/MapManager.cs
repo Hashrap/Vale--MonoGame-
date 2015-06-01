@@ -5,18 +5,22 @@ using System.Text;
 
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Vale.Content.MapGen
+namespace Vale.ScreenSystem
 {
     class MapManager
     {
         [FlagsAttribute]
-        private enum State { Walkable = 0x1 }
+        public enum State { Walkable = 0x1 }
         public struct Tile
         {
             private int x;
             public int X { get; set; }
             private int y;
             public int Y { get; set; }
+            private int width;
+            public int Width { get; set; }
+            private int height;
+            public int Height { get; set; }
 
             private State _state;
             public State State { get; set; }
@@ -43,6 +47,7 @@ namespace Vale.Content.MapGen
             {
                 for(int y = 0; y < height; y++)
                 {
+                    _map[x, y].State = (State)map[x, y];
                     
                 }
             }

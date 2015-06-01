@@ -38,7 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Content\MapGen\MapManager.cs" />
+    <Compile Include="ScreenSystem\MapManager.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
