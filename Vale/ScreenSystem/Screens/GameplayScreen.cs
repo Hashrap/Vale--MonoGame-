@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using DungeonGen;
+using Vale.Content.MapGen;
 using Vale.GameObjects.Actors;
 
 namespace Vale.ScreenSystem.Screens
@@ -28,6 +30,10 @@ namespace Vale.ScreenSystem.Screens
 
             cursorTexture = content.Load<Texture2D>("Art/cursor10x10.png");
             player.LoadContent();
+
+            Generator gen = new Generator(0, "test");
+            gen.Cave(1, "2222211", 40, 1000, 1000);
+            gen.arrayOfLevels[0].printMap();
 
             ScreenManager.Game.ResetElapsedTime();
         }

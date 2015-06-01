@@ -38,11 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Content\Map\CaveMap.cs" />
-    <Compile Include="Content\Map\DungeonMap.cs" />
-    <Compile Include="Content\Map\Generator.cs" />
-    <Compile Include="Content\Map\Map.cs" />
-    <Compile Include="Content\Map\MersenneTwister.cs" />
+    <Compile Include="Content\MapGen\MapManager.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
@@ -109,7 +105,12 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\DungeonGen\Game1\DungeonGen.csproj">
+      <Project>{b23695c9-9781-489d-90f1-a21fd6e331f7}</Project>
+      <Name>DungeonGen</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

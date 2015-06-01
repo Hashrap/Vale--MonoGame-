@@ -47,7 +47,7 @@ namespace Vale
         protected override void Initialize()
         {
             base.Initialize();
-            input.Initialize(Vale.Control.Input.Mode.KeyboardMouse);
+            input.Initialize(Input.Mode.KeyboardMouse);
         }
 
         /// <summary>
