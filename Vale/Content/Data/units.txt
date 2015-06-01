@@ -1,0 +1,6 @@
+{
+	"name":	"unit_grunt",
+	"health":	20,
+	"skill1":	"grunt_attack"
+}
+

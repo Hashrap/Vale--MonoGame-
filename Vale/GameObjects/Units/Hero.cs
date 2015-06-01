@@ -69,8 +69,8 @@ namespace Vale.GameObjects.Actors
             SkillThree.Draw(gameTime);
         }
 
-        public Hero(Vale.ScreenSystem.GameScreen gameScreen)
-            : base(gameScreen)
+        public Hero(Vale.ScreenSystem.GameScreen gameScreen, Faction alignment = Faction.Player)
+            : base(gameScreen, alignment)
         {
             Position = new Vector2(100f, 100f);
             Speed = 0.3f;

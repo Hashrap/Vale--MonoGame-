@@ -31,7 +31,7 @@ namespace Vale.GameObjects
         public float Rotation
         {
             get { return rotation; }
-            protected set { rotation = value%360; }
+            protected set { rotation = value % 360; }
         }
 
         public GameScreen Screen { get; set; }
@@ -44,25 +44,29 @@ namespace Vale.GameObjects
             get { return speed; }
             set { speed = Math.Max(0.0f, value); }
         }
-        
+
         public Vector2 Velocity { get; set; }
 
         public bool Visible { get; set; }
 
         protected Vector2 DrawingOrigin
         {
-            get { return new Vector2(spriteWidth/2, spriteHeight/2); }
+            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
         }
 
         protected Vector2 DrawingPosition
         {
             get { return Position - DrawingOrigin; }
         }
-        
-        protected GameActor(GameScreen screen)
+
+        protected GameActor(GameScreen screen, Faction alignment)
         {
             Screen = screen;
+            Alignment = alignment;
+            Visible = true;
         }
+
+        public Faction Alignment { set; get; }
 
         public virtual void Draw(GameTime gameTime)
         {
@@ -82,9 +86,10 @@ namespace Vale.GameObjects
 
         private Vector2 Move(GameTime gameTime)
         {
-            Position += (Velocity*gameTime.ElapsedGameTime.Milliseconds);
+            Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
 
             return Position;
         }
+
     }
 }

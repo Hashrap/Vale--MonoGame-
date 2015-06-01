@@ -36,7 +36,7 @@ namespace Vale.GameObjects.Skills
 
 
         public LineProjectile(GameScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
-            : base(gameScreen)
+            : base(gameScreen, owner.Alignment)
         {
             this.gameScreen = gameScreen;
             this.texture = texture;

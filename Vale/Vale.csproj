@@ -43,7 +43,8 @@
     <Compile Include="Content\Map\Generator.cs" />
     <Compile Include="Content\Map\Map.cs" />
     <Compile Include="Content\Map\MersenneTwister.cs" />
-    <Compile Include="GameObjects\Actors\CombatUnit.cs" />
+    <Compile Include="GameObjects\UnitFactory.cs" />
+    <Compile Include="GameObjects\Units\CombatUnit.cs" />
     <Compile Include="GameObjects\IDraw.cs" />
     <Compile Include="GameObjects\IUpdate.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
@@ -52,7 +53,7 @@
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
     <Compile Include="GameObjects\Skills\SplitShot.cs" />
     <Compile Include="Control\Input.cs" />
-    <Compile Include="GameObjects\Actors\Hero.cs" />
+    <Compile Include="GameObjects\Units\Hero.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +107,7 @@
     <Content Include="Content\Common\titlescreen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Data\units.txt" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -83,7 +83,8 @@ namespace Vale.GameObjects.Actors
             return rawDamage; //eventually return actual damage after mitigations/modifiers
         }
 
-        public CombatUnit(GameScreen gameScreen) : base(gameScreen)
+        public CombatUnit(GameScreen gameScreen, Faction alignment)
+            : base(gameScreen, alignment)
         {
         }
     }
