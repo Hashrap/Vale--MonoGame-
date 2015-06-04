@@ -38,7 +38,7 @@ namespace Vale.ScreenSystem.Screens
             map.LoadContent();
 
             Generator gen = new Generator(0, "test");
-            gen.Cave(1, "222111", 40, 100, 100);
+            gen.Cave(1, "22211111", 40, 100, 100);
             map.Import(gen.exportVale(0));
 
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(map.Width, map.Height));

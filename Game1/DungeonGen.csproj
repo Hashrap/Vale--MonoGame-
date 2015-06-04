@@ -53,15 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaveLevel.cs" />
-    <Compile Include="DieRoll.cs" />
-    <Compile Include="DungeonLevel.cs" />
+    <Compile Include="Classes\Map\CaveLevel.cs" />
+    <Compile Include="Classes\RNG\DieRoll.cs" />
+    <Compile Include="Classes\Map\DungeonLevel.cs" />
     <Compile Include="CompenentTest.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="MersenneTwister.cs" />
-    <Compile Include="Monster.cs" />
+    <Compile Include="Classes\Map\Generator.cs" />
+    <Compile Include="Classes\Map\Map.cs" />
+    <Compile Include="Classes\Map\Features\Item.cs" />
+    <Compile Include="Classes\RNG\MersenneTwister.cs" />
+    <Compile Include="Classes\Map\Features\Monster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
