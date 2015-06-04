@@ -204,7 +204,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
-Game1/Content/txt/Cave of Doom.txt
 Game1/Content/txt/.svn/text-base/suffix.txt.svn-base
 Game1/Content/txt/.svn/text-base/weapon.txt.svn-base
 Game1/Content/txt/.svn/text-base/prefix.txt.svn-base
