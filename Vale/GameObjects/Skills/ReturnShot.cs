@@ -3,14 +3,16 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Vale.GameObjects.Actors;
 using Vale.GameObjects.Skills.Projectiles;
-using Vale.ScreenSystem;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
 {
     internal class ReturnShot : QuickShot
     {
-        public ReturnShot(GameScreen gameScreen, GameActor owner)
-            : base(gameScreen, owner) { }
+        public ReturnShot(GameplayScreen gameScreen, GameActor owner)
+            : base(gameScreen, owner)
+        {
+        }
 
         /// <summary>
         ///     Fires a projectile.

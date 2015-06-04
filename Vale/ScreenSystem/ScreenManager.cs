@@ -9,7 +9,7 @@ namespace Vale.ScreenSystem
 {
     public class ScreenManager : DrawableGameComponent
     {
-        // Holds references to all of the 
+        // Holds references to all of the
         List<GameScreen> screenStack = new List<GameScreen>();
         // The queue is the stack reversed and is what is iterated over during a call to Update()
         List<GameScreen> screenQueue = new List<GameScreen>();
@@ -94,13 +94,11 @@ namespace Vale.ScreenSystem
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch.Begin();
             foreach (var screen in screenStack)
             {
                 // TODO: If the screen is not hidden
                 screen.Draw(gameTime);
             }
-            SpriteBatch.End();
         }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
-using Vale.ScreenSystem;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
 {
@@ -42,7 +42,7 @@ namespace Vale.GameObjects.Skills
 
         public bool Visible { get; private set; }
 
-        protected GameScreen GameScreen
+        protected GameplayScreen GameScreen
         {
             get { return Owner.GameScreen; }
         }
@@ -64,13 +64,14 @@ namespace Vale.GameObjects.Skills
         ///     Force children to use this constructor
         /// </summary>
         /// <param name="owner">The actor that owns this skill.</param>
-        protected Skill(GameScreen gameScreen, GameActor owner)
+        protected Skill(GameplayScreen gameScreen, GameActor owner)
         {
             Status = SkillTimeline.Available;
             Owner = owner;
             cooldown = 5;
             //can set default cooldown here?
         }
+
         /// <summary>
         ///     Begins the action. Disables other commands while using this action (channeling for shots).
         /// </summary>
@@ -81,6 +82,7 @@ namespace Vale.GameObjects.Skills
         public virtual void Draw(GameTime gameTime)
         {
         }
+
         /// <summary>
         ///     Execute the ability.
         /// </summary>
@@ -88,7 +90,8 @@ namespace Vale.GameObjects.Skills
         /// <returns>Returns success.</returns>
         public bool Execute(params object[] list)
         {
-            if (OnCooldown) return false;
+            if (OnCooldown)
+                return false;
             Status = SkillTimeline.InUse;
             DoAction(list);
             BeginCooldown();
@@ -117,6 +120,7 @@ namespace Vale.GameObjects.Skills
                     Status = SkillTimeline.Available;
             }
         }
+
         protected abstract bool DoAction(params object[] list);
 
         /// <summary>

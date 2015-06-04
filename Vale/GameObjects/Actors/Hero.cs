@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Vale.Control;
 using Vale.GameObjects.Skills;
+using System.Reflection;
+using Microsoft.Xna.Framework.Input;
 
 namespace Vale.GameObjects.Actors
 {
@@ -22,8 +24,8 @@ namespace Vale.GameObjects.Actors
 
         public override void Update(GameTime gameTime)
         {
-            System.Diagnostics.Debug.WriteLine("Updating. The hero.");
             Input input = Input.Instance;
+            Vector2 mousePosition = GameScreen.camera.ScreenToWorldCoords(input.MousePosition);
 
             if (Controllable)
             {
@@ -32,20 +34,20 @@ namespace Vale.GameObjects.Actors
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 if (input.MouseButtonPress("Left"))
                 {
-                    SkillOne.Execute(input.MousePosition + Vector2.One);
+                    SkillOne.Execute(mousePosition + Vector2.One);
                 }
 
                 if (input.MouseButtonPress("Right"))
                 {
-                    SkillTwo.Execute(input.MousePosition);
+                    SkillTwo.Execute(mousePosition);
                 }
 
                 if (input.KeyPress(' '))
                 {
-                    SkillThree.Execute(input.MousePosition);
+                    SkillThree.Execute(mousePosition);
                 }
 
-                Rotation = (float)Math.Atan2(input.MouseY - Position.Y, input.MouseX - Position.X);
+                Rotation = (float)Math.Atan2(mousePosition.Y - Position.Y, mousePosition.X - Position.X);
             }
 
             SkillOne.Update(gameTime);
@@ -61,7 +63,6 @@ namespace Vale.GameObjects.Actors
 
         public override void Draw(GameTime gameTime)
         {
-            System.Diagnostics.Debug.WriteLine("Drawing the hero :)");
             base.Draw(gameTime);
 
             SkillOne.Draw(gameTime);
@@ -69,10 +70,10 @@ namespace Vale.GameObjects.Actors
             SkillThree.Draw(gameTime);
         }
 
-        public Hero(Vale.ScreenSystem.GameScreen gameScreen)
+        public Hero(Vale.ScreenSystem.Screens.GameplayScreen gameScreen)
             : base(gameScreen)
         {
-            Position = new Vector2(100f, 100f);
+            Position = new Vector2(0, 0);
             Speed = 0.3f;
 
             SkillOne = new QuickShot(gameScreen, this);

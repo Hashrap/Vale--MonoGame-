@@ -3,7 +3,7 @@ using System;
 
 namespace Vale.GameObjects
 {
-    internal abstract class MoveableGameObject : IUpdateable
+    public abstract class MoveableGameObject : IUpdateable
     {
         protected float rotation;
 

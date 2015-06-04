@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Vale.GameObjects.Modifiers;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Actors
 {
     /// <summary>
     ///     Represents any moving character.
     /// </summary>
-    internal class GameActor : MoveableGameObject
+    public class GameActor : MoveableGameObject
     {
         public enum ActorState
         {
@@ -54,7 +55,7 @@ namespace Vale.GameObjects.Actors
             }
         }
 
-        public Vale.ScreenSystem.GameScreen GameScreen { get; set; }
+        public Vale.ScreenSystem.Screens.GameplayScreen GameScreen { get; set; }
 
         //this probably needs to be more sophisticated
         // list of modifiers effecting this unit.
@@ -75,12 +76,14 @@ namespace Vale.GameObjects.Actors
         }
 
         // maybe attributes that can modifed by buffs, such as Health, should be in a special Attribute class?
-        public GameActor(Vale.ScreenSystem.GameScreen gameScreen)
+        public GameActor(GameplayScreen gameScreen)
         {
             GameScreen = gameScreen;
         }
 
-        public virtual void LoadContent() { }
+        public virtual void LoadContent()
+        {
+        }
 
         public virtual void Draw(GameTime gameTime)
         {

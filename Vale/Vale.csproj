@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{38736B93-BC0A-4CC9-8229-C9DDA3E61643}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -58,6 +56,7 @@
     <Compile Include="ScreenSystem\Screens\BackgroundScreen.cs" />
     <Compile Include="ScreenSystem\Screens\GameplayScreen.cs" />
     <Compile Include="ScreenSystem\Screens\SplashScreen.cs" />
+    <Compile Include="GameObjects\Camera.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

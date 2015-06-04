@@ -59,7 +59,9 @@ namespace Vale.ScreenSystem.Screens
 
         public override void Draw(GameTime gameTime)
         {
+            SpriteBatch.Begin();
             SpriteBatch.Draw(this.valeLogoTexture, this.destination, Color.White);
+            SpriteBatch.End();
         }
     }
 }

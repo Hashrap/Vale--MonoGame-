@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vale.GameObjects.Actors;
-using Vale.ScreenSystem;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
 {
@@ -13,12 +13,13 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal class QuickShot : Skill
     {
-        public readonly float ProjectileSpeed = .75f; // this should be read in from a parsed file
+        public readonly float ProjectileSpeed = .75f;
+        // this should be read in from a parsed file
 
         protected readonly List<LineProjectile> arrows;
         private static Texture2D texture;
 
-        public QuickShot(GameScreen gameScreen, GameActor owner)
+        public QuickShot(GameplayScreen gameScreen, GameActor owner)
             : base(gameScreen, owner)
         {
             arrows = new List<LineProjectile>();

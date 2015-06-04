@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 using DungeonGen;
 using Vale.GameObjects.Actors;
+using System.Diagnostics;
+using Vale.Control;
+using System.Text.RegularExpressions;
 
 namespace Vale.ScreenSystem.Screens
 {
@@ -15,6 +18,7 @@ namespace Vale.ScreenSystem.Screens
         MapManager map;
         Hero player;
         Texture2D cursorTexture;
+        public Camera camera;
 
         public GameplayScreen()
         {
@@ -37,6 +41,9 @@ namespace Vale.ScreenSystem.Screens
             gen.Cave(1, "222111", 40, 100, 100);
             map.Import(gen.exportVale(0));
 
+            camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(map.Width, map.Height));
+            camera.SetTarget(player);
+
             ScreenManager.Game.ResetElapsedTime();
         }
 
@@ -50,13 +57,19 @@ namespace Vale.ScreenSystem.Screens
             base.Update(gameTime);
             // TODO: Handle screen state
             player.Update(gameTime);
+            camera.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
+            // Camera draw needs to go first
+            camera.Draw(gameTime, SpriteBatch);
+            //SpriteBatch.Begin();
             map.Draw(gameTime);
             player.Draw(gameTime);
-            SpriteBatch.Draw(cursorTexture, Vale.Control.Input.Instance.MousePosition, Color.White);
+            SpriteBatch.Draw(cursorTexture, camera.ScreenToWorldCoords(Input.Instance.MousePosition), Color.White);
+
+            SpriteBatch.End();
             base.Draw(gameTime);
         }
     }

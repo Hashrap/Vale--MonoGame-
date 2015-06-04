@@ -19,7 +19,9 @@ namespace Vale.ScreenSystem.Screens
 
         private Texture2D backgroundTexture;
 
-        public BackgroundScreen() { }
+        public BackgroundScreen()
+        {
+        }
 
         public override void LoadContent()
         {
