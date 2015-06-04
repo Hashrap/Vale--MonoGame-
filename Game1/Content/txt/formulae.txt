@@ -1,0 +1,5 @@
+MP = dex/2 + wis/2
+HP = str/2 + con/2
+AR = dex/2 + str/2 
+DR = con/2 + int/2
+MR = int/2 + wis/2

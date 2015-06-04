@@ -1,0 +1,54 @@
+[Armor] [AR] [DR] [MR] [HP] [MP] [STR] [CON] [DEX] [INT] [WIS]
+T-shirt|0|0|0|0|0|0|0|0|0|0|.005
+Soft Leather Half-Greaves|0|1|0|0|0|0|0|0|0|0|.08
+Soft Leather Greaves|0|1|0|0|0|0|0|0|0|0|.08
+Soft Leather Helm|0|1|0|0|0|0|0|0|0|0|.08
+Soft Leather Gauntlets|0|1|0|0|0|0|0|0|0|0|.08
+Boiled Leather Half-Greaves|0|2|0|0|0|0|0|0|0|0|.08
+Boiled Leather Greaves|0|2|0|0|0|0|0|0|0|0|.07
+Boiled Leather Helm|0|2|0|0|0|0|0|0|0|0|.07
+Boiled Leather Gauntlets|0|2|0|0|0|0|0|0|0|0|.07
+Studded Leather Half-Greaves|0|3|0|0|0|0|0|0|0|0|.06
+Studded Leather Greaves|0|3|0|0|0|0|0|0|0|0|.06
+Studded Leather Helm|0|3|0|0|0|0|0|0|0|0|0.06|
+Studded Leather Gauntlets|0|3|0|0|0|0|0|0|0|0|0.06|
+Rusty Chain Mail Half-Greaves|0|4|0|0|0|0|0|0|0|0|0.05|
+Rusty Chain Mail Greaves|0|4|0|0|0|0|0|0|0|0|0.05|
+Rusty Chain Mail Helm|0|4|0|0|0|0|0|0|0|0|0.05|
+Rusty Chain Mail Gauntlets|0|4|0|0|0|0|0|0|0|0|0.05|
+Chain Mail Half-Greaves|0|5|0|0|0|0|0|0|0|0|0.04|
+Chain Mail Greaves|0|5|0|0|0|0|0|0|0|0|0.04|
+Chain Mail Helm|0|5|0|0|0|0|0|0|0|0|0.04|
+Chain Mail Gauntlets|0|5|0|0|0|0|0|0|0|0|0.04|
+Scale Mail Half-Greaves|0|6|0|0|0|0|0|0|0|0|0.03|
+Scale Mail Greaves|0|6|0|0|0|0|0|0|0|0|0.03|
+Scale Mail Helm|0|6|0|0|0|0|0|0|0|0|0.03|
+Scale Mail Gauntlets|0|6|0|0|0|0|0|0|0|0|0.03|
+Splint Mail Half-Greaves|0|7|0|0|0|0|0|0|0|0|0.02|
+Splint Mail Greaves|0|7|0|0|0|0|0|0|0|0|0.02|
+Splint Mail Helm|0|7|0|0|0|0|0|0|0|0|0.02|
+Splint Mail Gauntlets|0|7|0|0|0|0|0|0|0|0|0|0.02|
+Plated Half-Greaves|0|8|0|0|0|0|0|0|0|0|0.01|
+Plated Greaves|0|8|0|0|0|0|0|0|0|0|0.01|
+Plated Helm|0|8|0|0|0|0|0|0|0|0|0.01|
+Plated Gauntlets|0|8|0|0|0|0|0|0|0|0|0.01|
+Soft Leather Chestplate|0|4|0|0|0|0|0|0|0|0|0.09|
+Boiled Leather Chestplate|0|8|0|0|0|0|0|0|0|0|0.08|
+Studded Leather Chestplate|0|12|0|0|0|0|0|0|0|0|0.07|
+Rusty Chain Mail|0|16|0|0|0|0|0|0|0|0|0.06|
+Chain Mail|0|20|0|0|0|0|0|0|0|0|0.05|
+Brigandine|0|24|0|0|0|0|0|0|0|0|0.04|
+Cuirass|0|28|0|0|0|0|0|0|0|0|0.03|
+Scale Mail|0|32|0|0|0|0|0|0|0|0|0.02|
+Splint Mail|0|36|0|0|0|0|0|0|0|0|0.015|
+Plated Armor|0|40|0|0|0|0|0|0|0|0|0.01|
+Ratty Robe|0|1|1|0|0|0|0|0|1|1|0.09|
+Padded Robe|0|2|2|0|0|0|0|0|0|2|2|0.08|
+White Robe|0|3|3|0|0|0|0|0|3|3|0.07|
+Silken Robe|0|4|4|0|0|0|0|0|4|4|0.06|
+Moon Robe|0|5|5|0|0|0|0|0|5|5|0.05|
+Mage Robe|0|6|6|0|0|0|0|0|6|6|0.04|
+Mana Robe|0|7|7|0|0|0|0|0|7|7|0.03|
+Mythril Robe|0|8|8|0|0|0|0|0|8|8|0.02|
+Adamantine Robe|0|9|9|0|0|0|0|0|9|9|0.15|
+Yggdrasil Robe|0|10|10|0|0|0|0|0|10|10|0.05|

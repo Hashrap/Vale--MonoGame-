@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vale", "Vale\Vale.csproj", "{38736B93-BC0A-4CC9-8229-C9DDA3E61643}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B23695C9-9781-489D-90F1-A21FD6E331F7} = {B23695C9-9781-489D-90F1-A21FD6E331F7}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen", "..\DungeonGen\Game1\DungeonGen.csproj", "{B23695C9-9781-489D-90F1-A21FD6E331F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen", "Game1\DungeonGen.csproj", "{B23695C9-9781-489D-90F1-A21FD6E331F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

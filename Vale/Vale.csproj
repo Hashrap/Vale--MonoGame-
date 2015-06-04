@@ -109,7 +109,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DungeonGen\Game1\DungeonGen.csproj">
+    <ProjectReference Include="..\Game1\DungeonGen.csproj">
       <Project>{b23695c9-9781-489d-90f1-a21fd6e331f7}</Project>
       <Name>DungeonGen</Name>
     </ProjectReference>

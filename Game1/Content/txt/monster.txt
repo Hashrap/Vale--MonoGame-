@@ -1,0 +1,38 @@
+[Monster][HP][Speed][Attack][Level]
+Timid Mouse|4|190|1|1|
+Mouse|6|190|2|1|
+Rat|6|200|3|2|
+Rabid Rat|13|210|3|4|
+Giant Rat|19|180|4|6|
+Crow|2|220|1|1|
+Rabid Crow|7|220|3|3|
+Giant Crow|14|200|5|5|
+Deepcrow|250|150|50|15|
+Raven|3|210|2|1|
+Rabid Raven|8|210|5|3|
+Giant Raven|20|200|7|7|
+Moblin|7|200|2|3|
+Goblin|12|202|4|5|
+Bokoblin|20|204|8|8|
+Arachnid|3|198|2|1|
+Cave Arachnid|23|199|7|7|
+Giant Cave Arachnid|130|230|30|14|
+Demilich|80|210|26|11|
+Lich|150|210|38|13|
+Arch-Lich|220|220|50|17|
+Troll|70|160|15|10|
+Rabid Troll|90|170|18|12|
+Frost Giant|160|150|23|15|
+Wood Giant|160|150|23|15|
+Mountain Giant|160|150|23|15|
+Plains Giant|130|190|16|15
+Giant|130|150|16|13|
+Dragon|200|200|50|17|
+Yellow Dragon|200|230|40|17|
+Green Dragon|240|200|40|17|
+Blue Dragon|220|180|45|17|
+Silver Dragon|200|220|40|17|
+White Dragon|250|200|40|17|
+Black Dragon|200|200|50|17|
+Kobold|30|207|6|7|
+Kobold Leader|40|210|8|8|
