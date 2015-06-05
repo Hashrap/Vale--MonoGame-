@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
-using Vale.GameObjects.Actors;
+using Vale.GameObjects;
 using System.Diagnostics;
 
 namespace Vale

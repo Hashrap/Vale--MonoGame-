@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
-using Vale.ScreenSystem;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills.Projectiles
 {
@@ -16,7 +16,7 @@ namespace Vale.GameObjects.Skills.Projectiles
         private bool returning = false;
 
         public int timeLeft { get { return travelDuration * 2 - elapsedTime; } }
-        public ReturnProjectile(GameScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
+        public ReturnProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
             : base(gameScreen, texture, owner, origin, rotation, speed)
         {
         }

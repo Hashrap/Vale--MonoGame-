@@ -21,7 +21,7 @@ namespace Vale.GameObjects.Modifiers
     /// <summary>
     ///     A modifier is buff/debuff that applies an effect to its owner
     /// </summary>
-    internal class Modifier : IUpdateable // AKA BUFF/DEBUFF
+    internal class Modifier : IUpdate // AKA BUFF/DEBUFF
     {
         private readonly int duration;
         private EffectType effectType;

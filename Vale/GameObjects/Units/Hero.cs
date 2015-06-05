@@ -12,20 +12,20 @@ namespace Vale.GameObjects.Actors
     /// <summary>
     ///     The player-controlled Hero
     /// </summary>
-    internal class Hero : GameActor
+    internal class Hero : CombatUnit
     {
         private Skill SkillOne, SkillTwo, SkillThree;
 
         public override void LoadContent()
         {
-            ContentManager content = new ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
+            ContentManager content = new ContentManager(Screen.ScreenManager.Game.Services, "Content");
             this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
         }
 
         public override void Update(GameTime gameTime)
         {
             Input input = Input.Instance;
-            Vector2 mousePosition = GameScreen.camera.ScreenToWorldCoords(input.MousePosition);
+            Vector2 mousePosition = this.Screen.camera.ScreenToWorldCoords(input.MousePosition);
 
             if (Controllable)
             {
@@ -70,8 +70,8 @@ namespace Vale.GameObjects.Actors
             SkillThree.Draw(gameTime);
         }
 
-        public Hero(Vale.ScreenSystem.Screens.GameplayScreen gameScreen)
-            : base(gameScreen)
+        public Hero(Vale.ScreenSystem.Screens.GameplayScreen gameScreen, Faction alignment = Faction.Player)
+            : base(gameScreen, alignment)
         {
             Position = new Vector2(0, 0);
             Speed = 0.3f;

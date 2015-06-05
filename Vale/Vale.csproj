@@ -38,13 +38,10 @@
   <ItemGroup>
     <Compile Include="ScreenSystem\MapManager.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
-    <Compile Include="GameObjects\MoveableGameObject.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
     <Compile Include="GameObjects\Skills\SplitShot.cs" />
     <Compile Include="Control\Input.cs" />
-    <Compile Include="GameObjects\Actors\Hero.cs" />
-    <Compile Include="GameObjects\Actors\GameActor.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,6 +54,12 @@
     <Compile Include="ScreenSystem\Screens\GameplayScreen.cs" />
     <Compile Include="ScreenSystem\Screens\SplashScreen.cs" />
     <Compile Include="GameObjects\Camera.cs" />
+    <Compile Include="GameObjects\Units\CombatUnit.cs" />
+    <Compile Include="GameObjects\Units\Hero.cs" />
+    <Compile Include="GameObjects\IDraw.cs" />
+    <Compile Include="GameObjects\IUpdate.cs" />
+    <Compile Include="GameObjects\GameActor.cs" />
+    <Compile Include="GameObjects\UnitFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -109,7 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game1\DungeonGen.csproj">
-      <Project>{b23695c9-9781-489d-90f1-a21fd6e331f7}</Project>
+      <Project>{B23695C9-9781-489D-90F1-A21FD6E331F7}</Project>
       <Name>DungeonGen</Name>
     </ProjectReference>
   </ItemGroup>

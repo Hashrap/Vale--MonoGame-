@@ -1,15 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using Vale.GameObjects.Actors;
-using Vale.ScreenSystem;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
 {
     /// <summary>
     ///     A projectile that moves in a line
     /// </summary>
-    internal class LineProjectile : MoveableGameObject, IDrawable
+    internal class LineProjectile : GameActor
     {
         public enum ProjectileStates
         {
@@ -22,7 +21,7 @@ namespace Vale.GameObjects.Skills
         private readonly float spriteHeight = 20;
         private readonly float spriteWidth = 20;
         private readonly Texture2D texture;
-        private readonly GameScreen gameScreen;
+        private readonly GameplayScreen gameScreen;
 
         public int DrawOrder { get; private set; }
 
@@ -34,23 +33,10 @@ namespace Vale.GameObjects.Skills
 
         public ProjectileStates State { get; private set; }
 
-        public bool Visible { get; private set; }
 
-        protected Vector2 DrawingOrigin
-        {
-            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
-        }
 
-        protected Vector2 DrawingPosition
-        {
-            get { return Position - DrawingOrigin; }
-        }
-
-        public event EventHandler<EventArgs> DrawOrderChanged;
-
-        public event EventHandler<EventArgs> VisibleChanged;
-
-        public LineProjectile(GameScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
+        public LineProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
+            : base(gameScreen, owner.Alignment)
         {
             this.gameScreen = gameScreen;
             this.texture = texture;
@@ -84,10 +70,7 @@ namespace Vale.GameObjects.Skills
             // start at the origin
             Position = Origin;
 
-            var xSpeed = (float)(Math.Cos(rotation) * Speed);
-            var ySpeed = (float)(Math.Sin(rotation) * Speed);
-
-            Velocity = new Vector2(xSpeed, ySpeed);
+            Velocity = new Vector2((float)(Math.Cos(Rotation) * Speed), (float)(Math.Sin(Rotation) * Speed));
 
             State = ProjectileStates.Moving;
             ElapsedTime = 0;
