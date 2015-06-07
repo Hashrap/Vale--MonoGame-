@@ -60,6 +60,8 @@
     <Compile Include="GameObjects\GameActor.cs" />
     <Compile Include="GameObjects\UnitFactory.cs" />
     <Compile Include="GameObjects\MapManager.cs" />
+    <Compile Include="GameObjects\MouseProvider.cs" />
+    <Compile Include="GameObjects\KeyboardProvider.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
   </ItemGroup>
   <ItemGroup>
