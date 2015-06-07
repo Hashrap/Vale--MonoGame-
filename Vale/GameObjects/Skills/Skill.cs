@@ -9,7 +9,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     ///     Represents a skill that can be used by a Hero or Enemy
     /// </summary>
-    internal abstract class Skill : IUpdate, IDraw
+    internal abstract class Skill : GameObject
     {
         private enum SkillTimeline
         {
@@ -42,8 +42,10 @@ namespace Vale.GameObjects.Skills
         /// <summary>
         ///     Force children to use this constructor
         /// </summary>
+        /// <param name="gameScreen">The currently active gameplay screen. Acts as sort of the root owner.</param>
         /// <param name="owner">The actor that owns this skill.</param>
         protected Skill(GameplayScreen gameScreen, GameActor owner)
+            : base(gameScreen)
         {
             Status = SkillTimeline.Available;
             Owner = owner;
@@ -55,10 +57,6 @@ namespace Vale.GameObjects.Skills
         ///     Begins the action. Disables other commands while using this action (channeling for shots).
         /// </summary>
         public void BeginAction()
-        {
-        }
-
-        public virtual void Draw(GameTime gameTime)
         {
         }
 
@@ -90,7 +88,7 @@ namespace Vale.GameObjects.Skills
         ///     Updates the skill's recharge time based on elapsed gametime.
         /// </summary>
         /// <param name="gameTime"></param>
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (cooldownRecharge > Ready)
             {

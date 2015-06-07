@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Vale.GameObjects.Actors;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
@@ -15,9 +14,8 @@ namespace Vale.GameObjects.Skills
     {
         public readonly float ProjectileSpeed = .75f;
         // this should be read in from a parsed file
-
         protected readonly List<LineProjectile> arrows;
-        private static Texture2D texture;
+        protected Texture2D texture;
 
         public QuickShot(GameplayScreen gameScreen, GameActor owner)
             : base(gameScreen, owner)
@@ -25,20 +23,20 @@ namespace Vale.GameObjects.Skills
             arrows = new List<LineProjectile>();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void LoadContent(ContentManager content)
         {
-            base.Draw(gameTime);
-
-            foreach (var arrow in arrows.Where(arrow => arrow.State == LineProjectile.ProjectileStates.Moving))
-                arrow.Draw(gameTime);
+            texture = GameScreen.Content.Load<Texture2D>("Art/quickshot10x20");
         }
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var arrow in arrows)
-                arrow.Update(gameTime);
+            List<LineProjectile> toRemove = arrows.FindAll(LineProjectile.ProjectileIsDead);
 
-            arrows.RemoveAll(LineProjectile.ProjectileIsDead);
+            foreach (var arrow in toRemove) {
+                arrows.Remove(arrow);
+                GameScreen.RemoveObject(arrow);
+            }
+
             base.Update(gameTime);
         }
 
@@ -64,14 +62,10 @@ namespace Vale.GameObjects.Skills
 
         protected void CreateProjectile(double rotation)
         {
-            if (texture == null)
-            {
-                var content = new Microsoft.Xna.Framework.Content.ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
-                texture = content.Load<Texture2D>("Art/arrow20x20");
-            }
             var arrow = new LineProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
+            GameScreen.AddObject(arrow);
         }
     }
 }

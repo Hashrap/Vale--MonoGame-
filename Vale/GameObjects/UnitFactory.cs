@@ -22,7 +22,7 @@ namespace Vale.GameObjects
 
             if (name.StartsWith("hero_"))
             {
-                unit = new Hero(game, alignment);
+                unit = new Hero(game, new MouseProvider(game), new KeyboardProvider(game), alignment: alignment);
             }
             else
             {

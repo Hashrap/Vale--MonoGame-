@@ -14,6 +14,11 @@ namespace Vale.GameObjects.Skills
         {
         }
 
+        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        {
+            texture = content.Load<Texture2D>("Art/return20x20");
+        }
+
         /// <summary>
         ///     Fires a projectile.
         /// </summary>
@@ -26,14 +31,14 @@ namespace Vale.GameObjects.Skills
             return true;
         }
 
-        private void CreateReturnProjectile(Vector2 targetPosition)
+        protected void CreateReturnProjectile(Vector2 targetPosition)
         {
-            var content = new Microsoft.Xna.Framework.Content.ContentManager(GameScreen.ScreenManager.Game.Services, "Content");
             var origin = Owner.Position;
             var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
-            var arrow = new ReturnProjectile(Owner.Screen, content.Load<Texture2D>("Art/bksq20x20"), Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new ReturnProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
+            GameScreen.AddObject(arrow);
         }
     }
 }

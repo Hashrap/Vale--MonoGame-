@@ -71,10 +71,13 @@ namespace Vale.GameObjects.Skills
             ElapsedTime = 0;
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            gameScreen.SpriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
-                SpriteEffects.None, 0f);
+            if (State == LineProjectile.ProjectileStates.Moving)
+            {
+                spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+                    SpriteEffects.None, 0f);
+            }
         }
 
         public override void Update(GameTime gameTime)

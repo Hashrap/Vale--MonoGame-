@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Vale.GameObjects.Actors;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills

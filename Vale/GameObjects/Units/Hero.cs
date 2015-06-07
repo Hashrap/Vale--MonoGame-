@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Vale.Control;
 using Vale.GameObjects.Skills;
-using System.Reflection;
-using Microsoft.Xna.Framework.Input;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Actors
 {
@@ -15,70 +14,65 @@ namespace Vale.GameObjects.Actors
     internal class Hero : CombatUnit
     {
         private Skill SkillOne, SkillTwo, SkillThree;
+        public MouseProvider MouseProvider { get; private set; }
+        public KeyboardProvider KeyboardProvider { get; private set; }
 
-        public override void LoadContent()
-        {
-            ContentManager content = new ContentManager(Screen.ScreenManager.Game.Services, "Content");
-            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
-        }
+        public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, float spawnX = 0, float spawnY = 0, Faction alignment = Faction.Player)
+            : this(gameScreen, mouseProvider, keyboardProvider, new Vector2(spawnX, spawnY), alignment) { }
 
-        public override void Update(GameTime gameTime)
-        {
-            Input input = Input.Instance;
-            Vector2 mousePosition = this.Screen.camera.ScreenToWorldCoords(input.MousePosition);
-
-            if (Controllable)
-            {
-                Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
-
-                //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
-                if (input.MouseButtonPress("Left"))
-                {
-                    SkillOne.Execute(mousePosition + Vector2.One);
-                }
-
-                if (input.MouseButtonPress("Right"))
-                {
-                    SkillTwo.Execute(mousePosition);
-                }
-
-                if (input.KeyPress(' '))
-                {
-                    SkillThree.Execute(mousePosition);
-                }
-
-                Rotation = (float)Math.Atan2(mousePosition.Y - Position.Y, mousePosition.X - Position.X);
-            }
-
-            SkillOne.Update(gameTime);
-            SkillTwo.Update(gameTime);
-            SkillThree.Update(gameTime);
-
-            if (input.KeyPress('P'))
-                Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
-
-            // always call base
-            base.Update(gameTime);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-
-            SkillOne.Draw(gameTime);
-            SkillTwo.Draw(gameTime);
-            SkillThree.Draw(gameTime);
-        }
-
-        public Hero(Vale.ScreenSystem.Screens.GameplayScreen gameScreen, Faction alignment = Faction.Player)
+        public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, Vector2 spawnPoint, Faction alignment = Faction.Player)
             : base(gameScreen, alignment)
         {
-            Position = new Vector2(0, 0);
+            MouseProvider = mouseProvider;
+            KeyboardProvider = keyboardProvider;
+            Position = spawnPoint;
             Speed = 0.3f;
 
             SkillOne = new QuickShot(gameScreen, this);
             SkillTwo = new SplitShot(gameScreen, this);
             SkillThree = new ReturnShot(gameScreen, this);
+            Game.AddObject(SkillOne);
+            Game.AddObject(SkillTwo);
+            Game.AddObject(SkillThree);
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Controllable)
+            {
+                Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
+
+                //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
+                if (MouseProvider.ButtonPress(MouseProvider.Button.LMB))
+                {
+                    SkillOne.Execute(MouseProvider.PointerPosition + Vector2.One);
+                }
+
+                if (MouseProvider.ButtonPress(MouseProvider.Button.RMB))
+                {
+                    SkillTwo.Execute(MouseProvider.PointerPosition);
+                }
+
+                if (KeyboardProvider.KeyPress(' '))
+                {
+                    SkillThree.Execute(MouseProvider.PointerPosition);
+                }
+
+                Rotation = (float)Math.Atan2(
+                    MouseProvider.PointerPosition.Y - Position.Y,
+                    MouseProvider.PointerPosition.X - Position.X);
+            }
+
+            if (KeyboardProvider.KeyPress('P'))
+                Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
+
+            // always call base
+            base.Update(gameTime);
         }
     }
 }

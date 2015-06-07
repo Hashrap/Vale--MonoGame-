@@ -2,10 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
+using Microsoft.Xna.Framework.Content;
 
 namespace Vale.GameObjects
 {
-    public abstract class GameActor : IUpdate, IDraw
+    public abstract class GameActor : GameObject
     {
         public enum Faction
         {
@@ -60,6 +61,7 @@ namespace Vale.GameObjects
         }
 
         protected GameActor(GameplayScreen screen, Faction alignment)
+            : base(screen)
         {
             Screen = screen;
             Alignment = alignment;
@@ -68,18 +70,16 @@ namespace Vale.GameObjects
 
         public Faction Alignment { set; get; }
 
-        public virtual void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (Visible)
-                Screen.SpriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+            {
+                spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
                     SpriteEffects.None, 0f);
+            }
         }
 
-        public virtual void LoadContent()
-        {
-        }
-
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             Move(gameTime);
         }
