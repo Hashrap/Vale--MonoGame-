@@ -58,6 +58,7 @@ namespace Vale.Control
             get
             {
                 var vector = RawInput;
+                
                 return vector.Length() <= 1 ? vector : Vector2.Normalize(vector);
             }
         }
@@ -113,11 +114,19 @@ namespace Vale.Control
             }
         }
 
+        /// <summary>
+        ///     Initializes the component
+        /// </summary>
+        /// <param name="mode">Sets the default control scheme</param>
         public void Initialize(Mode mode)
         {
             InputMode = mode;
         }
 
+        /// <summary>
+        ///     Runs every frame
+        /// </summary>
+        /// <param name="gameTime">GameTime information</param>
         public void Update(GameTime gameTime)
         {
             #region Debug strings
