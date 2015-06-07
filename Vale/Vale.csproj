@@ -60,6 +60,7 @@
     <Compile Include="GameObjects\IUpdate.cs" />
     <Compile Include="GameObjects\GameActor.cs" />
     <Compile Include="GameObjects\UnitFactory.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
