@@ -3,11 +3,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Security.Cryptography;
+using Vale.ScreenSystem.Screens;
 
-namespace Vale.ScreenSystem
+namespace Vale.GameObjects
 {
-    public class MapManager
+    public class MapManager : GameObject
     {
         [FlagsAttribute]
         public enum State
@@ -47,16 +47,16 @@ namespace Vale.ScreenSystem
         private Texture2D floor;
         private Texture2D wall;
 
-        public Vale.ScreenSystem.GameScreen GameScreen { get; set; }
+        public GameplayScreen GameScreen { get; set; }
 
-        public MapManager(GameScreen gs)
+        public MapManager(GameplayScreen gs)
+            : base(gs)
         {
             GameScreen = gs;
         }
 
-        public void LoadContent()
+        public override void LoadContent(ContentManager content)
         {
-            ContentManager content = new ContentManager(GameScreen.ScreenManager.Game.Services, "Content"); // TODO : what the fuck goes where 'null' is?
             floor = content.Load<Texture2D>("Art/whsq20x20.png");
             wall = content.Load<Texture2D>("Art/bksq20x20.png");
             Tile.Height = TILE_WIDTH;
@@ -85,7 +85,7 @@ namespace Vale.ScreenSystem
             }
         }
 
-        public void Draw(GameTime gameTime)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             for (int x = 0; x < Size_X; x++)
             {
@@ -95,11 +95,11 @@ namespace Vale.ScreenSystem
                     {
                         case State.Walkable:
                             // FIXME: Use a correctly sized asset
-                            GameScreen.SpriteBatch.Draw(floor, _map[x, y].Position, null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(floor, _map[x, y].Position, null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
                             break;
                         case State.Wall:
                             // FIXME: Use a correctly sized asset
-                            GameScreen.SpriteBatch.Draw(wall, _map[x, y].Position, null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(wall, _map[x, y].Position, null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
                             break;
                     }
                 }

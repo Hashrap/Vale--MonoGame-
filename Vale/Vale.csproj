@@ -36,7 +36,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ScreenSystem\MapManager.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
@@ -60,6 +59,7 @@
     <Compile Include="GameObjects\IUpdate.cs" />
     <Compile Include="GameObjects\GameActor.cs" />
     <Compile Include="GameObjects\UnitFactory.cs" />
+    <Compile Include="GameObjects\MapManager.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
   </ItemGroup>
   <ItemGroup>
