@@ -22,7 +22,6 @@ namespace Vale.GameObjects.Actors
          * UsedSkill
          */
 
-
         public enum ActorState
         {
             Standing,

@@ -83,8 +83,6 @@ namespace Vale
             updatedPosition.X = MathHelper.Clamp(target.Position.X, Bounds.Width / 2, worldDimensions.X - Bounds.Width / 2);
             updatedPosition.Y = MathHelper.Clamp(target.Position.Y, Bounds.Height / 2, worldDimensions.Y - Bounds.Height / 2);
             Position = updatedPosition;
-            Debug.WriteLine("Updated position: " + updatedPosition);
-            Debug.WriteLine("World dimensions: " + worldDimensions);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

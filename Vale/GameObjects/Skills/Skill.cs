@@ -23,10 +23,6 @@ namespace Vale.GameObjects.Skills
         private int cooldownRecharge;
         private SkillTimeline Status;
 
-        public int DrawOrder { get; private set; }
-
-        public bool Enabled { get; private set; }
-
         /// <summary>
         ///     Is this skill still recharging?
         /// </summary>
@@ -38,17 +34,10 @@ namespace Vale.GameObjects.Skills
 
         public GameActor Owner { get; private set; }
 
-        public int UpdateOrder { get; private set; }
-
-        public bool Visible { get; private set; }
-
         protected GameplayScreen GameScreen
         {
             get { return Owner.Screen; }
         }
-
-        public event EventHandler<EventArgs> EnabledChanged;
-        public event EventHandler<EventArgs> VisibleChanged;
 
         /// <summary>
         ///     Force children to use this constructor

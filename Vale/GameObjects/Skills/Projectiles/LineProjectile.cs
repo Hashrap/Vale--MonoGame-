@@ -20,10 +20,7 @@ namespace Vale.GameObjects.Skills
         private const int Duration = 1500;
         private readonly float spriteHeight = 20;
         private readonly float spriteWidth = 20;
-        private readonly Texture2D texture;
         private readonly GameplayScreen gameScreen;
-
-        public int DrawOrder { get; private set; }
 
         public int ElapsedTime { get; private set; }
 
@@ -32,8 +29,6 @@ namespace Vale.GameObjects.Skills
         public GameActor Owner { get; private set; }
 
         public ProjectileStates State { get; private set; }
-
-
 
         public LineProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
             : base(gameScreen, owner.Alignment)

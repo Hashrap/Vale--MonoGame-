@@ -51,7 +51,6 @@ namespace Vale.GameObjects.Skills
         {
             var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
             CreateProjectile(targetPosition);
-
             return true;
         }
 
