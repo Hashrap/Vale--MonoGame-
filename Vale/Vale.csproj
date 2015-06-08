@@ -36,6 +36,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\Collision\AABB.cs" />
+    <Compile Include="GameObjects\Collision\Circle.cs" />
     <Compile Include="GameObjects\Modifiers\Modifier.cs" />
     <Compile Include="GameObjects\Skills\Projectiles\ReturnProjectile.cs" />
     <Compile Include="GameObjects\Skills\ReturnShot.cs" />
