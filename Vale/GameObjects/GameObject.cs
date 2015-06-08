@@ -6,7 +6,7 @@ using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects
 {
-    public abstract class GameObject : IDraw
+    public abstract class GameObject : IDraw, IUpdate
     {
         public GameplayScreen Game { get; set; }
 
