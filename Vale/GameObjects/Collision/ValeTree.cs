@@ -84,10 +84,35 @@ namespace Vale.GameObjects.Collision
         private QuadNode root = null;
         public QuadNode Root { get { return root; } }
 
-        public void Insert(GameObject obj) { } // TODO
+        private readonly Vector2 minLeafSize;
+        private readonly int maxLeafObjs;
+
+        public void Insert(GameObject obj)
+        {
+            AABB bounds = obj.Bounds;
+            if(root == null)
+            {
+                Vector2 rootSize = new Vector2((float)Math.Ceiling(bounds.Width / minLeafSize.X),
+                                               (float)Math.Ceiling(bounds.Height / minLeafSize.Y));
+                float multiplier = Math.Max(rootSize.X, rootSize.Y);
+                rootSize = new Vector2(minLeafSize.X * multiplier, minLeafSize.Y * multiplier);
+                root = new QuadNode(new AABB(bounds.Origin, rootSize));
+            }
+
+            while (!root.Bounds.Contains(bounds))
+            {
+                ExpandRoot(bounds);
+            }
+
+            InsertNodeObject(root, obj);
+        } // TODO
 
         public void Remove(GameObject obj) { } // TODO
 
         public void Query() { } // TODO
+
+        private void ExpandRoot(AABB newChildbounds) { } // TODO
+
+        private void InsertNodeObject(QuadNode node, GameObject obj) { } //TODO
     }
 }

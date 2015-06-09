@@ -57,9 +57,30 @@ namespace Vale.GameObjects.Collision
             Max = new float[2] { center.X + halfWidth, center.Y + halfHeight };
         }
         #endregion
+        #region Helper Members
+        public bool Contains(Vector2 point)
+        {
+            if (point.X < Min[0] || point.X > Max[0])
+                return false;
+            if (point.Y < Min[1] || point.Y > Max[1])
+                return false;
+            return true;
+        }
+        public bool Contains(AABB rect)
+        {
+            if(rect.Min[0] < Min[0])
+                return false;
+            if(rect.Min[1] < Min[1])
+                return false;
+            if(rect.Max[0] > Max[0])
+                return false;
+            if(rect.Max[1] > Max[1])
+                return false;
+            return true;
+        }
+        #endregion
         #region Tests
-
-        public static bool TestCollision(AABB a, AABB b)
+        public static bool TestAABB(AABB a, AABB b)
         {
             if (a.Max[0] < b.Min[0] || a.Min[0] > b.Max[0])
                 return false;
@@ -67,13 +88,12 @@ namespace Vale.GameObjects.Collision
                 return false;
             return true;
         }
-
-        public static bool TestCollision(AABB a, Circle b)
+        public static bool TestCircle(AABB a, Circle b)
         {
-            return false; //(TestCollision(a, b.Center) || test line segments vs circle
+            return false; //(TestCollision(a, b.Center) || test line segments
         }
 
-        public static bool TestCollision(AABB a, Vector2 point)
+        public static bool TestPoint(AABB a, Vector2 point)
         {
             if (point.X < a.Min[0] || point.X > a.Max[0])
                 return false;
@@ -81,13 +101,10 @@ namespace Vale.GameObjects.Collision
                 return false;
             return true;
         }
-
-        public static bool TestCollision(AABB a, float aX, float aY, float bX, float bY)
+        public static bool TestRect(AABB a, float aX, float aY, float bX, float bY)
         {
-            return false;
+            return false; //TODO
         }
-
-
         #endregion
     }
 }
