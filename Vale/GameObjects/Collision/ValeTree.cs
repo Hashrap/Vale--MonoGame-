@@ -84,6 +84,8 @@ namespace Vale.GameObjects.Collision
         private QuadNode root = null;
         public QuadNode Root { get { return root; } }
 
+        private Dictionary<GameObject, QuadNode> objectToNodeLookup = new Dictionary<GameObject, QuadNode>();
+
         private readonly Vector2 minLeafSize;
         private readonly int maxLeafObjs;
 
@@ -113,9 +115,18 @@ namespace Vale.GameObjects.Collision
             InsertNodeObject(root, obj);
         }
 
-        public void Remove(GameObject obj) { } // TODO
+        public void Remove(GameObject obj)
+        {
+            if (!objectToNodeLookup.ContainsKey(obj))
+                return; //oops
+            QuadNode objNode = objectToNodeLookup[obj];
+            RemoveObjectFromNode(obj);
+            if (objNode.Parent != null)
+                CheckChildNodes(objNode.Parent);
 
-        public void Query() { } // TODO
+        }
+
+        public void Query() { } //TODO
 
         private void ExpandRoot(AABB newChildbounds)
         {
@@ -143,6 +154,20 @@ namespace Vale.GameObjects.Collision
         }
 
         private void InsertNodeObject(QuadNode node, GameObject obj) { } //TODO
+
+        private void AddObjectToNode(QuadNode node, GameObject obj) { } //TODO
+
+        private void RemoveObjectFromNode(GameObject obj)
+        {
+            QuadNode node = objectToNodeLookup[obj];
+            node._nodeObjs.Remove(obj);
+            objectToNodeLookup.Remove(obj);
+            obj.BoundsChanged -= new EventHandler(collider_BoundsChanged);
+        }
+
+        private void ClearObjectsFromNode(QuadNode node) { } //TODO
+
+        private void CheckChildNodes(QuadNode node) { } //TODO
 
         private void SetupChildNodes(QuadNode node)
         {
