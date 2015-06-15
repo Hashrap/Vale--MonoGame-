@@ -105,14 +105,57 @@ namespace Vale.GameObjects.Collision
             }
 
             InsertNodeObject(root, obj);
-        } // TODO
+        }
 
         public void Remove(GameObject obj) { } // TODO
 
         public void Query() { } // TODO
 
-        private void ExpandRoot(AABB newChildbounds) { } // TODO
+        private void ExpandRoot(AABB newChildbounds)
+        {
+            bool isNorth = root.Bounds.Origin.Y < newChildbounds.Origin.Y;
+            bool isWest = root.Bounds.Origin.X < newChildbounds.Origin.X;
+
+            Quadrant rootQuadrant;
+            if (isNorth)
+                rootQuadrant = isWest ? Quadrant.NW : Quadrant.NE;
+            else
+                rootQuadrant = isWest ? Quadrant.SW : Quadrant.SE;
+
+            float newX = (rootQuadrant == Quadrant.NW || rootQuadrant == Quadrant.SW)
+                ? root.Bounds.Origin.X
+                : root.Bounds.Origin.X - root.Bounds.Width;
+            float newY = (rootQuadrant == Quadrant.NW || rootQuadrant == Quadrant.NE)
+                ? root.Bounds.Origin.Y
+                : root.Bounds.Origin.X - root.Bounds.Height;
+
+            AABB newRootBounds = new AABB(new Vector2(newX, newY), root.Bounds.Width * 2, root.Bounds.Height * 2);
+            QuadNode newRoot = new QuadNode(newRootBounds);
+            //SetupChildNodes(newRoot); //TODO
+            newRoot[rootQuadrant] = root;
+            root = newRoot;
+        }
 
         private void InsertNodeObject(QuadNode node, GameObject obj) { } //TODO
+
+        private void SetupChildNodes(QuadNode node)
+        {
+            if(minLeafSize.X <= node.Bounds.Width / 2 && minLeafSize.Y <= node.Bounds.Height / 2)
+            {
+                node[Quadrant.NW] = new QuadNode(new Vector2(node.Bounds.Origin.X, node.Bounds.Origin.Y), node.Bounds.Width / 2,
+                                  node.Bounds.Height / 2);
+                node[Quadrant.NE] = new QuadNode(new Vector2(node.Bounds.Origin.X + node.Bounds.Width / 2, node.Bounds.Origin.Y),
+                                                  node.Bounds.Width / 2,
+                                                  node.Bounds.Height / 2);
+                node[Quadrant.SW] = new QuadNode(new Vector2(node.Bounds.Origin.X, node.Bounds.Origin.Y + node.Bounds.Height / 2),
+                                                  node.Bounds.Width / 2,
+                                                  node.Bounds.Height / 2);
+                node[Quadrant.SE] = new QuadNode(new Vector2(node.Bounds.Origin.X + node.Bounds.Width / 2,
+                                                  node.Bounds.Origin.Y + node.Bounds.Height / 2),
+                                                  node.Bounds.Width / 2, node.Bounds.Height / 2);
+            }
+        } // TODO
+
+        void collider_BoundsChanged(object sender, EventArgs e) { } //TODO
     }
 }
