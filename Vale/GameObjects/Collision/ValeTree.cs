@@ -87,6 +87,12 @@ namespace Vale.GameObjects.Collision
         private readonly Vector2 minLeafSize;
         private readonly int maxLeafObjs;
 
+        public ValeTree(Vector2 minLeafSize, int maxLeafObjs)
+        {
+            this.minLeafSize = minLeafSize;
+            this.maxLeafObjs = maxLeafObjs;
+        }
+
         public void Insert(GameObject obj)
         {
             AABB bounds = obj.Bounds;
@@ -154,7 +160,7 @@ namespace Vale.GameObjects.Collision
                                                   node.Bounds.Origin.Y + node.Bounds.Height / 2),
                                                   node.Bounds.Width / 2, node.Bounds.Height / 2);
             }
-        } // TODO
+        }
 
         void collider_BoundsChanged(object sender, EventArgs e) { } //TODO
     }
