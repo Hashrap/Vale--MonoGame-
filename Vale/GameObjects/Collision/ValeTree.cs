@@ -206,7 +206,14 @@ namespace Vale.GameObjects.Collision
             obj.BoundsChanged -= new EventHandler(collider_BoundsChanged);
         }
 
-        private void ClearObjectsFromNode(QuadNode node) { } //TODO
+        private void ClearObjectsFromNode(QuadNode node)
+        {
+            List<GameObject> quadObjects = new List<GameObject>(node.Objects);
+            foreach(GameObject quadObject in quadObjects)
+            {
+                RemoveObjectFromNode(quadObject);
+            }
+        }
 
         private void CheckChildNodes(QuadNode node) { } //TODO
 
