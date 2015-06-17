@@ -153,7 +153,48 @@ namespace Vale.GameObjects.Collision
             root = newRoot;
         }
 
-        private void InsertNodeObject(QuadNode node, GameObject obj) { } //TODO
+        private void InsertNodeObject(QuadNode node, GameObject obj) 
+        {
+            if (node.Bounds.Contains(obj.Bounds))
+                return; //oops
+            if(!node.HasChildren() && node.Objects.Count + 1 > maxLeafObjs)
+            {
+                SetupChildNodes(node);
+
+                List<GameObject> childObjects = new List<GameObject>(node.Objects);
+                List<GameObject> childrenToRelocate = new List<GameObject>();
+
+                foreach (GameObject childObject in childObjects)
+                {
+                    foreach (QuadNode childNode in node.Nodes)
+                    {
+                        if (childNode == null)
+                            continue;
+                        if (childNode.Bounds.Contains(childObject.Bounds))
+                            childrenToRelocate.Add(childObject);
+                    }
+                }
+
+                foreach (GameObject childObject in childrenToRelocate)
+                {
+                    RemoveObjectFromNode(childObject);
+                    InsertNodeObject(node, childObject);
+                }
+            }
+            foreach(QuadNode childNode in node.Nodes)
+            {
+                if(childNode != null)
+                {
+                    if(childNode.Bounds.Contains(obj.Bounds))
+                    {
+                        InsertNodeObject(childNode, obj);
+                        return;
+                    }
+                }
+            }
+
+            AddObjectToNode(node, obj);
+        }
 
         private void AddObjectToNode(QuadNode node, GameObject obj) { } //TODO
 
