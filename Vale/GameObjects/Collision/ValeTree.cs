@@ -196,7 +196,12 @@ namespace Vale.GameObjects.Collision
             AddObjectToNode(node, obj);
         }
 
-        private void AddObjectToNode(QuadNode node, GameObject obj) { } //TODO
+        private void AddObjectToNode(QuadNode node, GameObject obj)
+        {
+            node._nodeObjs.Add(obj);
+            objectToNodeLookup.Add(obj, node);
+            obj.BoundsChanged += new EventHandler(collider_BoundsChanged);
+        }
 
         private void RemoveObjectFromNode(GameObject obj)
         {
