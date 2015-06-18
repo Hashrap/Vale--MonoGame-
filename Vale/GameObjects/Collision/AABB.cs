@@ -11,19 +11,19 @@ namespace Vale.GameObjects.Collision
         #region Properties
         public Vector2 Origin
         {
-            get { return new Vector2(Min[0], Min[1]); }
+            get { return new Vector2( Left, Top; }
         }
         public Vector2 Center
         {
-            get { return new Vector2((Min[0] + Max[0]) / 2, (Min[1] + Max[1]) / 2);  }
+            get { return new Vector2((Left + Right) / 2, (Bottom + Top) / 2);  }
         }
         public float Width
         {
-            get { return Max[0] - Min[0]; }
+            get { return Right - Left; }
         }
         public float Height
         {
-            get { return Max[1] - Min[1]; }
+            get { return Bottom - Top; }
         }
         public float HalfWidth
         {
@@ -33,7 +33,24 @@ namespace Vale.GameObjects.Collision
         {
             get { return Height / 2; }
         }
+        public float Bottom
+        {
+            get { return Max[1]; }
+        }
+        public float Top
+        {
+            get { return Min[1]; }
+        }
+        public float Left
+        {
+            get { return Min[0]; }
+        }
+        public float Right
+        {
+            get { return Max[0]; }
+        }
         #endregion
+
         #region Constructors
 
         public AABB(float xMin, float xMax, float yMin, float yMax)
@@ -57,54 +74,56 @@ namespace Vale.GameObjects.Collision
             Max = new float[2] { center.X + halfWidth, center.Y + halfHeight };
         }
         #endregion
+
         #region Helper Members
         public bool Contains(Vector2 point)
         {
-            if (point.X < Min[0] || point.X > Max[0])
-                return false;
-            if (point.Y < Min[1] || point.Y > Max[1])
-                return false;
-            return true;
+            return !(point.X < Left
+                || point.X > Right
+                || point.Y < Top
+                || point.Y > Bottom);
         }
-        public bool Contains(AABB rect)
+        public bool Contains(AABB box)
         {
-            if(rect.Min[0] < Min[0])
-                return false;
-            if(rect.Min[1] < Min[1])
-                return false;
-            if(rect.Max[0] > Max[0])
-                return false;
-            if(rect.Max[1] > Max[1])
-                return false;
-            return true;
+            return !(box.Left < Left
+                || box.Right > Right
+                || box.Top < Top
+                || box.Bottom > Bottom);
+        }
+        public bool Intersects(AABB box)
+        {
+            return !(box.Left > Right
+                || box.Right < Left
+                || box.Top > Bottom
+                || box.Bottom < Top);
         }
         #endregion
+
         #region Tests
-        public static bool TestAABB(AABB a, AABB b)
+        public static bool AABBIntersect(AABB a, AABB b)
         {
-            if (a.Max[0] < b.Min[0] || a.Min[0] > b.Max[0])
-                return false;
-            if (a.Max[1] < b.Min[1] || a.Min[1] > b.Max[1])
-                return false;
-            return true;
+            return !(a.Left > b.Right
+                || a.Right < b.Left
+                || a.Top > b.Bottom
+                || a.Bottom < b.Top);
         }
-        public static bool TestCircle(AABB a, Circle b)
+        public static bool CircleIntersect(AABB a, Circle b)
         {
-            return false; //(TestCollision(a, b.Center) || test line segments
+            return false; //(TestCollision(a, b.Center) || test line segments TODO
         }
 
-        public static bool TestPoint(AABB a, Vector2 point)
+        public static bool PointIntersect(AABB a, Vector2 point)
         {
-            if (point.X < a.Min[0] || point.X > a.Max[0])
-                return false;
-            if (point.Y < a.Min[1] || point.Y > a.Max[1])
-                return false;
-            return true;
+            return !(a.Left > point.X
+                || a.Right < point.X
+                || a.Top > point.Y
+                || a.Bottom < point.Y);
         }
-        public static bool TestRect(AABB a, float aX, float aY, float bX, float bY)
+        public static bool RectangleIntersect(AABB a, float aX, float aY, float bX, float bY)
         {
-            return false; //TODO
+            return AABBIntersect(a, new AABB(aX, bX, aY, bY));
         }
         #endregion
+
     }
 }
