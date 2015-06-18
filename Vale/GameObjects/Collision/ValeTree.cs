@@ -267,7 +267,18 @@ namespace Vale.GameObjects.Collision
 
         void collider_BoundsChanged(object sender, EventArgs e)
         {
-
-        } //TODO
+            GameObject quadObject = sender as GameObject;
+            if(quadObject != null)
+            {
+                QuadNode node = objectToNodeLookup[quadObject];
+                if(!node.Bounds.Contains(quadObject.Bounds) || node.HasChildren())
+                {
+                    RemoveObjectFromNode(quadObject);
+                    Insert(quadObject);
+                    if (node.Parent != null)
+                        CheckChildNodes(node.Parent);
+                }
+            }
+        }
     }
 }
