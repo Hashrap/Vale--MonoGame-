@@ -154,9 +154,11 @@ namespace Vale.GameObjects.Collision
             return results;
         }
 
-        public int QuadObjectCount() { return 0; } //TODO
+        public int GetQuadObjectCount() { return 0; } //TODO
 
-        public int QuadNodeCount() { return 0; } //TODO
+        public int GetQuadNodeCount() { return 0; } //TODO
+
+        public List<QuadNode> GetAllNodes() { return new List<QuadNode>(); }
         #endregion
 
         #region Helper Methods
@@ -246,14 +248,9 @@ namespace Vale.GameObjects.Collision
             }
         }
 
-        private void CheckChildNodes(QuadNode node)
-        {
-        
-        } //TODO
-
         private void SetupChildNodes(QuadNode node)
         {
-            if(minLeafSize.X <= node.Bounds.Width / 2 && minLeafSize.Y <= node.Bounds.Height / 2)
+            if (minLeafSize.X <= node.Bounds.Width / 2 && minLeafSize.Y <= node.Bounds.Height / 2)
             {
                 node[Quadrant.NW] = new QuadNode(node.Bounds.Origin,
                                                  node.Bounds.HalfWidth,
@@ -270,18 +267,62 @@ namespace Vale.GameObjects.Collision
             }
         }
 
-        private int QuadObjectCount (QuadNode node)
+        private void CheckChildNodes(QuadNode node)
+        {
+            if(GetQuadObjectCount(node) <= maxLeafObjs)
+            {
+                // Decompose children
+                List<GameObject> childObjects = GetChildObjects(node);
+                foreach (GameObject childObject in childObjects)
+                {
+                    if(!node.Objects.Contains(childObject))
+                    {
+                        RemoveObjectFromNode(childObject);
+                        AddObjectToNode(node, childObject);
+                    }
+                }
+                if (node[Quadrant.NW] != null)
+                {
+                    node[Quadrant.NW].Parent = null;
+                    node[Quadrant.NW] = null;
+                }
+                if (node[Quadrant.NE] != null)
+                {
+                    node[Quadrant.NE].Parent = null;
+                    node[Quadrant.NE] = null;
+                }
+                if (node[Quadrant.SW] != null)
+                {
+                    node[Quadrant.SW].Parent = null;
+                    node[Quadrant.SW] = null;
+                }
+                if (node[Quadrant.SE] != null)
+                {
+                    node[Quadrant.SE].Parent = null;
+                    node[Quadrant.SE] = null;
+                }
+                if (node.Parent != null)
+                    CheckChildNodes(node.Parent);
+                else
+                {
+                    //Root node
+                }
+            }
+
+        } //TODO
+
+        private int GetQuadObjectCount (QuadNode node)
         {
             int count = node.Objects.Count;
             foreach (QuadNode child in node.Nodes)
             {
                 if (child != null)
-                    count += QuadObjectCount(child);
+                    count += GetQuadObjectCount(child);
             }
             return count;
         }
 
-        private int QuadNodeCount(QuadNode node, int count)
+        private int GetQuadNodeCount(QuadNode node, int count)
         {
             if (node == null) return count;
             foreach (QuadNode child in node.Nodes)
@@ -290,6 +331,30 @@ namespace Vale.GameObjects.Collision
                     count++;
             }
             return count;
+        }
+
+        private List<GameObject> GetChildObjects(QuadNode node)
+        {
+            List<GameObject> results = new List<GameObject>();
+            results.AddRange(node._nodeObjs);
+            foreach(QuadNode child in node.Nodes)
+            {
+                if (child != null)
+                    results.AddRange(GetChildObjects(child));
+            }
+            return results;
+        }
+
+        private void GetChildNodes(QuadNode node, ICollection<QuadNode> results)
+        {
+            foreach (QuadNode child in node.Nodes)
+            {
+                if(child != null)
+                {
+                    results.Add(child);
+                    GetChildNodes(child, results);
+                }
+            }
         }
 
         #region Event Handling
