@@ -126,7 +126,30 @@ namespace Vale.GameObjects.Collision
 
         }
 
-        public void Query() { } //TODO
+        public List<GameObject> Query(AABB bounds) 
+        {
+            List<GameObject> results = new List<GameObject>();
+            if (root != null)
+                Query(bounds, root, results);
+            return results;
+        }
+
+        private void Query(AABB bounds, QuadNode node, List<GameObject> results)
+        {
+            if (node == null) return;
+
+            if (bounds.Intersects(node.Bounds))
+            {
+                foreach (GameObject quadObject in node.Objects)
+                {
+                    if (bounds.Intersects(quadObject.Bounds))
+                        results.Add(quadObject);
+                }
+
+                foreach (QuadNode child in node.Nodes)
+                    Query(bounds, child, results);
+            }
+        }
 
         private void ExpandRoot(AABB newChildbounds)
         {
