@@ -107,10 +107,6 @@ namespace Vale.GameObjects.Collision
                 || a.Top > b.Bottom
                 || a.Bottom < b.Top);
         }
-        public static bool CircleIntersect(AABB a, Circle b)
-        {
-            return false; //(TestCollision(a, b.Center) || test line segments TODO
-        }
 
         public static bool PointIntersect(AABB a, Vector2 point)
         {
@@ -123,6 +119,12 @@ namespace Vale.GameObjects.Collision
         {
             return AABBIntersect(a, new AABB(aX, bX, aY, bY));
         }
+
+        /*public static bool CircleInterset(AABB a, Circle b) { }
+        public static bool ContainsAABB
+        public static bool ContainsCircle
+        public static bool ContainsPoint*/
+        // TODO as needed
         #endregion
 
     }
