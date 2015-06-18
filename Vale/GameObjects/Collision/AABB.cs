@@ -11,7 +11,7 @@ namespace Vale.GameObjects.Collision
         #region Properties
         public Vector2 Origin
         {
-            get { return new Vector2( Left, Top; }
+            get { return new Vector2(Left, Top); }
         }
         public Vector2 Center
         {
