@@ -176,11 +176,11 @@ namespace Vale.GameObjects.Collision
 
                 foreach (GameObject childObject in childObjects)
                 {
-                    foreach (QuadNode childNode in node.Nodes)
+                    foreach (QuadNode child in node.Nodes)
                     {
-                        if (childNode == null)
+                        if (child == null)
                             continue;
-                        if (childNode.Bounds.Contains(childObject.Bounds))
+                        if (child.Bounds.Contains(childObject.Bounds))
                             childrenToRelocate.Add(childObject);
                     }
                 }
@@ -191,13 +191,13 @@ namespace Vale.GameObjects.Collision
                     InsertNodeObject(node, childObject);
                 }
             }
-            foreach (QuadNode childNode in node.Nodes)
+            foreach (QuadNode child in node.Nodes)
             {
-                if (childNode != null)
+                if (child != null)
                 {
-                    if (childNode.Bounds.Contains(obj.Bounds))
+                    if (child.Bounds.Contains(obj.Bounds))
                     {
-                        InsertNodeObject(childNode, obj);
+                        InsertNodeObject(child, obj);
                         return;
                     }
                 }
@@ -226,7 +226,7 @@ namespace Vale.GameObjects.Collision
 
             AABB newRootBounds = new AABB(new Vector2(newX, newY), root.Bounds.Width * 2, root.Bounds.Height * 2);
             QuadNode newRoot = new QuadNode(newRootBounds);
-            //SetupChildNodes(newRoot); //TODO
+            SetupChildNodes(newRoot);
             newRoot[rootQuadrant] = root;
             root = newRoot;
         }
@@ -306,6 +306,26 @@ namespace Vale.GameObjects.Collision
                 else
                 {
                     //Root node
+                    int numChildrenWithObjects = 0;
+                    QuadNode nodeWithObjects = null;
+                    foreach (QuadNode child in node.Nodes)
+                    {
+                        if(child != null && GetQuadObjectCount(child) > 0)
+                        {
+                            numChildrenWithObjects++;
+                            nodeWithObjects = child;
+                            if (numChildrenWithObjects > 1) break;
+                        }
+                    }
+                    if(numChildrenWithObjects == 1)
+                    {
+                        foreach(QuadNode child in node.Nodes)
+                        {
+                            if (child != nodeWithObjects)
+                                child.Parent = null;
+                        }
+                        root = nodeWithObjects;
+                    }
                 }
             }
 
