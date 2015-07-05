@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using DungeonGen;
 using Vale.GameObjects;
 using Vale.GameObjects.Actors;
+using Vale.GameObjects.Collision;
 
 namespace Vale.ScreenSystem.Screens
 {
@@ -19,6 +20,8 @@ namespace Vale.ScreenSystem.Screens
 
         List<GameObject> objects = new List<GameObject>();
         List<GameObject> objectQueue = new List<GameObject>();
+
+        private ValeTree actors;
 
         /// <summary>
         /// Should load all of the content for the game.
@@ -53,6 +56,10 @@ namespace Vale.ScreenSystem.Screens
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(map.Width, map.Height));
             camera.SetTarget(player);
 
+            actors = new ValeTree(new Vector2(20,20), 4);
+            actors.Insert(player);
+            //TODO - Add units to tree
+
             ScreenManager.Game.ResetElapsedTime();
         }
 
@@ -83,6 +90,11 @@ namespace Vale.ScreenSystem.Screens
             {
                 objectQueue.Add(gameObject);
             }
+
+            // TODO: Check collisions
+            // 1'st: Broadphase check
+            // 2'nd: Pairwise test
+            // 3'rd: Terrain
 
             // We start popping things off the end until the queue is empty so
             // that if something is removed we don't get confused.

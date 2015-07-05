@@ -18,7 +18,14 @@ namespace Vale.GameObjects
 
         public AABB Rect;
         public AABB Bounds { get { return Rect; } }
+
         public event EventHandler BoundsChanged;
+        private void RaiseBoundsChanged()
+        {
+            EventHandler handler = BoundsChanged;
+            if (handler != null)
+                handler(this, new EventArgs());
+        }
 
         private float rotation;
 
@@ -71,6 +78,7 @@ namespace Vale.GameObjects
             Screen = screen;
             Alignment = alignment;
             Visible = true;
+            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
         }
 
         public Faction Alignment { set; get; }
@@ -91,7 +99,12 @@ namespace Vale.GameObjects
 
         private Vector2 Move(GameTime gameTime)
         {
-            Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
+            if (Velocity == Vector2.Zero)
+                return Position;
+
+            Position += Velocity * gameTime.ElapsedGameTime.Milliseconds;
+            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            RaiseBoundsChanged();
 
             return Position;
         }
