@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Vale.GameObjects.Collision
 {
@@ -70,14 +71,14 @@ namespace Vale.GameObjects.Collision
             }
             public bool HasChildren { get { return _nodes[0] != null; } }
 
-            internal List<GameObject> _nodeObjs = new List<GameObject>();
-            public ReadOnlyCollection<GameObject> Objects;
+            internal List<GameActor> _nodeObjs = new List<GameActor>();
+            public ReadOnlyCollection<GameActor> Objects;
 
             public QuadNode (AABB bounds)
             {
                 Bounds = bounds;
                 Nodes = new ReadOnlyCollection<QuadNode>(_nodes);
-                Objects = new ReadOnlyCollection<GameObject>(_nodeObjs);
+                Objects = new ReadOnlyCollection<GameActor>(_nodeObjs);
             }
 
             public QuadNode(Vector2 origin, float width, float height)
@@ -100,7 +101,7 @@ namespace Vale.GameObjects.Collision
         private QuadNode root = null;
         public QuadNode Root { get { return root; } }
 
-        private Dictionary<GameObject, QuadNode> objectToNodeLookup = new Dictionary<GameObject, QuadNode>();
+        private Dictionary<GameActor, QuadNode> objectToNodeLookup = new Dictionary<GameActor, QuadNode>();
 
         private readonly Vector2 minLeafSize;
         private readonly int maxLeafObjs;
@@ -115,7 +116,7 @@ namespace Vale.GameObjects.Collision
         #endregion
 
         #region Public Methods
-        public void Insert(GameObject obj)
+        public void Insert(GameActor obj)
         {
             AABB bounds = obj.Bounds;
             if(root == null)
@@ -135,7 +136,7 @@ namespace Vale.GameObjects.Collision
             InsertNodeObject(root, obj);
         }
 
-        public void Remove(GameObject obj)
+        public void Remove(GameActor obj)
         {
             if (!objectToNodeLookup.ContainsKey(obj))
                 return; //oops
@@ -146,9 +147,9 @@ namespace Vale.GameObjects.Collision
 
         }
 
-        public List<GameObject> Query(AABB bounds) 
+        public List<GameActor> Query(AABB bounds) 
         {
-            List<GameObject> results = new List<GameObject>();
+            List<GameActor> results = new List<GameActor>();
             if (root != null)
                 Query(bounds, root, results);
             return results;
@@ -162,19 +163,18 @@ namespace Vale.GameObjects.Collision
         #endregion
 
         #region Helper Methods
-        private void InsertNodeObject(QuadNode node, GameObject obj)
+        private void InsertNodeObject(QuadNode node, GameActor obj)
         {
             if (!node.Bounds.Contains(obj.Bounds))
-                Console.WriteLine("you did it wrong");
-            return; //oops, object is out of node bounds.  this cannot happen if implemented correctly
+                return; //oops, object is out of node bounds.  this cannot happen if implemented correctly
             if (!node.HasChildren && node.Objects.Count + 1 > maxLeafObjs)
             {
                 SetupChildNodes(node);
 
-                List<GameObject> childObjects = new List<GameObject>(node.Objects);
-                List<GameObject> childrenToRelocate = new List<GameObject>();
+                List<GameActor> childObjects = new List<GameActor>(node.Objects);
+                List<GameActor> childrenToRelocate = new List<GameActor>();
 
-                foreach (GameObject childObject in childObjects)
+                foreach (GameActor childObject in childObjects)
                 {
                     foreach (QuadNode child in node.Nodes)
                     {
@@ -185,7 +185,7 @@ namespace Vale.GameObjects.Collision
                     }
                 }
 
-                foreach (GameObject childObject in childrenToRelocate)
+                foreach (GameActor childObject in childrenToRelocate)
                 {
                     RemoveObjectFromNode(childObject);
                     InsertNodeObject(node, childObject);
@@ -231,13 +231,13 @@ namespace Vale.GameObjects.Collision
             root = newRoot;
         }
 
-        private void Query(AABB bounds, QuadNode node, List<GameObject> results)
+        private void Query(AABB bounds, QuadNode node, List<GameActor> results)
         {
             if (node == null) return;
 
             if (bounds.Intersects(node.Bounds))
             {
-                foreach (GameObject quadObject in node.Objects)
+                foreach (GameActor quadObject in node.Objects)
                 {
                     if (bounds.Intersects(quadObject.Bounds))
                         results.Add(quadObject);
@@ -272,8 +272,8 @@ namespace Vale.GameObjects.Collision
             if(GetQuadObjectCount(node) <= maxLeafObjs)
             {
                 // Decompose children
-                List<GameObject> childObjects = GetChildObjects(node);
-                foreach (GameObject childObject in childObjects)
+                List<GameActor> childObjects = GetChildObjects(node);
+                foreach (GameActor childObject in childObjects)
                 {
                     if(!node.Objects.Contains(childObject))
                     {
@@ -353,9 +353,9 @@ namespace Vale.GameObjects.Collision
             return count;
         }
 
-        private List<GameObject> GetChildObjects(QuadNode node)
+        private List<GameActor> GetChildObjects(QuadNode node)
         {
-            List<GameObject> results = new List<GameObject>();
+            List<GameActor> results = new List<GameActor>();
             results.AddRange(node._nodeObjs);
             foreach(QuadNode child in node.Nodes)
             {
@@ -378,14 +378,14 @@ namespace Vale.GameObjects.Collision
         }
 
         #region Event Handling
-        private void AddObjectToNode(QuadNode node, GameObject obj)
+        private void AddObjectToNode(QuadNode node, GameActor obj)
         {
             node._nodeObjs.Add(obj);
             objectToNodeLookup.Add(obj, node);
             obj.BoundsChanged += new EventHandler(collider_BoundsChanged);
         }
 
-        private void RemoveObjectFromNode(GameObject obj)
+        private void RemoveObjectFromNode(GameActor obj)
         {
             QuadNode node = objectToNodeLookup[obj];
             node._nodeObjs.Remove(obj);
@@ -395,8 +395,8 @@ namespace Vale.GameObjects.Collision
 
         private void ClearObjectsFromNode(QuadNode node)
         {
-            List<GameObject> quadObjects = new List<GameObject>(node.Objects);
-            foreach (GameObject quadObject in quadObjects)
+            List<GameActor> quadObjects = new List<GameActor>(node.Objects);
+            foreach (GameActor quadObject in quadObjects)
             {
                 RemoveObjectFromNode(quadObject);
             }
@@ -404,7 +404,7 @@ namespace Vale.GameObjects.Collision
 
         void collider_BoundsChanged(object sender, EventArgs e)
         {
-            GameObject quadObject = sender as GameObject;
+            GameActor quadObject = sender as GameActor;
             if (quadObject != null)
             {
                 QuadNode node = objectToNodeLookup[quadObject];
