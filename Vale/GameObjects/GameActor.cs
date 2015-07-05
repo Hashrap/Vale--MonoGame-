@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
 using Microsoft.Xna.Framework.Content;
+using Vale.GameObjects.Collision;
 
 namespace Vale.GameObjects
 {
-    public abstract class GameActor : GameObject
+    public abstract class GameActor : GameObject, ICollide
     {
         public enum Faction
         {
@@ -14,6 +15,10 @@ namespace Vale.GameObjects
             Hostile,
             Neutral
         }
+
+        public AABB Rect;
+        public AABB Bounds { get { return Rect; } }
+        public event EventHandler BoundsChanged;
 
         private float rotation;
 
