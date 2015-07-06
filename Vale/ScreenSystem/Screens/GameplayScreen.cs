@@ -106,7 +106,7 @@ namespace Vale.ScreenSystem.Screens
             }
 
             // TODO: Check collisions
-            // 1'st: Broadphase check
+            // 1'st: Broadphase check (Actors.Query())
             // 2'nd: Pairwise test
             // 3'rd: Terrain
 
