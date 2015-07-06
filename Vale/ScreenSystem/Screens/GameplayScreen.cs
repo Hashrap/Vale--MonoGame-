@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using DungeonGen;
+using Vale.Control;
 using Vale.GameObjects;
 using Vale.GameObjects.Actors;
 using Vale.GameObjects.Collision;
@@ -23,6 +24,7 @@ namespace Vale.ScreenSystem.Screens
 
         public ValeTree Actors { get; private set; }
         private Texture2D WhiteTexture { get; set; }
+        private bool DebugValeTree { get; set; }
 
         /// <summary>
         /// Should load all of the content for the game.
@@ -37,6 +39,7 @@ namespace Vale.ScreenSystem.Screens
             cursorTexture = Content.Load<Texture2D>("Art/cursor10x10.png");
             WhiteTexture = new Texture2D(SpriteBatch.GraphicsDevice, 1, 1);
             WhiteTexture.SetData(new Color[] { Color.White });
+            DebugValeTree = false;
 
             Actors = new ValeTree(new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
@@ -91,11 +94,6 @@ namespace Vale.ScreenSystem.Screens
                 objectQueue.Add(gameObject);
             }
 
-            // TODO: Check collisions
-            // 1'st: Broadphase check
-            // 2'nd: Pairwise test
-            // 3'rd: Terrain
-
             // We start popping things off the end until the queue is empty so
             // that if something is removed we don't get confused.
             while (objectQueue.Count > 0)
@@ -107,7 +105,14 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Update(gameTime);
             }
 
+            // TODO: Check collisions
+            // 1'st: Broadphase check
+            // 2'nd: Pairwise test
+            // 3'rd: Terrain
+
             camera.Update(gameTime);
+            if (Input.Instance.KeyPress('c'))
+                DebugValeTree = !DebugValeTree;
         }
 
         public override void Draw(GameTime gameTime)
@@ -120,7 +125,9 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Draw(gameTime, SpriteBatch);
             }
 
-            Actors.Draw(WhiteTexture, SpriteBatch);
+            if (DebugValeTree)
+                Actors.Draw(WhiteTexture, SpriteBatch);
+            
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 
             SpriteBatch.End();
