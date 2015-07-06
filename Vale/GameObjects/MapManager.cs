@@ -132,11 +132,11 @@ namespace Vale.GameObjects
                     {
                         case State.Walkable:
                             // FIXME: Use a correctly sized asset
-                            GameScreen.SpriteBatch.Draw(floor, new Vector2(Tile.Width*x, Tile.Height*y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(floor, new Vector2(Tile.Width*x, Tile.Height*y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
                             break;
                         case State.Wall:
                             // FIXME: Use a correctly sized asset
-                            GameScreen.SpriteBatch.Draw(wall, new Vector2(Tile.Width*x, Tile.Height*y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(wall, new Vector2(Tile.Width*x, Tile.Height*y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
                             break;
                     }
                 }

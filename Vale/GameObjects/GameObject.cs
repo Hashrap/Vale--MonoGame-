@@ -11,10 +11,7 @@ namespace Vale.GameObjects
         public GameplayScreen Game { get; set; }
 
         public GameObject(GameplayScreen game)
-        {
-            this.Game = game;
-        }
-
+        {   this.Game = game;  }
 
         public virtual void LoadContent(ContentManager content)
         {

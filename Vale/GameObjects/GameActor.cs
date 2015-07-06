@@ -3,16 +3,28 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
 using Microsoft.Xna.Framework.Content;
+using Vale.GameObjects.Collision;
 
 namespace Vale.GameObjects
 {
-    public abstract class GameActor : GameObject
+    public abstract class GameActor : GameObject, ICollide
     {
         public enum Faction
         {
             Player,
             Hostile,
             Neutral
+        }
+
+        public AABB Rect;
+        public AABB Bounds { get { return Rect; } }
+
+        public event EventHandler BoundsChanged;
+        private void RaiseBoundsChanged()
+        {
+            EventHandler handler = BoundsChanged;
+            if (handler != null)
+                handler(this, new EventArgs());
         }
 
         private float rotation;
@@ -66,6 +78,8 @@ namespace Vale.GameObjects
             Screen = screen;
             Alignment = alignment;
             Visible = true;
+            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            Screen.Actors.Insert(this);
         }
 
         public Faction Alignment { set; get; }
@@ -86,7 +100,12 @@ namespace Vale.GameObjects
 
         private Vector2 Move(GameTime gameTime)
         {
-            Position += (Velocity * gameTime.ElapsedGameTime.Milliseconds);
+            if (Velocity == Vector2.Zero)
+                return Position;
+
+            Position += Velocity * gameTime.ElapsedGameTime.Milliseconds;
+            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            RaiseBoundsChanged();
 
             return Position;
         }

@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using DungeonGen;
+using Vale.Control;
 using Vale.GameObjects;
 using Vale.GameObjects.Actors;
+using Vale.GameObjects.Collision;
 
 namespace Vale.ScreenSystem.Screens
 {
@@ -23,6 +25,10 @@ namespace Vale.ScreenSystem.Screens
         List<GameObject> objects = new List<GameObject>();
         List<GameObject> objectQueue = new List<GameObject>();
 
+        public ValeTree Actors { get; private set; }
+        private Texture2D WhiteTexture { get; set; }
+        private bool DebugValeTree { get; set; }
+
         /// <summary>
         /// Should load all of the content for the game.
         /// </summary>
@@ -34,7 +40,11 @@ namespace Vale.ScreenSystem.Screens
             }
 
             cursorTexture = Content.Load<Texture2D>("Art/cursor10x10.png");
+            WhiteTexture = new Texture2D(SpriteBatch.GraphicsDevice, 1, 1);
+            WhiteTexture.SetData(new Color[] { Color.White });
+            DebugValeTree = false;
 
+            Actors = new ValeTree(new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
             KeyboardProvider = new KeyboardProvider(this);
             var map = new MapManager(this);
@@ -100,7 +110,14 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Update(gameTime);
             }
 
+            // TODO: Check collisions
+            // 1'st: Broadphase check (Actors.Query())
+            // 2'nd: Pairwise test
+            // 3'rd: Terrain
+
             camera.Update(gameTime);
+            if (Input.Instance.KeyPress('c'))
+                DebugValeTree = !DebugValeTree;
         }
 
         public override void Draw(GameTime gameTime)
@@ -113,6 +130,9 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Draw(gameTime, SpriteBatch);
             }
 
+            if (DebugValeTree)
+                Actors.Draw(WhiteTexture, SpriteBatch);
+            
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 
             SpriteBatch.End();
