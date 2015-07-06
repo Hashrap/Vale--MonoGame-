@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Vale.GameObjects.Actors;
+using Vale.Parsing;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects
 {
-    class UnitFactory
+    public class UnitFactory
     {
         private GameplayScreen game;
 
@@ -16,7 +18,7 @@ namespace Vale.GameObjects
             this.game = game;
         }
 
-        public CombatUnit CreateUnit(string name, GameActor.Faction alignment)
+        public CombatUnit CreateUnit(string name, GameActor.Faction alignment, Vector2 spawnPosition)
         {
             CombatUnit unit;
 
@@ -29,18 +31,23 @@ namespace Vale.GameObjects
                 unit = new CombatUnit(game, alignment);
             }
 
+            unit.Position = spawnPosition;
+
+            SetupUnit(unit, name);
+
+
             return unit;
         }
 
         private void SetupUnit(CombatUnit unit, string name)
         {
+            unit.LoadContent(game.Content);
+            
             // by now we have already parsed JSON and stored it into a dictionary.
             //then we grab all of that info and set up the unit
 
-            // sprite, sprite size
-            // speed, health
-            // skills
-            // drops? exp gain? gold gain?
+            var unitInfo = Resource.Instance.GetUnitInfo(name);
+            unit.LoadUnitInfo(unitInfo);
         }
     }
 }

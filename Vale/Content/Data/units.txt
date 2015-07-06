@@ -1,6 +1,18 @@
 {
-	"name":	"unit_grunt",
-	"health":	20,
-	"skill1":	"grunt_attack"
+	"unit_grunt" : {
+		"name":	"Grunt",
+		"health":	20,
+		"speed":	.4,
+		"skills": ["grunt_attack", "grunt_charge"],
+		"sprite": "unit_grunt.png"
+	},
+	
+	"unit_wizard" : {
+		"name" : "Wizard",
+		"health": 15,
+		"speed": .5,
+		"skills": ["wizard_fireball"],
+		"sprite":	"unit_wizard.png"
+	}
 }
 

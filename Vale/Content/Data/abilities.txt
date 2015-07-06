@@ -1,0 +1,66 @@
+{
+	"npc_grunt_attack" : {
+		"name" : "Grunt Attack",
+		"baseAbility": "MeleeArc",
+		"icon":	"grunt_attack.png",
+		"parameters": [{
+						"name" : "power",
+						"paramType" : "System.Float",
+						"value": 2.0
+					}]
+	},
+
+	"npc_grunt_charge" : {
+		"name" : "Grunt Charge",
+		"baseAbility": "Charge",
+		"icon":	"grunt_attack.png",
+		"parameters": [{
+						"name" : "power",
+						"paramType" : "System.Float",
+						"value": 2.0
+					}]
+	},
+
+	"npc_shoot_arrow" : {
+		"name" : "Shoot Arrow",
+		"baseAbility": "ShootArrow",
+		"icon":	"grunt_attack.png",
+		"parameters": [{
+						"name" : "power",
+						"paramType" : "System.Float",
+						"value": 2.0
+					}]
+	},
+
+	"archer_focus_shot": {
+		"name" : "Focus Shot",
+		"baseAbility": "FocusShot",
+		"icon":	"archer_focus_shot.png",
+		"parameters": [
+					{
+						"name" : "minPower",
+						"paramType" : "System.Float",
+						"value": 2.0
+					},
+					{
+						"name" : "maxPower",
+						"paramType" : "System.Float",
+						"value": 8.0
+					},
+					{
+						"name" : "chargeTime",
+						"paramType" : "System.Float",
+						"value": 1.2
+					},
+					{
+						"name" : "sweetSpotMin",
+						"paramType" : "System.Float",
+						"value": 0.8
+					},
+					{
+						"name" : "sweetSpotMax",
+						"valueType" : "System.Float",
+						"value": 1.1
+					}]
+	}	
+}

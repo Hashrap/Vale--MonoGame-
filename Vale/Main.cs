@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Vale.Control;
+using Vale.Parsing;
 using Vale.ScreenSystem;
 using Vale.ScreenSystem.Screens;
 
@@ -27,6 +28,10 @@ namespace Vale
             Window.Title = "Vale";
             Content.RootDirectory = "Content";
 
+            //UnitParser.Instance.ParseUnits();
+            JsonParser.Instance.ParseData<UnitInfo>("..\\..\\..\\Content\\Data\\units.txt");
+            JsonParser.Instance.ParseData<AbilityInfo>("..\\..\\..\\Content\\Data\\abilities.txt");
+            
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;

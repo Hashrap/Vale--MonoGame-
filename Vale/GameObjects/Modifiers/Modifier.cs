@@ -10,7 +10,7 @@ namespace Vale.GameObjects.Modifiers
         Expired
     }
 
-    internal enum EffectType
+    public enum EffectType
     {
         Stun,
         Slow,
@@ -21,7 +21,7 @@ namespace Vale.GameObjects.Modifiers
     /// <summary>
     ///     A modifier is buff/debuff that applies an effect to its owner
     /// </summary>
-    internal class Modifier : IUpdate // AKA BUFF/DEBUFF
+    public class Modifier : IUpdate // AKA BUFF/DEBUFF
     {
         private readonly int duration;
         private EffectType effectType;

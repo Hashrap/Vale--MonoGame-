@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Modifiers;
+using Vale.Parsing;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Actors
@@ -11,7 +14,7 @@ namespace Vale.GameObjects.Actors
     /// Represents a GameActor that engages in combat.
     /// Notably, a CombatUnit has health, can receive and deal damage
     /// </summary>
-    class CombatUnit : GameActor
+    public class CombatUnit : GameActor
     {
         /* events to consider
          * ModifierAdded
@@ -21,6 +24,7 @@ namespace Vale.GameObjects.Actors
          * GainedHealth
          * UsedSkill
          */
+        private UnitInfo defaultInfo;
 
         public enum ActorState
         {
@@ -36,9 +40,9 @@ namespace Vale.GameObjects.Actors
             get { return true; } // eventually loop through and check for Stun modifiers?
         }
 
-        private double health;
+        private float health;
 
-        private double maxHealth;
+        private float maxHealth;
 
 
         //this probably needs to be more sophisticated
@@ -51,7 +55,7 @@ namespace Vale.GameObjects.Actors
             modifiers.Add(modifier);
         }
 
-        public double Health
+        public float Health
         {
             get { return health; }
             set
@@ -68,7 +72,7 @@ namespace Vale.GameObjects.Actors
             }
         }
 
-        public double ReceiveDamage(GameActor source, double rawDamage)
+        public double ReceiveDamage(GameActor source, float rawDamage)
         //maybe there should be a "Damage" struct which holds raw damage value, damage type, modifiers?
         {
             //apply modifers: damage increase/decrease %
@@ -82,5 +86,26 @@ namespace Vale.GameObjects.Actors
             : base(gameScreen, alignment)
         {
         }
+
+        public void LoadUnitInfo(UnitInfo info)
+        {
+            defaultInfo = info;
+            SetupUnit();
+        }
+
+        private void SetupUnit()
+        {
+            this.Health = defaultInfo.Health;
+            this.Speed = defaultInfo.Speed;
+            
+            //set-up abilities here
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
+        }
+
+
     }
 }
