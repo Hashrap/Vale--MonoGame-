@@ -49,6 +49,14 @@ namespace Vale.GameObjects.Collision
         {
             get { return Max[0]; }
         }
+        public float X
+        {
+            get { return Min[0]; }
+        }
+        public float Y
+        {
+            get { return Min[1]; }
+        }
         #endregion
 
         #region Constructors
@@ -75,7 +83,7 @@ namespace Vale.GameObjects.Collision
         }
         #endregion
 
-        #region Methods
+        #region Member Methods
         public void Move(Vector2 v)
         {
             Max[0] += v.X;
