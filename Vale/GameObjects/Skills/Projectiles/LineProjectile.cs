@@ -55,6 +55,7 @@ namespace Vale.GameObjects.Skills
         {
             Velocity = Vector2.Zero;
             State = ProjectileStates.Dead;
+            Screen.Actors.Remove(this);
         }
 
         /// <summary>

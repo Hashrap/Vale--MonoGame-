@@ -79,6 +79,7 @@ namespace Vale.GameObjects
             Alignment = alignment;
             Visible = true;
             Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            Screen.Actors.Insert(this);
         }
 
         public Faction Alignment { set; get; }
