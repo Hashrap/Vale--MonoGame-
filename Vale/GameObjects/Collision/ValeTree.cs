@@ -338,7 +338,7 @@ namespace Vale.GameObjects.Collision
                 }
             }
 
-        } //TODO
+        }
 
         private int GetQuadObjectCount (QuadNode node)
         {

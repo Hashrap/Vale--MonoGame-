@@ -21,7 +21,7 @@ namespace Vale.ScreenSystem.Screens
         List<GameObject> objects = new List<GameObject>();
         List<GameObject> objectQueue = new List<GameObject>();
 
-        private ValeTree actors;
+        public ValeTree Actors { get; private set; }
 
         /// <summary>
         /// Should load all of the content for the game.
@@ -55,10 +55,6 @@ namespace Vale.ScreenSystem.Screens
 
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(map.Width, map.Height));
             camera.SetTarget(player);
-
-            actors = new ValeTree(new Vector2(20,20), 4);
-            actors.Insert(player);
-            //TODO - Add units to tree
 
             ScreenManager.Game.ResetElapsedTime();
         }
