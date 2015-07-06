@@ -200,6 +200,19 @@ namespace Vale.GameObjects.Collision
         }
 
         /// <summary>
+        /// Query all objects of a different alignment intersecting a GameActor
+        /// </summary>
+        /// <param name="target">GameActor to query for</param>
+        /// <returns>List of all GameActors of a different alignment intersecting with target GameActor </returns>
+        public List<GameActor> Query(GameActor target)
+        {
+            List<GameActor> results = new List<GameActor>();
+            if (root != null)
+                Query(target.Bounds, root, results, (int)target.Alignment);
+            return results;
+        }
+
+        /// <summary>
         /// Count all objects in the tree
         /// </summary>
         /// <returns>The number of all objects in the tree</returns>
@@ -342,7 +355,7 @@ namespace Vale.GameObjects.Collision
         /// <param name="bounds">Target area</param>
         /// <param name="node">Node to check</param>
         /// <param name="results">List reference to populate</param>
-        private void Query(AABB bounds, QuadNode node, List<GameActor> results)
+        private void Query(AABB bounds, QuadNode node, List<GameActor> results, int layer = -1)
         {
             if (node == null) return;
 
@@ -351,16 +364,18 @@ namespace Vale.GameObjects.Collision
             {
                 foreach (GameActor quadObject in node.Objects)
                 {
-                    // NOTE: currently adds object to list ONLY if its bounds intersects with the target bounds.
-                    // We may wish to instead to have it just return all potential collisions and let the GamePlay screen
-                    // or the ICollide object handle it themselves.
-                    if (bounds.Intersects(quadObject.Bounds))
+                    // NOTE: currently adds object to list ONLY in the case of object bounds intersecting with the target
+                    //bounds & faction mismatch. We may wish to instead to have it just return all potential collisions
+                    //and let the GameplayScreen or the ICollide object handle it themselves.
+
+                    // If the compared object is of a different alignment and has intersecting bounds, add it to the results
+                    if ((int)quadObject.Alignment != layer && bounds.Intersects(quadObject.Bounds))
                         results.Add(quadObject);
                 }
 
                 // Recurse into child nodes
                 foreach (QuadNode child in node.Nodes)
-                    Query(bounds, child, results);
+                    Query(bounds, child, results, layer);
             }
         }
 
