@@ -159,7 +159,16 @@ namespace Vale.GameObjects.Collision
 
         public int GetQuadNodeCount() { return 0; } //TODO
 
-        public List<QuadNode> GetAllNodes() { return new List<QuadNode>(); }
+        public List<QuadNode> GetAllNodes()
+        {
+            List<QuadNode> results = new List<QuadNode>();
+            if (root != null)
+            {
+                results.Add(root);
+                GetChildNodes(root, results);
+            }
+            return results;
+        }
         #endregion
 
         #region Helper Methods
