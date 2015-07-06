@@ -427,6 +427,25 @@ namespace Vale.GameObjects.Collision
             }
         }
         #endregion
+
+        #region Debugging
+        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        {
+            foreach (QuadNode node in GetAllNodes())
+            {
+                DrawBorder(node.Bounds, texture, spriteBatch);
+            }
+        }
+
+        private void DrawBorder(AABB aabb, Texture2D texture, SpriteBatch spriteBatch)
+        {
+            Rectangle rect = aabb.ToRectangle();
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, rect.Width, 1), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Bottom, rect.Width, 1), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, 1, rect.Height), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle(rect.Right, rect.Top, 1, rect.Height + 1), Color.Red);
+        }
+        #endregion
         #endregion
     }
 }

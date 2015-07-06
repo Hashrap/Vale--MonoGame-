@@ -22,6 +22,7 @@ namespace Vale.ScreenSystem.Screens
         List<GameObject> objectQueue = new List<GameObject>();
 
         public ValeTree Actors { get; private set; }
+        private Texture2D WhiteTexture { get; set; }
 
         /// <summary>
         /// Should load all of the content for the game.
@@ -34,7 +35,10 @@ namespace Vale.ScreenSystem.Screens
             }
 
             cursorTexture = Content.Load<Texture2D>("Art/cursor10x10.png");
+            WhiteTexture = new Texture2D(SpriteBatch.GraphicsDevice, 1, 1);
+            WhiteTexture.SetData(new Color[] { Color.White });
 
+            Actors = new ValeTree(new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
             KeyboardProvider = new KeyboardProvider(this);
             var map = new MapManager(this);
@@ -116,6 +120,7 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Draw(gameTime, SpriteBatch);
             }
 
+            Actors.Draw(WhiteTexture, SpriteBatch);
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 
             SpriteBatch.End();
