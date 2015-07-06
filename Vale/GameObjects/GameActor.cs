@@ -16,11 +16,11 @@ namespace Vale.GameObjects
             Neutral
         }
 
-        public AABB Rect;
-        public AABB Bounds { get { return Rect; } }
+        private AABB bounds;
+        public AABB Bounds { get { return bounds; } }
 
         public event EventHandler BoundsChanged;
-        private void RaiseBoundsChanged()
+        protected void RaiseBoundsChanged()
         {
             EventHandler handler = BoundsChanged;
             if (handler != null)
@@ -78,7 +78,7 @@ namespace Vale.GameObjects
             Screen = screen;
             Alignment = alignment;
             Visible = true;
-            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
             Screen.Actors.Insert(this);
         }
 
@@ -104,11 +104,13 @@ namespace Vale.GameObjects
                 return Position;
 
             Position += Velocity * gameTime.ElapsedGameTime.Milliseconds;
-            Rect = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
             RaiseBoundsChanged();
 
             return Position;
         }
 
+        private void OnObjectCollision() { }
+        private void OnTerrainCollision() { }
     }
 }
