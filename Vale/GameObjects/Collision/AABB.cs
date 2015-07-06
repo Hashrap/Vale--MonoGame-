@@ -75,7 +75,28 @@ namespace Vale.GameObjects.Collision
         }
         #endregion
 
-        #region Helper Members
+        #region Methods
+        public void Move(Vector2 v)
+        {
+            Max[0] += v.X;
+            Min[0] += v.X;
+            Max[1] += v.Y;
+            Min[1] += v.Y;
+        }
+        public void Move(float x, float y)
+        {
+            Max[0] += x;
+            Min[0] += x;
+            Max[1] += y;
+            Min[1] += y;
+        }
+        public Rectangle ToRectangle()
+        {
+            return new Rectangle((int)Min[0], (int)Min[1], (int)Width, (int)Height);
+        }
+        #endregion
+
+        #region Member Tests
         public bool Contains(Vector2 point)
         {
             return !(point.X < Left
@@ -99,8 +120,8 @@ namespace Vale.GameObjects.Collision
         }
         #endregion
 
-        #region Tests
-        public static bool AABBIntersect(AABB a, AABB b)
+        #region Static Tests
+        public static bool Intersects(AABB a, AABB b)
         {
             return !(a.Left > b.Right
                 || a.Right < b.Left
@@ -108,16 +129,16 @@ namespace Vale.GameObjects.Collision
                 || a.Bottom < b.Top);
         }
 
-        public static bool PointIntersect(AABB a, Vector2 point)
+        public static bool Intersects(AABB a, Vector2 point)
         {
             return !(a.Left > point.X
                 || a.Right < point.X
                 || a.Top > point.Y
                 || a.Bottom < point.Y);
         }
-        public static bool RectangleIntersect(AABB a, float aX, float aY, float bX, float bY)
+        public static bool Intersects(AABB a, float aX, float aY, float bX, float bY)
         {
-            return AABBIntersect(a, new AABB(aX, bX, aY, bY));
+            return Intersects(a, new AABB(aX, bX, aY, bY));
         }
 
         /*public static bool CircleInterset(AABB a, Circle b) { }
