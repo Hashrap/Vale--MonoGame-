@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Vale.GameObjects.Actors;
 using Vale.Parsing;
 using Vale.ScreenSystem.Screens;

@@ -17,7 +17,7 @@ namespace Vale.ScreenSystem.Screens
         public MouseProvider MouseProvider { get; private set; }
         public KeyboardProvider KeyboardProvider { get; private set; }
 
-        public UnitFactory unitCreator;
+        public UnitFactory UnitCreator;
 
 
         List<GameObject> objects = new List<GameObject>();
@@ -39,12 +39,12 @@ namespace Vale.ScreenSystem.Screens
             KeyboardProvider = new KeyboardProvider(this);
             var map = new MapManager(this);
             var player = new Hero(this, MouseProvider, KeyboardProvider);
-            unitCreator = new UnitFactory(this);
+            UnitCreator = new UnitFactory(this);
 
             AddObject(MouseProvider);
             AddObject(map);
             AddObject(player);
-            AddObject(unitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
+            AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
 
             foreach (var gameObject in objects)
             {
