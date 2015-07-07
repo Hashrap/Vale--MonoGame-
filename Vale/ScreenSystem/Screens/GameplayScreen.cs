@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,18 +17,18 @@ namespace Vale.ScreenSystem.Screens
         public ContentManager Content { get; private set; }
         Texture2D cursorTexture;
         public Camera camera;
+        public ValeTree Actors { get; private set; }
+        public MapManager Map { get; private set; }
         public MouseProvider MouseProvider { get; private set; }
         public KeyboardProvider KeyboardProvider { get; private set; }
-
         public UnitFactory UnitCreator;
-
 
         List<GameObject> objects = new List<GameObject>();
         List<GameObject> objectQueue = new List<GameObject>();
-
-        public ValeTree Actors { get; private set; }
+        
         private Texture2D WhiteTexture { get; set; }
         private bool DebugValeTree { get; set; }
+        private readonly int spawnMin = 40;
 
         /// <summary>
         /// Should load all of the content for the game.
@@ -43,30 +44,41 @@ namespace Vale.ScreenSystem.Screens
             WhiteTexture = new Texture2D(SpriteBatch.GraphicsDevice, 1, 1);
             WhiteTexture.SetData(new Color[] { Color.White });
             DebugValeTree = false;
-
             Actors = new ValeTree(new Vector2(20, 20), 5);
+
             MouseProvider = new MouseProvider(this);
             KeyboardProvider = new KeyboardProvider(this);
-            var map = new MapManager(this);
-            var player = new Hero(this, MouseProvider, KeyboardProvider);
+            Map = new MapManager(this);
             UnitCreator = new UnitFactory(this);
-
             AddObject(MouseProvider);
-            AddObject(map);
-            AddObject(player);
+            AddObject(KeyboardProvider);
+            AddObject(Map);
             AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
+
+            //Create a playspace
+            var gen = new Generator(0, "test");
+            gen.Cave(1, "2221111", 40, 100, 100);
+            Map.Import(gen.exportVale(0));
+
+            //Find a 40x40 spawn zone for the player to spawn in
+            Random rng = new Random();
+            Vector2 spawn = new Vector2(rng.Next(Map.Width - spawnMin), rng.Next(Map.Height - spawnMin));
+            AABB spawnArea = new AABB(spawn, spawn + new Vector2(spawnMin, spawnMin));
+            while (!Map.Query(spawnArea))
+            {
+                spawn = new Vector2(rng.Next(Map.Width), rng.Next(Map.Height));
+                spawnArea = new AABB(spawn, spawn + new Vector2(spawnMin, spawnMin));
+            }
+            var player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
+            AddObject(player);
+
+            camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(Map.Width, Map.Height));
+            camera.SetTarget(player);
 
             foreach (var gameObject in objects)
             {
                 gameObject.LoadContent(Content);
             }
-
-            var gen = new Generator(0, "test");
-            gen.Cave(1, "2221111", 40, 100, 100);
-            map.Import(gen.exportVale(0));
-
-            camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(map.Width, map.Height));
-            camera.SetTarget(player);
 
             ScreenManager.Game.ResetElapsedTime();
         }
@@ -110,12 +122,13 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Update(gameTime);
             }
 
-            // TODO: Check collisions
-            // 1'st: Broadphase check (Actors.Query())
-            // 2'nd: Pairwise test
-            // 3'rd: Terrain
+            foreach (GameActor actor in Actors.GetAllObjects())
+            {
+                
+            }
 
             camera.Update(gameTime);
+
             if (Input.Instance.KeyPress('c'))
                 DebugValeTree = !DebugValeTree;
         }

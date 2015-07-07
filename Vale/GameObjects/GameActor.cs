@@ -20,12 +20,6 @@ namespace Vale.GameObjects
         public AABB Bounds { get { return bounds; } }
 
         public event EventHandler BoundsChanged;
-        protected void RaiseBoundsChanged()
-        {
-            EventHandler handler = BoundsChanged;
-            if (handler != null)
-                handler(this, new EventArgs());
-        }
 
         private float rotation;
 
@@ -47,7 +41,7 @@ namespace Vale.GameObjects
             protected set { rotation = value % 360; }
         }
 
-        public GameplayScreen Screen { get; set; }
+        public GameplayScreen Screen { get; protected set; }
 
         /// <summary>
         ///     The magnitude of this game object's velocity
@@ -70,6 +64,11 @@ namespace Vale.GameObjects
         protected Vector2 DrawingPosition
         {
             get { return Position - DrawingOrigin; }
+        }
+
+        protected Vector2 PreviousDrawingPosition
+        {
+            get { return PreviousPosition - DrawingOrigin; }
         }
 
         protected GameActor(GameplayScreen screen, Faction alignment)
@@ -100,17 +99,32 @@ namespace Vale.GameObjects
 
         private Vector2 Move(GameTime gameTime)
         {
+            PreviousPosition = Position;
             if (Velocity == Vector2.Zero)
                 return Position;
 
             Position += Velocity * gameTime.ElapsedGameTime.Milliseconds;
-            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
-            RaiseBoundsChanged();
+            if (!Screen.Map.Query(new AABB(new Vector2(DrawingPosition.X, PreviousDrawingPosition.Y), spriteWidth, spriteHeight)))
+                Position = new Vector2(PreviousPosition.X, Position.Y);
+            if (!Screen.Map.Query(new AABB(new Vector2(PreviousDrawingPosition.X, DrawingPosition.Y), spriteWidth, spriteHeight)))
+                Position = new Vector2(Position.X, PreviousPosition.Y);
+
+            if (Position != PreviousPosition)
+                RaiseBoundsChanged();
 
             return Position;
         }
 
-        private void OnObjectCollision() { }
-        private void OnTerrainCollision() { }
+        protected void RaiseBoundsChanged()
+        {
+            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+
+            EventHandler handler = BoundsChanged;
+            if (handler != null)
+                handler(this, new EventArgs());
+        }
+
+        protected void OnObjectCollision() { }
+        protected void OnTerrainCollision() { }
     }
 }
