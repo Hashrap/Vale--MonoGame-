@@ -237,6 +237,18 @@ namespace Vale.GameObjects.Collision
         }
 
         /// <summary>
+        /// Get a list of all GameActors in the tree
+        /// </summary>
+        /// <returns>a list of every GameActor in the tree</returns>
+        public List<GameActor> GetAllObjects()
+        {
+            List<GameActor> results = new List<GameActor>();
+            if(root != null)
+                GetChildObjects(root, results);
+            return results;
+        }
+
+        /// <summary>
         /// Get a list of all QuadNodes in the tree
         /// </summary>
         /// <returns>a list of every Quadnode in the tree</returns>
@@ -412,7 +424,8 @@ namespace Vale.GameObjects.Collision
             if(GetObjectCount(node) <= maxLeafObjs)
             {
                 // Merge children
-                List<GameActor> childObjects = GetChildObjects(node);
+                List<GameActor> childObjects = new List<GameActor>();
+                GetChildObjects(node, childObjects);
                 foreach (GameActor childObject in childObjects)
                 {
                     if(!node.Objects.Contains(childObject))
@@ -508,24 +521,22 @@ namespace Vale.GameObjects.Collision
         }
 
         /// <summary>
-        /// Return a list of all objects held by a node's children
+        /// Populate a list of all objects held by a node's children
         /// </summary>
         /// <param name="node">Node to check</param>
-        /// <returns>List of all objects in <paramref name="node"/>'s children</returns>
-        private List<GameActor> GetChildObjects(QuadNode node)
+        /// <param name="results">List to store all objects in <paramref name="node"/>'s children</returns>
+        private void GetChildObjects(QuadNode node, List<GameActor> results)
         {
-            List<GameActor> results = new List<GameActor>();
             results.AddRange(node._nodeObjs);
             foreach(QuadNode child in node.Nodes)
             {
                 if (child != null)
-                    results.AddRange(GetChildObjects(child));
+                    GetChildObjects(child, results);
             }
-            return results;
         }
 
         /// <summary>
-        /// Return a collection of a node's children
+        /// Populate a collection of a node's children
         /// </summary>
         /// <param name="node">Node to retrieve children from</param>
         /// <param name="results">Collection reference to store <paramref name="node"/>'s children</param>
