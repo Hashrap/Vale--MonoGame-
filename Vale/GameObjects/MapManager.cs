@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
 
 using Vale.GameObjects;
+using Vale.GameObjects.Collision;
 using System.Security.Cryptography;
 
 namespace Vale.GameObjects
@@ -31,11 +32,11 @@ namespace Vale.GameObjects
             /// </summary>
             ///     Width of the tile texture
             /// </summary>
-            public static short Width { get; set; }
+            public static short Width { get; internal set; }
             /// </summary>
             ///     Height of the tile texture
             /// </summary>
-            public static short Height { get; set; }
+            public static short Height { get; internal set; }
 
             /// <summary>
             ///     Bitfield for storing additional tile info
@@ -116,6 +117,21 @@ namespace Vale.GameObjects
                     _map[x, y].State = (State)map[x, y];
                 }
             }
+        }
+
+        public bool Query(int x, int y)
+        {
+            return _map[x, y].State == State.Walkable;
+        }
+
+        public bool Query(Vector2 pos)
+        {
+            return Query(((int)(pos.X / TILE_WIDTH)), ((int)(pos.Y / TILE_HEIGHT)));
+        }
+
+        public bool Query(AABB bounds)
+        {
+            return Query(bounds.Origin) && Query(bounds.Opposite);
         }
 
         /// <summary>
