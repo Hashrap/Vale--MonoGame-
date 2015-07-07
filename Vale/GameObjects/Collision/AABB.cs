@@ -13,6 +13,10 @@ namespace Vale.GameObjects.Collision
         {
             get { return new Vector2(Left, Top); }
         }
+        public Vector2 Opposite
+        {
+            get { return new Vector2(Right, Bottom); }
+        }
         public Vector2 Center
         {
             get { return new Vector2((Left + Right) / 2, (Bottom + Top) / 2);  }
