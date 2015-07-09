@@ -17,6 +17,14 @@ namespace Vale.GameObjects.Collision
         {
             get { return new Vector2(Right, Bottom); }
         }
+        public Vector2 TopRight
+        {
+            get { return new Vector2(Right, Top); }
+        }
+        public Vector2 BottomLeft
+        {
+            get { return new Vector2(Left, Bottom); }
+        }
         public Vector2 Center
         {
             get { return new Vector2((Left + Right) / 2, (Bottom + Top) / 2);  }
@@ -84,6 +92,11 @@ namespace Vale.GameObjects.Collision
         {
             Min = new float[2] { center.X - halfWidth, center.Y - halfHeight };
             Max = new float[2] { center.X + halfWidth, center.Y + halfHeight };
+        }
+        public AABB(Rectangle rect)
+        {
+            Min = new float[2] { rect.Left , rect.Top };
+            Max = new float[2] { rect.Right , rect.Bottom };
         }
         #endregion
 

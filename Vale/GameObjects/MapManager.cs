@@ -116,6 +116,11 @@ namespace Vale.GameObjects
             }
         }
 
+        public Point GetTileCoordinates(Vector2 pos)
+        {
+            return new Point((int)(pos.X / TILE_WIDTH), (int)(pos.Y / TILE_HEIGHT));
+        }
+
         public bool Query(int x, int y)
         {
             return _map[x, y].State == State.Walkable;
@@ -123,12 +128,13 @@ namespace Vale.GameObjects
 
         public bool Query(Vector2 pos)
         {
-            return Query(((int)(pos.X / TILE_WIDTH)), ((int)(pos.Y / TILE_HEIGHT)));
+            Point coords = GetTileCoordinates(pos);
+            return Query(coords.X, coords.Y);
         }
 
         public bool Query(AABB bounds)
         {
-            return Query(bounds.Origin) && Query(bounds.Opposite);
+            return Query(bounds.Origin) && Query(bounds.Opposite) && Query(bounds.TopRight) && Query(bounds.BottomLeft);
         }
 
         /// <summary>
@@ -149,27 +155,28 @@ namespace Vale.GameObjects
                             break;
                         case State.Wall:
                             // FIXME: Use a correctly sized asset
-                            spriteBatch.Draw(wall, new Vector2(Tile.Width*x, Tile.Height*y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(wall, new Vector2(Tile.Width * x, Tile.Height * y), null, Color.White, 0, Vector2.Zero, 30f / 20f, SpriteEffects.None, 0);
                             break;
                     }
                 }
             }
         }
 
-        public void DebugDraw(Texture2D texture, SpriteBatch spriteBatch)
+        public void DebugDraw(Texture2D texture, SpriteBatch spriteBatch, Vector2 pos)
         {
-            for(int x = 0; x < _map.GetLength(0); x++)
+            Point coords = GetTileCoordinates(pos);
+            for(int x = (int)Math.Max(coords.X - 10, 0); x < (int)Math.Min(_map.GetLength(0), coords.X + 10); x++)
             {
-                for(int y = 0; y < _map.GetLength(1); y++)
+                for(int y = (int)Math.Max(coords.Y - 10, 0); y < (int)Math.Min(_map.GetLength(1), coords.Y + 10); y++)
                 {
                     DrawBorder(new AABB(new Vector2(Tile.Width * x, Tile.Height * y), Tile.Width, Tile.Height), texture, spriteBatch);
-                    spriteBatch.DrawString(font, "" + x + y, new Vector2(Tile.Width * x, Tile.Height * y), Color.Red);
+                    if(_map[x, y].State == State.Wall)
+                        spriteBatch.Draw(texture, new Rectangle(x * Tile.Width + 1, y * Tile.Height + 1, Tile.Width - 1, Tile.Height - 1), Color.DarkGray);
+                    else
+                        spriteBatch.Draw(texture, new Rectangle(x * Tile.Width + 1, y * Tile.Height + 1, Tile.Width - 1, Tile.Height - 1), Color.LightGray);
+                    spriteBatch.DrawString(font, "" + x + " / " + y, new Vector2(Tile.Width * x, (Tile.Height * y)+2), Color.Red);
                 }
             }
-        }
-
-        public void DrawText(Vector2 pos)
-        {
         }
 
         /// <summary>

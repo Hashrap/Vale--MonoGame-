@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Vale.ScreenSystem.Screens;
 using Microsoft.Xna.Framework.Content;
+using Vale.ScreenSystem.Screens;
 using Vale.GameObjects.Collision;
 
 namespace Vale.GameObjects
@@ -74,13 +74,14 @@ namespace Vale.GameObjects
             get { return PreviousPosition - DrawingOrigin; }
         }
 
-        protected GameActor(GameplayScreen screen, Faction alignment)
+        protected GameActor(GameplayScreen screen, Faction alignment, Vector2 pos)
             : base(screen)
         {
             Screen = screen;
             Alignment = alignment;
-            Visible = true;
+            Position = pos;
             bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            Visible = true;
             Screen.Actors.Insert(this);
         }
 
@@ -93,6 +94,21 @@ namespace Vale.GameObjects
                 spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
                     SpriteEffects.None, 0f);
             }
+        }
+
+        public void DebugDraw(Texture2D texture, SpriteBatch spriteBatch)
+        {
+            //Bounds
+            spriteBatch.Draw(texture, new Rectangle((int)Bounds.Left, (int)Bounds.Top, 1, 1), Color.Yellow);
+            spriteBatch.Draw(texture, new Rectangle((int)Bounds.Right, (int)Bounds.Bottom, 1, 1), Color.Purple);
+            spriteBatch.Draw(texture, new Rectangle((int)Bounds.Right, (int)Bounds.Top, 1, 1), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle((int)Bounds.Left, (int)Bounds.Bottom, 1, 1), Color.Green);
+
+            //Position
+            /*spriteBatch.Draw(texture, new Rectangle((int)DrawingPosition.X, (int)DrawingPosition.Y, 1, 1), Color.Yellow);
+            spriteBatch.Draw(texture, new Rectangle((int)(DrawingPosition.X + spriteWidth), (int)(DrawingPosition.Y + spriteHeight), 1, 1), Color.Purple);
+            spriteBatch.Draw(texture, new Rectangle((int)(DrawingPosition.X + spriteWidth), (int)(int)DrawingPosition.Y, 1, 1), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle((int)DrawingPosition.X, (int)(DrawingPosition.Y + spriteHeight), 1, 1), Color.Green);*/
         }
 
         public override void Update(GameTime gameTime)

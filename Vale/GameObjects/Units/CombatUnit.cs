@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Modifiers;
@@ -82,8 +83,8 @@ namespace Vale.GameObjects.Actors
             return rawDamage; //eventually return actual damage after mitigations/modifiers
         }
 
-        public CombatUnit(GameplayScreen gameScreen, Faction alignment)
-            : base(gameScreen, alignment)
+        public CombatUnit(GameplayScreen gameScreen, Faction alignment, Vector2 spawn)
+            : base(gameScreen, alignment, spawn)
         {
         }
 

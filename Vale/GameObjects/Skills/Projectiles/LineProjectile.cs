@@ -31,14 +31,13 @@ namespace Vale.GameObjects.Skills
         public ProjectileStates State { get; private set; }
 
         public LineProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
-            : base(gameScreen, owner.Alignment)
+            : base(gameScreen, owner.Alignment, origin)
         {
             this.gameScreen = gameScreen;
             this.texture = texture;
             State = ProjectileStates.Dormant;
             Owner = owner;
             Origin = origin;
-            Position = origin;
             Rotation = rotation;
             Speed = speed;
         }

@@ -21,7 +21,8 @@ namespace Vale.ScreenSystem.Screens
         public MapManager Map { get; private set; }
         public MouseProvider MouseProvider { get; private set; }
         public KeyboardProvider KeyboardProvider { get; private set; }
-        public UnitFactory UnitCreator;
+        public UnitFactory UnitCreator { get; private set; }
+        public CombatUnit Player { get; private set; }
 
         List<GameObject> objects = new List<GameObject>();
         List<GameObject> objectQueue = new List<GameObject>();
@@ -29,6 +30,7 @@ namespace Vale.ScreenSystem.Screens
         private Texture2D WhiteTexture { get; set; }
         private bool DebugValeTree { get; set; }
         private bool DebugMap { get; set; }
+        private bool DebugHeroBounds { get; set; }
         private readonly int spawnMin = 40;
 
         /// <summary>
@@ -46,6 +48,7 @@ namespace Vale.ScreenSystem.Screens
             WhiteTexture.SetData(new Color[] { Color.White });
             DebugValeTree = false;
             DebugMap = false;
+            DebugHeroBounds = false;
 
             Actors = new ValeTree(this, new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
@@ -72,11 +75,14 @@ namespace Vale.ScreenSystem.Screens
                 spawn = new Vector2(rng.Next(Map.Width), rng.Next(Map.Height));
                 spawnArea = new AABB(spawn, spawn + new Vector2(spawnMin, spawnMin));
             }
-            var player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
-            AddObject(player);
 
+            //Spawn the player
+            Player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
+            AddObject(Player);
+
+            //Set camera
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(Map.Width, Map.Height));
-            camera.SetTarget(player);
+            camera.SetTarget(Player);
 
             foreach (var gameObject in objects)
             {
@@ -136,6 +142,8 @@ namespace Vale.ScreenSystem.Screens
                 DebugValeTree = !DebugValeTree;
             if (Input.Instance.KeyPress('m'))
                 DebugMap = !DebugMap;
+            if (Input.Instance.KeyPress('h'))
+                DebugHeroBounds = !DebugHeroBounds;
         }
 
         public override void Draw(GameTime gameTime)
@@ -151,7 +159,9 @@ namespace Vale.ScreenSystem.Screens
             if (DebugValeTree)
                 Actors.DebugDraw(WhiteTexture, SpriteBatch);
             if (DebugMap)
-                Map.DebugDraw(WhiteTexture, SpriteBatch);
+                Map.DebugDraw(WhiteTexture, SpriteBatch, Player.Bounds.Origin);
+            if (DebugHeroBounds)
+                Player.DebugDraw(WhiteTexture, SpriteBatch);
             
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 

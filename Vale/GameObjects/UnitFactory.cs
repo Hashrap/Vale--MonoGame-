@@ -24,7 +24,7 @@ namespace Vale.GameObjects
             }
             else
             {
-                unit = new CombatUnit(game, alignment);
+                unit = new CombatUnit(game, alignment, spawnPosition);
             }
 
             unit.Position = spawnPosition;

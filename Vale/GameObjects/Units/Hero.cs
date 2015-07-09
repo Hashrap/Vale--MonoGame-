@@ -21,11 +21,10 @@ namespace Vale.GameObjects.Actors
             : this(gameScreen, mouseProvider, keyboardProvider, new Vector2(spawnX, spawnY), alignment) { }
 
         public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, Vector2 spawnPoint, Faction alignment = Faction.Player)
-            : base(gameScreen, alignment)
+            : base(gameScreen, alignment, spawnPoint)
         {
             MouseProvider = mouseProvider;
             KeyboardProvider = keyboardProvider;
-            Position = spawnPoint;
             Speed = 0.3f;
 
             SkillOne = new QuickShot(gameScreen, this);
