@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Collision
 {
@@ -23,7 +24,7 @@ namespace Vale.GameObjects.Collision
     /// Data structure for spatially organizing GameActors
     /// </summary>
     /// <remarks>Used to optimize collision detection by reducing necessary pairwise tests</remarks>
-    public class ValeTree
+    public class ValeTree : GameObject
     {
         #region Definitions
         /// <summary>
@@ -139,7 +140,8 @@ namespace Vale.GameObjects.Collision
         #endregion
 
         #region Constructor(s)
-        public ValeTree(Vector2 minLeafSize, int maxLeafObjs)
+        public ValeTree(GameplayScreen gs, Vector2 minLeafSize, int maxLeafObjs)
+            : base(gs)
         {
             this.minLeafSize = minLeafSize;
             this.maxLeafObjs = maxLeafObjs;
@@ -524,7 +526,7 @@ namespace Vale.GameObjects.Collision
         /// Populate a list of all objects held by a node's children
         /// </summary>
         /// <param name="node">Node to check</param>
-        /// <param name="results">List to store all objects in <paramref name="node"/>'s children</returns>
+        /// <param name="results">List to store all objects in <paramref name="node"/>'s children</param>
         private void GetChildObjects(QuadNode node, List<GameActor> results)
         {
             results.AddRange(node._nodeObjs);
@@ -536,7 +538,7 @@ namespace Vale.GameObjects.Collision
         }
 
         /// <summary>
-        /// Populate a collection of a node's children
+        /// Populate a collection with a node's children
         /// </summary>
         /// <param name="node">Node to retrieve children from</param>
         /// <param name="results">Collection reference to store <paramref name="node"/>'s children</param>
@@ -628,7 +630,7 @@ namespace Vale.GameObjects.Collision
         /// </summary>
         /// <param name="texture">Texture to draw with</param>
         /// <param name="spriteBatch">SpriteBatch to draw with</param>
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void DebugDraw(Texture2D texture, SpriteBatch spriteBatch)
         {
             foreach (QuadNode node in GetAllNodes())
             {
@@ -645,10 +647,10 @@ namespace Vale.GameObjects.Collision
         private void DrawBorder(AABB aabb, Texture2D texture, SpriteBatch spriteBatch)
         {
             Rectangle rect = aabb.ToRectangle();
-            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, rect.Width, 1), Color.Red);
-            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Bottom, rect.Width, 1), Color.Red);
-            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, 1, rect.Height), Color.Red);
-            spriteBatch.Draw(texture, new Rectangle(rect.Right, rect.Top, 1, rect.Height + 1), Color.Red);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, rect.Width, 1), Color.DarkGreen);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Bottom, rect.Width, 1), Color.DarkGreen);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, 1, rect.Height), Color.DarkGreen);
+            spriteBatch.Draw(texture, new Rectangle(rect.Right, rect.Top, 1, rect.Height + 1), Color.DarkGreen);
         }
         #endregion
         #endregion

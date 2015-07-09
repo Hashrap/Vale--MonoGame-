@@ -19,6 +19,9 @@ namespace Vale.GameObjects
         private AABB bounds;
         public AABB Bounds { get { return bounds; } }
 
+        private AABB previousBounds;
+        public AABB PreviousBounds { get { return previousBounds; } }
+
         public event EventHandler BoundsChanged;
 
         private float rotation;

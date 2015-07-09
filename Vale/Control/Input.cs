@@ -131,7 +131,7 @@ namespace Vale.Control
         {
             #region Debug strings
 
-            if (KeyPress('I'))
+            /*if (KeyPress('I'))
             {
                 Console.WriteLine("X-axis:" + XAxisInput + " Y-axis:" + YAxisInput);
                 Console.WriteLine("Raw:" + RawInput);
@@ -151,7 +151,7 @@ namespace Vale.Control
             if (MouseButtonPress("Middle"))
                 Console.WriteLine("MMB Pressed");
             if (MouseButtonRelease("Middle"))
-                Console.WriteLine("MMB Released");
+                Console.WriteLine("MMB Released");*/
 
             #endregion Debug strings
 

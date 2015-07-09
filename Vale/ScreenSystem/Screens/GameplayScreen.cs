@@ -28,6 +28,7 @@ namespace Vale.ScreenSystem.Screens
         
         private Texture2D WhiteTexture { get; set; }
         private bool DebugValeTree { get; set; }
+        private bool DebugMap { get; set; }
         private readonly int spawnMin = 40;
 
         /// <summary>
@@ -44,12 +45,14 @@ namespace Vale.ScreenSystem.Screens
             WhiteTexture = new Texture2D(SpriteBatch.GraphicsDevice, 1, 1);
             WhiteTexture.SetData(new Color[] { Color.White });
             DebugValeTree = false;
-            Actors = new ValeTree(new Vector2(20, 20), 5);
+            DebugMap = false;
 
+            Actors = new ValeTree(this, new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
             KeyboardProvider = new KeyboardProvider(this);
             Map = new MapManager(this);
             UnitCreator = new UnitFactory(this);
+            AddObject(Actors);
             AddObject(MouseProvider);
             AddObject(KeyboardProvider);
             AddObject(Map);
@@ -131,6 +134,8 @@ namespace Vale.ScreenSystem.Screens
 
             if (Input.Instance.KeyPress('c'))
                 DebugValeTree = !DebugValeTree;
+            if (Input.Instance.KeyPress('m'))
+                DebugMap = !DebugMap;
         }
 
         public override void Draw(GameTime gameTime)
@@ -144,7 +149,9 @@ namespace Vale.ScreenSystem.Screens
             }
 
             if (DebugValeTree)
-                Actors.Draw(WhiteTexture, SpriteBatch);
+                Actors.DebugDraw(WhiteTexture, SpriteBatch);
+            if (DebugMap)
+                Map.DebugDraw(WhiteTexture, SpriteBatch);
             
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 

@@ -46,7 +46,7 @@ namespace Vale
 
             // TODO: Create a gameplay screen and add it to the screen manager
             screenManager.Add(new BackgroundScreen());
-            screenManager.Add(new SplashScreen(TimeSpan.FromSeconds(3.0)));
+            screenManager.Add(new SplashScreen(TimeSpan.FromSeconds(1.0)));
         }
 
         protected override void Initialize()

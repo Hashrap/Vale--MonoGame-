@@ -7,7 +7,6 @@ using Vale.ScreenSystem.Screens;
 
 using Vale.GameObjects;
 using Vale.GameObjects.Collision;
-using System.Security.Cryptography;
 
 namespace Vale.GameObjects
 {
@@ -62,22 +61,19 @@ namespace Vale.GameObjects
         /// <summary>
         ///     Gets the total pixel X dimension of the current map
         /// </summary>
-        public int Width { get { return Size_X * TILE_WIDTH; } private set { } }
+        public int Width { get { return Size_X * TILE_WIDTH; } }
         /// <summary>
         ///     Gets the total pixel Y dimension of the current map
         /// </summary>
-        public int Height { get { return Size_Y * TILE_HEIGHT; } private set { } }
+        public int Height { get { return Size_Y * TILE_HEIGHT; } }
 
         private Texture2D floor;
         private Texture2D wall;
-
-        public GameplayScreen GameScreen { get; set; }
+        private SpriteFont font;
 
         public MapManager(GameplayScreen gs)
             : base(gs)
-        {
-            GameScreen = gs;
-        }
+        { }
 
         /// <summary>
         ///     Loads assets
@@ -86,6 +82,7 @@ namespace Vale.GameObjects
         {
             floor = content.Load<Texture2D>("Art/whsq20x20.png");
             wall = content.Load<Texture2D>("Art/bksq20x20.png");
+            font = content.Load<SpriteFont>("Art/test");
             Tile.Height = TILE_WIDTH;
             Tile.Width = TILE_HEIGHT;
         }
@@ -157,6 +154,37 @@ namespace Vale.GameObjects
                     }
                 }
             }
+        }
+
+        public void DebugDraw(Texture2D texture, SpriteBatch spriteBatch)
+        {
+            for(int x = 0; x < _map.GetLength(0); x++)
+            {
+                for(int y = 0; y < _map.GetLength(1); y++)
+                {
+                    DrawBorder(new AABB(new Vector2(Tile.Width * x, Tile.Height * y), Tile.Width, Tile.Height), texture, spriteBatch);
+                    spriteBatch.DrawString(font, "" + x + y, new Vector2(Tile.Width * x, Tile.Height * y), Color.Red);
+                }
+            }
+        }
+
+        public void DrawText(Vector2 pos)
+        {
+        }
+
+        /// <summary>
+        /// Draw a highlight or border around a rectangle
+        /// </summary>
+        /// <param name="aabb">Bounds of the rectangle to border</param>
+        /// <param name="texture">Texture to draw with</param>
+        /// <param name="spriteBatch">SpriteBatch to draw with</param>
+        private void DrawBorder(AABB aabb, Texture2D texture, SpriteBatch spriteBatch)
+        {
+            Rectangle rect = aabb.ToRectangle();
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, rect.Width, 1), Color.DarkBlue);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Bottom, rect.Width, 1), Color.DarkBlue);
+            spriteBatch.Draw(texture, new Rectangle(rect.Left, rect.Top, 1, rect.Height), Color.DarkBlue);
+            spriteBatch.Draw(texture, new Rectangle(rect.Right, rect.Top, 1, rect.Height + 1), Color.DarkBlue);
         }
     }
 }
