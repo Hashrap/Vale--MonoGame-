@@ -162,7 +162,7 @@ namespace Vale.GameObjects.Collision
                                                (float)Math.Ceiling(bounds.Height / minLeafSize.Y));
                 float multiplier = Math.Max(rootSize.X, rootSize.Y);
                 rootSize = new Vector2(minLeafSize.X * multiplier, minLeafSize.Y * multiplier);
-                root = new QuadNode(new AABB(bounds.Origin, rootSize));
+                root = new QuadNode(new AABB(bounds.Origin, rootSize.X, rootSize.Y));
             }
 
             while (!root.Bounds.Contains(bounds))

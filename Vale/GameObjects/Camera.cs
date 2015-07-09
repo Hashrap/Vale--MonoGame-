@@ -80,8 +80,8 @@ namespace Vale
         public void Update(GameTime gameTime)
         {
             Vector2 updatedPosition = target.Position;
-            updatedPosition.X = MathHelper.Clamp(target.Bounds.Center.X, Bounds.Width / 2, worldDimensions.X - Bounds.Width / 2);
-            updatedPosition.Y = MathHelper.Clamp(target.Bounds.Center.Y, Bounds.Height / 2, worldDimensions.Y - Bounds.Height / 2);
+            updatedPosition.X = MathHelper.Clamp(target.Position.X, Bounds.Width / 2, worldDimensions.X - Bounds.Width / 2);
+            updatedPosition.Y = MathHelper.Clamp(target.Position.Y, Bounds.Height / 2, worldDimensions.Y - Bounds.Height / 2);
             Position = updatedPosition;
         }
 

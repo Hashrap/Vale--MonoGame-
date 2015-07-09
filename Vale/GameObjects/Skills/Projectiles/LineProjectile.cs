@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Vale.GameObjects.Collision;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Skills
@@ -63,7 +64,7 @@ namespace Vale.GameObjects.Skills
         public void Discharge()
         {
             // start at the origin
-            Position = Origin;
+            Bounds.Set(Origin, spriteWidth, spriteHeight);
 
             Velocity = new Vector2((float)(Math.Cos(Rotation) * Speed), (float)(Math.Sin(Rotation) * Speed));
 
@@ -75,7 +76,7 @@ namespace Vale.GameObjects.Skills
         {
             if (State == LineProjectile.ProjectileStates.Moving)
             {
-                spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+                spriteBatch.Draw(texture, Position, null, Color.White, Rotation, new Vector2(Bounds.HalfWidth, Bounds.HalfHeight), 1f,
                     SpriteEffects.None, 0f);
             }
         }

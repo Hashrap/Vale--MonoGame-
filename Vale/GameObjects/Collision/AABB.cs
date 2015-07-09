@@ -101,19 +101,39 @@ namespace Vale.GameObjects.Collision
         #endregion
 
         #region Member Methods
-        public void Move(Vector2 v)
+        public void Translate(Vector2 v)
         {
-            Max[0] += v.X;
-            Min[0] += v.X;
-            Max[1] += v.Y;
-            Min[1] += v.Y;
+            Translate(v.X, v.Y);
         }
-        public void Move(float x, float y)
+        public void Translate(float x, float y)
         {
             Max[0] += x;
             Min[0] += x;
             Max[1] += y;
             Min[1] += y;
+        }
+        public void Set(float xMin, float xMax, float yMin, float yMax)
+        {
+            Max[0] = xMax;
+            Max[1] = yMax;
+            Min[0] = xMin;
+            Min[1] = yMin;
+        }
+        public void Set(Vector2 origin, Vector2 opposite)
+        {
+            Set(origin.X, opposite.X, origin.Y, opposite.Y);
+        }
+        public void Set(Vector2 origin, float width, float height)
+        {
+            Set(origin.X, origin.X + width, origin.Y, origin.Y + height);
+        }
+        public void Set(float halfWidth, float halfHeight, Vector2 center)
+        {
+            Set(center.X - halfWidth, center.X + halfWidth, center.Y - halfHeight, center.Y + halfHeight);
+        }
+        public void Set(Rectangle rect)
+        {
+            Set(rect.Left, rect.Right, rect.Top, rect.Bottom);
         }
         public Rectangle ToRectangle()
         {

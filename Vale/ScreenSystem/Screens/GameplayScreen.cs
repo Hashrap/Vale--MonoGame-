@@ -55,7 +55,6 @@ namespace Vale.ScreenSystem.Screens
             KeyboardProvider = new KeyboardProvider(this);
             Map = new MapManager(this);
             UnitCreator = new UnitFactory(this);
-            AddObject(Actors);
             AddObject(MouseProvider);
             AddObject(KeyboardProvider);
             AddObject(Map);
@@ -159,7 +158,7 @@ namespace Vale.ScreenSystem.Screens
             if (DebugValeTree)
                 Actors.DebugDraw(WhiteTexture, SpriteBatch);
             if (DebugMap)
-                Map.DebugDraw(WhiteTexture, SpriteBatch, Player.Bounds.Origin);
+                Map.DebugDraw(WhiteTexture, SpriteBatch, Player.Position);
             if (DebugHeroBounds)
                 Player.DebugDraw(WhiteTexture, SpriteBatch);
             

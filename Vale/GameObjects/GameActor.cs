@@ -16,11 +16,13 @@ namespace Vale.GameObjects
             Neutral
         }
 
-        private AABB bounds;
+        protected AABB bounds;
         public AABB Bounds { get { return bounds; } }
+        public Vector2 Position { get { return Bounds.Center; } }
 
-        private AABB previousBounds;
+        protected AABB previousBounds;
         public AABB PreviousBounds { get { return previousBounds; } }
+        public Vector2 PreviousPosition { get { return PreviousBounds.Center; } }
 
         public event EventHandler BoundsChanged;
 
@@ -33,10 +35,6 @@ namespace Vale.GameObjects
         private float spriteWidth = 20, spriteHeight = 20;
 
         public bool Enabled { get; private set; }
-
-        public Vector2 Position { get; set; }
-
-        public Vector2 PreviousPosition { get; set; }
 
         public float Rotation
         {
@@ -59,28 +57,13 @@ namespace Vale.GameObjects
 
         public bool Visible { get; set; }
 
-        protected Vector2 DrawingOrigin
-        {
-            get { return new Vector2(spriteWidth / 2, spriteHeight / 2); }
-        }
-
-        protected Vector2 DrawingPosition
-        {
-            get { return Position - DrawingOrigin; }
-        }
-
-        protected Vector2 PreviousDrawingPosition
-        {
-            get { return PreviousPosition - DrawingOrigin; }
-        }
-
         protected GameActor(GameplayScreen screen, Faction alignment, Vector2 pos)
             : base(screen)
         {
             Screen = screen;
             Alignment = alignment;
-            Position = pos;
-            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
+            bounds = new AABB(pos, spriteWidth, spriteHeight);
+            previousBounds = bounds;
             Visible = true;
             Screen.Actors.Insert(this);
         }
@@ -91,7 +74,7 @@ namespace Vale.GameObjects
         {
             if (Visible)
             {
-                spriteBatch.Draw(texture, DrawingPosition, null, Color.White, Rotation, DrawingOrigin, 1f,
+                spriteBatch.Draw(texture, Position, null, Color.White, Rotation, new Vector2(Bounds.HalfWidth, Bounds.HalfHeight), 1f,
                     SpriteEffects.None, 0f);
             }
         }
@@ -103,12 +86,6 @@ namespace Vale.GameObjects
             spriteBatch.Draw(texture, new Rectangle((int)Bounds.Right, (int)Bounds.Bottom, 1, 1), Color.Purple);
             spriteBatch.Draw(texture, new Rectangle((int)Bounds.Right, (int)Bounds.Top, 1, 1), Color.Red);
             spriteBatch.Draw(texture, new Rectangle((int)Bounds.Left, (int)Bounds.Bottom, 1, 1), Color.Green);
-
-            //Position
-            /*spriteBatch.Draw(texture, new Rectangle((int)DrawingPosition.X, (int)DrawingPosition.Y, 1, 1), Color.Yellow);
-            spriteBatch.Draw(texture, new Rectangle((int)(DrawingPosition.X + spriteWidth), (int)(DrawingPosition.Y + spriteHeight), 1, 1), Color.Purple);
-            spriteBatch.Draw(texture, new Rectangle((int)(DrawingPosition.X + spriteWidth), (int)(int)DrawingPosition.Y, 1, 1), Color.Red);
-            spriteBatch.Draw(texture, new Rectangle((int)DrawingPosition.X, (int)(DrawingPosition.Y + spriteHeight), 1, 1), Color.Green);*/
         }
 
         public override void Update(GameTime gameTime)
@@ -118,17 +95,18 @@ namespace Vale.GameObjects
 
         private Vector2 Move(GameTime gameTime)
         {
-            PreviousPosition = Position;
+            previousBounds = Bounds;
             if (Velocity == Vector2.Zero)
                 return Position;
 
-            Position += Velocity * gameTime.ElapsedGameTime.Milliseconds;
-            if (!Screen.Map.Query(new AABB(new Vector2(DrawingPosition.X, PreviousDrawingPosition.Y), spriteWidth, spriteHeight)))
-                Position = new Vector2(PreviousPosition.X, Position.Y);
-            if (!Screen.Map.Query(new AABB(new Vector2(PreviousDrawingPosition.X, DrawingPosition.Y), spriteWidth, spriteHeight)))
-                Position = new Vector2(Position.X, PreviousPosition.Y);
+            Vector2 distance = Velocity * gameTime.ElapsedGameTime.Milliseconds;
+            bounds = new AABB(Bounds.Origin + distance, spriteWidth, spriteHeight);
+            if (!Screen.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight)))
+                bounds = new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight);
+            if (!Screen.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight)))
+                bounds = new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight);
 
-            if (Position != PreviousPosition)
+            if (Bounds != PreviousBounds)
                 RaiseBoundsChanged();
 
             return Position;
@@ -136,8 +114,6 @@ namespace Vale.GameObjects
 
         protected void RaiseBoundsChanged()
         {
-            bounds = new AABB(DrawingPosition, spriteWidth, spriteHeight);
-
             EventHandler handler = BoundsChanged;
             if (handler != null)
                 handler(this, new EventArgs());

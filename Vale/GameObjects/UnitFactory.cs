@@ -20,17 +20,14 @@ namespace Vale.GameObjects
 
             if (name.StartsWith("hero_"))
             {
-                unit = new Hero(game, new MouseProvider(game), new KeyboardProvider(game), alignment: alignment);
+                unit = new Hero(game, new MouseProvider(game), new KeyboardProvider(game), spawnPosition, alignment: alignment);
             }
             else
             {
                 unit = new CombatUnit(game, alignment, spawnPosition);
             }
 
-            unit.Position = spawnPosition;
-
             SetupUnit(unit, name);
-
 
             return unit;
         }
