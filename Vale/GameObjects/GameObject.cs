@@ -13,12 +13,12 @@ namespace Vale.GameObjects
         public GameObject(GameplayScreen game)
         {   this.Game = game;  }
 
-        public virtual void LoadContent(ContentManager content)
+        public virtual void LoadContent()
         {
             // Nothing~
         }
 
-        public virtual void UnloadContent(ContentManager content)
+        public virtual void UnloadContent()
         {
             // Nothing~
         }

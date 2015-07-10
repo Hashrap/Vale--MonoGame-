@@ -61,7 +61,7 @@ namespace Vale.ScreenSystem.Screens
             //Create a playspace
             var gen = new Generator(0, "test");
             gen.Cave(1, "2221111", 40, 128, 128);
-            Map.LoadContent(Content);
+            Map.LoadContent();
             Map.Import(gen.exportVale(0));
             Actors = new ValeTree(this, new Vector2(40, 40), 5, new AABB(Vector2.Zero, Map.Width, Map.Height));
 
@@ -76,18 +76,13 @@ namespace Vale.ScreenSystem.Screens
 
             //Spawn the player and other units
             Player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
+            Player.LoadContent();
             AddObject(Player);
             AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
 
             //Set camera
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(Map.Width, Map.Height));
             camera.SetTarget(Player);
-
-
-            foreach (var gameObject in objects)
-            {
-                gameObject.LoadContent(Content);
-            }
 
             ScreenManager.Game.ResetElapsedTime();
         }

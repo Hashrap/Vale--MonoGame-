@@ -99,11 +99,11 @@ namespace Vale.GameObjects
         /// <summary>
         ///     Loads assets
         /// </summary>
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent()
         {
-            floor = content.Load<Texture2D>("Art/whsq20x20.png");
-            wall = content.Load<Texture2D>("Art/bksq20x20.png");
-            font = content.Load<SpriteFont>("Art/test");
+            floor = Game.Content.Load<Texture2D>("Art/whsq20x20.png");
+            wall = Game.Content.Load<Texture2D>("Art/bksq20x20.png");
+            font = Game.Content.Load<SpriteFont>("Art/test");
             Tile.Height = TILE_WIDTH;
             Tile.Width = TILE_HEIGHT;
         }

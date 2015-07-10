@@ -34,7 +34,7 @@ namespace Vale.GameObjects
 
         private void SetupUnit(CombatUnit unit, string name)
         {
-            unit.LoadContent(game.Content);
+            unit.LoadContent();
             
             // by now we have already parsed JSON and stored it into a dictionary.
             //then we grab all of that info and set up the unit

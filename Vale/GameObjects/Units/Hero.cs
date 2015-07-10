@@ -30,14 +30,12 @@ namespace Vale.GameObjects.Actors
             SkillOne = new QuickShot(gameScreen, this);
             SkillTwo = new SplitShot(gameScreen, this);
             SkillThree = new ReturnShot(gameScreen, this);
+            SkillOne.LoadContent();
+            SkillTwo.LoadContent();
+            SkillThree.LoadContent();
             Game.AddObject(SkillOne);
             Game.AddObject(SkillTwo);
             Game.AddObject(SkillThree);
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
         }
 
         public override void Update(GameTime gameTime)

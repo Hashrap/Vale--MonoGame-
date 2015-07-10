@@ -23,7 +23,7 @@ namespace Vale.GameObjects.Skills
             arrows = new List<LineProjectile>();
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent()
         {
             texture = Game.Content.Load<Texture2D>("Art/quickshot10x20");
         }
@@ -63,6 +63,7 @@ namespace Vale.GameObjects.Skills
         protected void CreateProjectile(double rotation)
         {
             var arrow = new LineProjectile(Owner.Game, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            arrow.LoadContent();
             arrow.Discharge();
             arrows.Add(arrow);
             Game.AddObject(arrow);

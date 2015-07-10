@@ -14,9 +14,9 @@ namespace Vale.GameObjects.Skills
         {
         }
 
-        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public override void LoadContent()
         {
-            texture = content.Load<Texture2D>("Art/return20x20");
+            texture = Game.Content.Load<Texture2D>("Art/return20x20");
         }
 
         /// <summary>

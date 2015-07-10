@@ -102,11 +102,10 @@ namespace Vale.GameObjects.Actors
             //set-up abilities here
         }
 
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent()
         {
-            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
+            this.texture = Game.Content.Load<Texture2D>("Art/arrow20x20.png");
+            base.LoadContent();
         }
-
-
     }
 }
