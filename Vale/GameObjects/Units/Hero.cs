@@ -49,7 +49,7 @@ namespace Vale.GameObjects.Actors
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 if (MouseProvider.ButtonPress(MouseProvider.Button.LMB))
                 {
-                    SkillOne.Execute(MouseProvider.PointerPosition + Vector2.One);
+                    SkillOne.Execute(MouseProvider.PointerPosition);
                 }
 
                 if (MouseProvider.ButtonPress(MouseProvider.Button.RMB))

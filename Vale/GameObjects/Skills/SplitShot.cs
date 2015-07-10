@@ -5,6 +5,8 @@ namespace Vale.GameObjects.Skills
 {
     internal class SplitShot : QuickShot
     {
+        private readonly double spread = .174;
+
         public SplitShot(GameplayScreen gameScreen, GameActor owner)
             : base(gameScreen, owner)
         {
@@ -19,8 +21,8 @@ namespace Vale.GameObjects.Skills
         {
             var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
             var rotation = CreateProjectile(targetPosition);
-            CreateProjectile(rotation + .174);
-            CreateProjectile(rotation - .174);
+            CreateProjectile(rotation + spread);
+            CreateProjectile(rotation - spread);
             return true;
         }
     }
