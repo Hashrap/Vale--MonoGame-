@@ -63,7 +63,7 @@ namespace Vale.ScreenSystem.Screens
             gen.Cave(1, "2221111", 40, 128, 128);
             Map.LoadContent(Content);
             Map.Import(gen.exportVale(0));
-            Actors = new ValeTree(this, new Vector2(20, 20), 5, new AABB(Vector2.Zero, Map.Width, Map.Height));
+            Actors = new ValeTree(this, new Vector2(40, 40), 5, new AABB(Vector2.Zero, Map.Width, Map.Height));
 
             //Find a 40x40 spawn zone for the player to spawn in
             Random rng = new Random();
