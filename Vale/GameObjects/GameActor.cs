@@ -101,10 +101,8 @@ namespace Vale.GameObjects
 
             Vector2 distance = Velocity * gameTime.ElapsedGameTime.Milliseconds;
             bounds = new AABB(Bounds.Origin + distance, spriteWidth, spriteHeight);
-            if (!Screen.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight);
-            if (!Screen.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight);
+            if (!Screen.Map.Query(Bounds))
+                OnTerrainCollision();
 
             if (Bounds != PreviousBounds)
                 RaiseBoundsChanged();
@@ -119,7 +117,13 @@ namespace Vale.GameObjects
                 handler(this, new EventArgs());
         }
 
-        protected void OnObjectCollision() { }
-        protected void OnTerrainCollision() { }
+        protected virtual void OnObjectCollision() { }
+        protected virtual void OnTerrainCollision() 
+        {
+            if (!Screen.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight)))
+                bounds = new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight);
+            if (!Screen.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight)))
+                bounds = new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight);
+        }
     }
 }
