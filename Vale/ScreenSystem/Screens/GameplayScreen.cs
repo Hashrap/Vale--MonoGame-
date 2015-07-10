@@ -131,11 +131,6 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Update(gameTime);
             }
 
-            foreach (GameActor actor in Actors.GetAllObjects())
-            {
-                
-            }
-
             camera.Update(gameTime);
 
             if (Input.Instance.KeyPress('c'))
@@ -164,7 +159,8 @@ namespace Vale.ScreenSystem.Screens
             if (DebugValeTree)
                 Actors.DebugDraw(WhiteTexture, SpriteBatch);
             if (DebugHeroBounds)
-                Player.DebugDraw(WhiteTexture, SpriteBatch);
+                foreach (GameActor actor in Actors.GetAllObjects())
+                    actor.DebugDraw(WhiteTexture, SpriteBatch);
             
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 

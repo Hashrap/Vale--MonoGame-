@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -88,6 +89,7 @@ namespace Vale.GameObjects
         public override void Update(GameTime gameTime)
         {
             Move(gameTime);
+            OnObjectCollision(Game.Actors.Query(Bounds));
         }
 
         private Vector2 Move(GameTime gameTime)
@@ -114,13 +116,33 @@ namespace Vale.GameObjects
                 handler(this, new EventArgs());
         }
 
-        protected virtual void OnObjectCollision() { }
+        protected virtual void OnObjectCollision(List<GameActor> collisions)
+        {
+            // Nothing~
+        }
         protected virtual void OnTerrainCollision() 
         {
+            Point nw = Game.Map.GetTileCoordinates(Bounds.Origin);
+            Point se = Game.Map.GetTileCoordinates(Bounds.Opposite);
+            Point pnw = Game.Map.GetTileCoordinates(PreviousBounds.Origin);
+            Point pse = Game.Map.GetTileCoordinates(PreviousBounds.Opposite);
+
+            // Check horizontal
             if (!Game.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight);
+                // Wall located East
+                if(se.X - pse.X > 0)
+                    bounds = new AABB(new Vector2(se.X * Game.Map.TileWidth - (spriteWidth+1), Bounds.Y), spriteWidth, spriteHeight);
+                // Wall located West
+                else if(nw.X - pnw.X < 0)
+                    bounds = new AABB(new Vector2(pnw.X * Game.Map.TileWidth + 1, Bounds.Y), spriteWidth, spriteHeight);
+            // Check vertical
             if (!Game.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight);
+                // Wall located South
+                if (se.Y - pse.Y > 0)
+                    bounds = new AABB(new Vector2(Bounds.X, se.Y * Game.Map.TileHeight - (spriteHeight+1)), spriteWidth, spriteHeight);
+                // Wall located North
+                else if (nw.Y - pnw.Y < 0)
+                    bounds = new AABB(new Vector2(Bounds.X, pnw.Y * Game.Map.TileHeight + 1), spriteWidth, spriteHeight);
         }
     }
 }
