@@ -65,7 +65,7 @@ namespace Vale.GameObjects
             bounds = new AABB(pos, spriteWidth, spriteHeight);
             previousBounds = bounds;
             Visible = true;
-            Screen.Actors.Insert(this);
+            Game.Actors.Insert(this);
         }
 
         public Faction Alignment { set; get; }

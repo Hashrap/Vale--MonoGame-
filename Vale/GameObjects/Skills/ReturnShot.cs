@@ -35,10 +35,10 @@ namespace Vale.GameObjects.Skills
         {
             var origin = Owner.Position;
             var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
-            var arrow = new ReturnProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new ReturnProjectile(Owner.Game, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
-            GameScreen.AddObject(arrow);
+            Game.AddObject(arrow);
         }
     }
 }

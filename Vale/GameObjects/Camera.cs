@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.ScreenSystem.Screens;
 using Vale.GameObjects;
+using Vale.GameObjects.Collision;
 using System.Diagnostics;
 
 namespace Vale
@@ -17,7 +18,7 @@ namespace Vale
 
         public float Rotation { get; set; }
 
-        Rectangle Bounds { get; set; }
+        AABB Bounds { get; set; }
 
         GameActor target;
 
@@ -41,7 +42,7 @@ namespace Vale
         {
             this.game = game;
             this.worldDimensions = worldDimensions;
-            Bounds = viewport.Bounds;
+            Bounds = new AABB(viewport.Bounds);
             Debug.WriteLine("Bounds: " + Bounds);
             Zoom = 1;
             Position = new Vector2(0, 0);

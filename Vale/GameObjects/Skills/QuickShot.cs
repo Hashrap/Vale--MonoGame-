@@ -25,7 +25,7 @@ namespace Vale.GameObjects.Skills
 
         public override void LoadContent(ContentManager content)
         {
-            texture = GameScreen.Content.Load<Texture2D>("Art/quickshot10x20");
+            texture = Game.Content.Load<Texture2D>("Art/quickshot10x20");
         }
 
         public override void Update(GameTime gameTime)
@@ -34,7 +34,7 @@ namespace Vale.GameObjects.Skills
 
             foreach (var arrow in toRemove) {
                 arrows.Remove(arrow);
-                GameScreen.RemoveObject(arrow);
+                Game.RemoveObject(arrow);
             }
 
             base.Update(gameTime);
@@ -62,10 +62,10 @@ namespace Vale.GameObjects.Skills
 
         protected void CreateProjectile(double rotation)
         {
-            var arrow = new LineProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new LineProjectile(Owner.Game, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
             arrow.Discharge();
             arrows.Add(arrow);
-            GameScreen.AddObject(arrow);
+            Game.AddObject(arrow);
         }
     }
 }

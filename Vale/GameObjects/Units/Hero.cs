@@ -45,6 +45,8 @@ namespace Vale.GameObjects.Actors
             if (Controllable)
             {
                 Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
+                // always call base
+                base.Update(gameTime);
 
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 if (MouseProvider.ButtonPress(MouseProvider.Button.LMB))
@@ -69,9 +71,6 @@ namespace Vale.GameObjects.Actors
 
             if (KeyboardProvider.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
-
-            // always call base
-            base.Update(gameTime);
         }
     }
 }
