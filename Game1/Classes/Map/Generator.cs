@@ -62,24 +62,25 @@ namespace DungeonGen
 
                     /* These check the validity of the map, trashes "bad" maps until it gets a good one
                      * Will attempt to repair mildly disjointed rooms.*/
-                    arrayOfMaps[i].setInvalid();
+                    arrayOfMaps[i].RemoveValid();
                     int[] fTile = arrayOfMaps[i].findFloor();
                     arrayOfMaps[i].iterativeFloodSearch(fTile[0], fTile[1]);
-                    /*if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount > (size_x * size_y)/4)
+                    saveInstance();
+                    if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount > (size_x * size_y)/8)
                     {
                         good = false; //Trashes the map
                         trashed++;
                         Console.WriteLine(trashed);
                     }
-                    else if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount <= (size_x * size_y)/4)
+                    else if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount <= (size_x * size_y)/8)
                     {
-                        arrayOfMaps[i].fill(); //Repairs the map
+                        arrayOfMaps[i].Fill(); //Repairs the map
                         good = true;
                     }
-                    else*/
+                    else
                         good = true; //Map is fine as is
-                    arrayOfMaps[i].placeObjects();
-                    arrayOfMaps[i].setInvalid();
+                    //arrayOfMaps[i].placeObjects();
+                    arrayOfMaps[i].RemoveValid();
                     int waiter = 0;
                     while (waiter < 10000000)
                     {
@@ -123,14 +124,14 @@ namespace DungeonGen
                     }
                     sr.WriteLine();
                 }
-                sr.WriteLine("[Items]");
+                /*sr.WriteLine("[Items]");
                 sr.WriteLine(arrayOfMaps[i].items.Length);
                 foreach (Item item in arrayOfMaps[i].items)
                     sr.WriteLine(item.ToString(true));
                 sr.WriteLine("[Monsters]");
                 sr.WriteLine(arrayOfMaps[i].monsters.Count());
                 foreach (Monster monster in arrayOfMaps[i].monsters)
-                    sr.WriteLine(monster.ToString(true));
+                    sr.WriteLine(monster.ToString(true));*/
             }
             sr.Close();
         }

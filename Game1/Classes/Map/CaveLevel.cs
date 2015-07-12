@@ -18,16 +18,16 @@ namespace DungeonGen
         public void randomFill(int wall_chance)
         {
             //randomizes everything but the edges of the map
-            for (int i = 1; i < base.Size_Y - 1; i++)
+            for (int x = 1; x < base.Size_Y - 1; x++)
             //goes through each row
             {
-                for (int j = 1; j < base.Size_X - 1; j++)
+                for (int y = 1; y < base.Size_X - 1; y++)
                 //goes through each column in a row
                 {
                     if (rng.Next(100) <= wall_chance)
-                        board[i, j] = Tile.Wall;
+                        board[x, y] = Tile.Wall;
                     else
-                        board[i, j] = Tile.Floor;
+                        board[x, y] = Tile.Walkable;
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace DungeonGen
                     for (ii = -1; ii <= 1; ii++)
                         for (jj = -1; jj <= 1; jj++)
                         {
-                            if (board[yi + ii, xi + jj] != Tile.Floor)
+                            if (board[yi + ii, xi + jj] != Tile.Walkable)
                                 adjWallCount++;
                         }
                     /* Variant one tends to 'erode' the walls,
@@ -63,14 +63,14 @@ namespace DungeonGen
                             if (adjWallCount >= 5 || adjWallCount < 2)
                                 board2[yi, xi] = Tile.Wall;
                             else
-                                board2[yi, xi] = Tile.Floor;
+                                board2[yi, xi] = Tile.Walkable;
                             break;
                         case 1: 
                             //5 or more walls surrounding source tile
                             if (adjWallCount >= 5)
                                 board2[yi, xi] = Tile.Wall;
                             else
-                                board2[yi, xi] = Tile.Floor;
+                                board2[yi, xi] = Tile.Walkable;
                             break;
                     }
                 }

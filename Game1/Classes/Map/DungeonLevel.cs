@@ -2,45 +2,41 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace DungeonGen
 {
     public class DungeonLevel : Map
     {
-        private class Leaf
+        private class Node
         {
-            private readonly int _minimumLeafSize = 6;
+            internal readonly int _minimumLeafSize;
 
-            private int top, left, height, width;
-            private Leaf leftChild, rightChild;
-            private Rectangle room;
-            private List<Point> hall;
+            internal Rectangle Bounds;
+            internal Node leftChild, rightChild;
+            internal Rectangle room;
+            internal List<Point> hall;
         }
 
         private struct Rectangle
         {
-            private int x, y, width, height;
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Width { get; set; }
-            public int Height { get; set; }
+            public int X { get; private set; }
+            public int Y { get; private set; }
+            public int Top { get { return Y; } }
+            public int Left { get { return X; } }
+            public int Width { get; private set; }
+            public int Height { get; private set; }
 
             public Rectangle(int top, int left, int width, int height) : this()
             {
-                this.x = left;
-                this.y = top;
-                this.width = width;
-                this.height = height;
+                this.X = left;
+                this.Y = top;
+                this.Width = width;
+                this.Height = height;
             }
 
-            public Rectangle(Point a, Point b) : this()
+            public Rectangle(Point a, Point b) : this(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y))
             {
-                this.x = Math.Min(a.X, b.X);
-                this.y = Math.Min(a.Y, b.Y);
-                this.width = Math.Abs(a.X - b.X);
-                this.height = Math.Abs(a.Y - b.Y);
             }
         }
 
@@ -48,13 +44,13 @@ namespace DungeonGen
             : base(size_y, size_x, true)
         {
             board = new Tile[base.Size_X, base.Size_Y];
-            for (int i = 0; i < base.Size_Y; i++)
+            for (int x = 0; x < base.Size_Y; x++)
             //goes through each row
             {
-                for (int j = 0; j < base.Size_X; j++)
+                for (int y = 0; y < base.Size_X; y++)
                 //goes through each column in a row
                 {
-                    board[i, j] &= ~Tile.Floor;
+                    board[x, y] &= ~Tile.Walkable;
                 }
             }
         }
@@ -107,7 +103,7 @@ namespace DungeonGen
                         //goes through each column in a row
                         {
                             array[i, j] &= ~Tile.Valid;
-                            array[i, j] |= Tile.Floor;
+                            array[i, j] |= Tile.Walkable;
                             good = true;
                         }
                     }
