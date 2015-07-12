@@ -8,17 +8,26 @@ namespace DungeonGen
 {
     public class DungeonLevel : Map
     {
-        private class Node
+        protected class Node
         {
-            internal readonly int _minimumLeafSize;
+            public Node(int top, int left, int width, int height)
+            {
+                Bounds = new Rectangle(top, left, width, height);
+            }
 
-            internal Rectangle Bounds;
+            public void Split(bool vertical, int pos)
+            {
+
+            }
+
+            internal static int _minimumLeafSize;
+
+            internal Rectangle Bounds { get; set; }
             internal Node leftChild, rightChild;
-            internal Rectangle room;
-            internal List<Point> hall;
+            internal Rectangle Room { get; set; }
         }
 
-        private struct Rectangle
+        protected struct Rectangle
         {
             public int X { get; private set; }
             public int Y { get; private set; }
@@ -27,7 +36,7 @@ namespace DungeonGen
             public int Width { get; private set; }
             public int Height { get; private set; }
 
-            public Rectangle(int top, int left, int width, int height) : this()
+            public Rectangle(int top, int left, int width, int height)
             {
                 this.X = left;
                 this.Y = top;
@@ -41,7 +50,7 @@ namespace DungeonGen
         }
 
         public DungeonLevel(int size_x, int size_y)
-            : base(size_y, size_x, true)
+            : base(size_y, size_x)
         {
             board = new Tile[base.Size_X, base.Size_Y];
             for (int x = 0; x < base.Size_Y; x++)
@@ -50,28 +59,33 @@ namespace DungeonGen
                 for (int y = 0; y < base.Size_X; y++)
                 //goes through each column in a row
                 {
-                    board[x, y] &= ~Tile.Walkable;
+                    board[x, y] = Tile.Wall;
                 }
             }
         }
         
-        public Tile[,] dungeonGen(int iterations, double min_position, double max_position, int minimum_area)
+        public Tile[,] DungeonGen(int iterations, double min_position, double max_position, int minimum_area)
         {
             //TODO: BSP dungeon gen
-            //Horizontal
-            if (rng.Next(99) % 2 == 1)
-            {
+            Node._minimumLeafSize = minimum_area;
+            Node root = new Node(0,0,board.GetLength(0), board.GetLength(1));
+            Node current = root;
+            for (int i = 0; i < iterations; i++ )
+                //Horizontal
+                if (rng.Next(99) % 2 == 1 &&
+                    current.Bounds.Width )
+                {
 
-            }
-            //Vertical
-            else
-            {
-            }
+                }
+                //Vertical
+                else
+                {
+                }
 
             return null;
         }
 
-        public Tile[,] carveRoom(Tile[,] array)
+        private Tile[,] carveRoom(Tile[,] array)
         {
             bool good = false;
             int x;

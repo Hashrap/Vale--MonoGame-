@@ -43,16 +43,14 @@ namespace DungeonGen
         private int objectX;
         private int objectY;
         //Constructor
-        public Map(int x, int y, bool load)
+        public Map(int x, int y)
         {
             Size_Y = y;
             Size_X = x;
-            if (load == true)
-                items = new Item[rng.Next(Convert.ToInt32((Size_X + Size_Y) / 15))];
         }
         //Iterates through the array and
         //prints each tile out into the console
-        public void printMap()
+        public void PrintMap()
         {
             for (int x = 0; x < board.GetLength(0); x++)
             {
@@ -76,7 +74,7 @@ namespace DungeonGen
         }
         /*Starts at a source tile, then spreads throughout adjacent floor
          * tiles and marks them reachable if they are set to unreachable.*/
-        public int[,] exportMap()
+        public int[,] ExportMap()
         {
             int[,] map = new int[board.GetLength(0), board.GetLength(1)];
             for (int x = 0; x < map.GetLength(0); x++)
@@ -90,7 +88,7 @@ namespace DungeonGen
         }
         /* Starts at a source tile, then spreads throughout adjacent floor
          * tiles and marks them reachable if they are set to unreachable.*/
-        public void floodSearch(int x, int y)
+        public void FloodSearch(int x, int y)
         {
             if ((board[x, y] & Tile.Walkable) == Tile.Walkable)
             {
@@ -104,15 +102,15 @@ namespace DungeonGen
                 return;
             /*Recursively propagates to each square around it.  Currently spawns in
              * the surrounding cardinal squares.*/
-            floodSearch(x, y + 1);
-            floodSearch(x, y - 1);
-            floodSearch(x + 1, y);
-            floodSearch(x - 1, y);
+            FloodSearch(x, y + 1);
+            FloodSearch(x, y - 1);
+            FloodSearch(x + 1, y);
+            FloodSearch(x - 1, y);
         }
         /* Starts at a source tile, then spreads throughout adjacent floor
          * tiles and marks them reachable if they are set to unreachable.
          * Not susceptible to stack overflow on large maps. */
-        public void iterativeFloodSearch(int x, int y)
+        public void IterativeFloodSearch(int x, int y)
         {
             Stack<Point> searchStack = new Stack<Point>();
             HashSet<Point> searched = new HashSet<Point>();
@@ -151,7 +149,7 @@ namespace DungeonGen
         /* Checks to see if floodFill() could reach every floor tile.
          * returns true if it reached every floor tile and false
          * if the map was disjointed and floodFill() missed a tile*/
-        public bool isEverythingReachable()
+        public bool IsEverythingReachable()
         {
             BadCount = 0;
             for (int x = 0; x < board.GetLength(0); x++)
@@ -165,8 +163,7 @@ namespace DungeonGen
             }
             if (BadCount > 0)
                 return false;
-            else
-                return true;
+            return true;
         }
 
         /* Randomly checks the map until it finds a floor tile,
@@ -174,7 +171,7 @@ namespace DungeonGen
          * provides the starting tile for floodFill().*/
 
         //TODO: pick from near the center rather than randomly
-        public int[] findFloor()
+        public int[] FindFloor()
         {
             int x, y;
             while(true)
@@ -214,7 +211,7 @@ namespace DungeonGen
         }
 
         /* Sets all tiles to walls */
-        public void setWall()
+        public void SetWall()
         {
             //goes through each row
             for (int x = 0; x < Size_Y; x++)
@@ -228,7 +225,7 @@ namespace DungeonGen
         /*This method keeps making duplicates
          * it should be threaded so we can pause it
          * and get unique items each time*/
-        public void placeObjects()
+        public void PlaceObjects()
         {
             int num = rng.Next(Convert.ToInt32((Size_X + Size_Y) / 20), Convert.ToInt32((Size_X + Size_Y) / 15));
             items = new Item[num];

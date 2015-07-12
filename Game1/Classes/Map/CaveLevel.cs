@@ -9,13 +9,13 @@ namespace DungeonGen
     public class CaveLevel:Map
     {
         public CaveLevel(int size_y, int size_x)
-        : base(size_y, size_x, false)
+        : base(size_y, size_x)
         {
             board = new Tile[base.Size_Y, base.Size_X];
         }
 
         //This method creates the baseline map to begin the aging process
-        public void randomFill(int wall_chance)
+        public void RandomFill(int wall_chance)
         {
             //randomizes everything but the edges of the map
             for (int x = 1; x < base.Size_Y - 1; x++)
@@ -35,7 +35,7 @@ namespace DungeonGen
         /* This method loops through each tile that isn't on the edge.  If a
          * tile is surrounded by 5+ walls (including itself), it becomes or
          * remains a wall.  Otherwise, it becomes a floor tile.*/
-        public void ageDungeon(int variant)
+        public void AgeDungeon(int variant)
         {
             Tile[,] board2 = board;
             /* all 9 tiles centered around the source

@@ -51,7 +51,7 @@ namespace DungeonGen
             test.Dungeon(1, .3, .7, 9, 3, 75, 75);
             foreach (DungeonLevel dl in test.arrayOfMaps)
             {
-                dl.printMap();
+                dl.PrintMap();
             }
             
             /**************** THREADED ITEMS TEST ***************/
@@ -99,7 +99,7 @@ namespace DungeonGen
                     {
                         Console.WriteLine(m.ToString(false));
                     }
-                    cl.printMap();
+                    cl.PrintMap();
                 }
             }
         }
