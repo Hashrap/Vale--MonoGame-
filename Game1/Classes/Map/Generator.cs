@@ -90,13 +90,13 @@ namespace DungeonGen
             }
         }
 
-        public void Dungeon(int levels, double pos_min, double pos_max, int min_room, int iterations, int size_y, int size_x)
+        public void Dungeon(int levels, double pos_min, double pos_max, int min_x, int min_y, int size_y, int size_x)
         {
             arrayOfMaps = new DungeonLevel[levels];
             for (int i = 0; i < levels; i++)
             {
                 DungeonLevel dl = new DungeonLevel(size_y, size_x);
-                dl.DungeonGen(iterations, pos_min, pos_max, min_room);
+                dl.DungeonGen(pos_min, pos_max, min_x, min_y);
                 arrayOfMaps[i] = dl;
             }
         }

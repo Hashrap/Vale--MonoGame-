@@ -8,46 +8,102 @@ namespace DungeonGen
 {
     public class DungeonLevel : Map
     {
-        protected class Node
+        internal class Node
         {
-            public Node(int top, int left, int width, int height)
+            internal static int _minimumLeafSize, _minimumWidth, _minimumHeight;
+            internal static DungeonLevel level;
+            internal Rectangle Bounds { get; set; }
+            internal Node parent;
+            internal Node[] children = new Node[2];
+            internal bool HasChildren { get { return !(children[0] == null && children[1] == null); } }
+            internal bool isRoot { get { return parent == null; } }
+            internal Rectangle Room { get; set; }
+
+            public Node(int top, int left, int width, int height, Node nodeParent = null)
             {
                 Bounds = new Rectangle(top, left, width, height);
+                parent = nodeParent;
             }
 
-            public void Split(bool vertical, int pos)
+            public void Split(double min_position, double max_position)
             {
+                int split;
+                double splitRatio = (double)rng.Next((int)Math.Round(min_position * 100), (int)Math.Round(max_position * 100)) / 100; 
 
+                //Vertical
+                if (rng.Next(99) % 2 == 1 && Bounds.Width / 2 > _minimumWidth)
+                {
+                    split = (int)Math.Round(Bounds.Width * splitRatio);
+                    if (split >= Node._minimumWidth &&
+                        Bounds.Width - split >= Node._minimumWidth)
+                    {
+                        children[0] = new Node(Bounds.Top, Bounds.Left, split, Bounds.Height);
+                        children[1] = new Node(Bounds.Top, Bounds.Left + split, Bounds.Width - split, Bounds.Height);
+                    }
+                }
+                //Horizontal
+                else if (Bounds.Height / 2 > _minimumHeight)
+                {
+                    split = (int)Math.Round((decimal)(Bounds.Height * splitRatio));
+                    if (split >= Node._minimumHeight &&
+                        Bounds.Height - split >= Node._minimumHeight)
+                    {
+                        children[0] = new Node(Bounds.Top, Bounds.Left, Bounds.Width, split);
+                        children[1] = new Node(Bounds.Top + split, Bounds.Left, Bounds.Width, Bounds.Height - split);
+                    }
+                }
+
+                if (HasChildren)
+                {
+                    foreach (Node child in children)
+                    {
+                        if (child != null)
+                            child.Split(min_position, max_position);
+                    }
+                }
+                else
+                    CreateRoom();
             }
 
-            internal static int _minimumLeafSize;
+            public void CreateRoom()
+            {
+                int width = rng.Next(2, Bounds.Width - 2);
+                int height = rng.Next(2, Bounds.Height - 2);
+                int top = rng.Next(Bounds.Top + 1, (Bounds.Bottom - height) - 1);
+                int left = rng.Next(Bounds.Left + 1, (Bounds.Right - width) - 1);
 
-            internal Rectangle Bounds { get; set; }
-            internal Node leftChild, rightChild;
-            internal Rectangle Room { get; set; }
+                level.CarveRoom(new Rectangle(top, left, width, height));
+            }
         }
 
-        protected struct Rectangle
+        internal struct Rectangle
         {
             public int X { get; private set; }
             public int Y { get; private set; }
             public int Top { get { return Y; } }
             public int Left { get { return X; } }
+            public int Bottom { get { return Y + Height; } }
+            public int Right { get { return X + Width; } }
             public int Width { get; private set; }
             public int Height { get; private set; }
+            public int Area { get { return Width * Height; } }
 
             public Rectangle(int top, int left, int width, int height)
+                : this()
             {
-                this.X = left;
-                this.Y = top;
-                this.Width = width;
-                this.Height = height;
+                X = left;
+                Y = top;
+                Width = width;
+                Height = height;
             }
 
-            public Rectangle(Point a, Point b) : this(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y))
+            public Rectangle(Point a, Point b)
+                : this(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Abs(a.X - b.X), Math.Abs(a.Y - b.Y))
             {
             }
         }
+
+        Node root;
 
         public DungeonLevel(int size_x, int size_y)
             : base(size_y, size_x)
@@ -64,66 +120,47 @@ namespace DungeonGen
             }
         }
         
-        public Tile[,] DungeonGen(int iterations, double min_position, double max_position, int minimum_area)
+        public void DungeonGen(double min_position, double max_position, int minimum_width, int minimum_height)
         {
-            //TODO: BSP dungeon gen
-            Node._minimumLeafSize = minimum_area;
-            Node root = new Node(0,0,board.GetLength(0), board.GetLength(1));
-            Node current = root;
-            for (int i = 0; i < iterations; i++ )
-                //Horizontal
-                if (rng.Next(99) % 2 == 1 &&
-                    current.Bounds.Width )
-                {
+            Node._minimumWidth = minimum_width;
+            Node._minimumHeight = minimum_height;
+            Node._minimumLeafSize = minimum_height * minimum_width;
+            Node.level = this;
 
-                }
-                //Vertical
-                else
-                {
-                }
-
-            return null;
+            root = new Node(0,0,board.GetLength(0), board.GetLength(1));
+            
+            root.Split(min_position, max_position);
         }
 
-        private Tile[,] carveRoom(Tile[,] array)
+        internal List<Node> GetLeaves()
         {
-            bool good = false;
-            int x;
-            int x_length;
-            int y;
-            int y_length;
-            while (good == false)
+            List<Node> results = new List<Node>();
+            GetLeaves(root, results);
+            return results;
+        }
+
+        private void GetLeaves(Node node, List<Node> results)
+        {
+            if (!node.HasChildren)
+                results.Add(node);
+            else
             {
-                Console.WriteLine("CARVIN'");
-                for (int i = 0; i < array.GetLength(0); i++)
-                //goes through each row
+                foreach (Node child in node.children)
                 {
-                    for (int j = 0; j < array.GetLength(1); j++)
-                    //goes through each column in a row
-                    {
-                        board[i, j] |= Tile.Valid;
-                    }
-                }
-                y_length = rng.Next(array.GetLength(0));
-                x_length = rng.Next(array.GetLength(1));
-                y = rng.Next(array.GetLength(0) - y_length);
-                x = rng.Next(array.GetLength(1) - x_length);
-                if (x_length * y_length > 8)
-                {
-                    for (int i = y; i < y_length; i++)
-                    //goes through each row
-                    {
-                        for (int j = x; j < x_length; j++)
-                        //goes through each column in a row
-                        {
-                            array[i, j] &= ~Tile.Valid;
-                            array[i, j] |= Tile.Walkable;
-                            good = true;
-                        }
-                    }
+                    GetLeaves(child, results);
                 }
             }
-            return array;
+        }
+
+        private void CarveRoom(Rectangle bounds)
+        {
+            for (int x = bounds.Left; x < bounds.Right; x++)
+            {
+                for (int y = bounds.Top; y < bounds.Bottom; y++)
+                {
+                    board[x, y] = Tile.Walkable;
+                }
+            }
         }
     }
 }
