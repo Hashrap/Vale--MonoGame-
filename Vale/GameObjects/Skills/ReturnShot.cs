@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Vale.GameObjects.Actors;
+using Vale.GameObjects.Skills.Hero.Archer;
 using Vale.GameObjects.Skills.Projectiles;
 using Vale.ScreenSystem.Screens;
 

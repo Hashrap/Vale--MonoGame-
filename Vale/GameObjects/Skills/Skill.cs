@@ -32,7 +32,7 @@ namespace Vale.GameObjects.Skills
             get { return cooldownRecharge > Ready; }
         }
 
-        public GameActor Owner { get; private set; }
+        public CombatUnit Owner { get; private set; }
 
         protected GameplayScreen GameScreen
         {
@@ -44,7 +44,7 @@ namespace Vale.GameObjects.Skills
         /// </summary>
         /// <param name="gameScreen">The currently active gameplay screen. Acts as sort of the root owner.</param>
         /// <param name="owner">The actor that owns this skill.</param>
-        protected Skill(GameplayScreen gameScreen, GameActor owner)
+        protected Skill(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen)
         {
             Status = SkillTimeline.Available;
@@ -67,8 +67,10 @@ namespace Vale.GameObjects.Skills
         /// <returns>Returns success.</returns>
         public bool Execute(params object[] list)
         {
-            if (OnCooldown)
+            if (OnCooldown || !Owner.Controllable)
                 return false;
+
+
             Status = SkillTimeline.InUse;
             DoAction(list);
             BeginCooldown();

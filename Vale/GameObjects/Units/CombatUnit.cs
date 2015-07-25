@@ -49,11 +49,11 @@ namespace Vale.GameObjects.Actors
         //this probably needs to be more sophisticated
         // list of modifiers effecting this unit.
         //public float Speed { get; set; }
-        private List<Modifier> modifiers;
+        private List<Buff> modifiers;
 
-        public void AddModifier(Modifier modifier)
+        public void AddModifier(Buff buff)
         {
-            modifiers.Add(modifier);
+            modifiers.Add(buff);
         }
 
         public float Health

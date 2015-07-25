@@ -1,23 +1,31 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
+using Vale.GameObjects.Actors;
 using Vale.ScreenSystem.Screens;
 
-namespace Vale.GameObjects.Skills
+namespace Vale.GameObjects.Skills.Hero.Archer
 {
     /// <summary>
     ///     Fires an arrow in the direction of the cursor.
     /// </summary>
     internal class QuickShot : Skill
     {
+        public struct ChargeState
+        {
+            public bool PreviousChargeState, CurrentChargeState;
+        }
+        
         public readonly float ProjectileSpeed = .75f;
         // this should be read in from a parsed file
         protected readonly List<LineProjectile> arrows;
         protected Texture2D texture;
 
-        public QuickShot(GameplayScreen gameScreen, GameActor owner)
+        private ChargeState chargingState;
+
+        public QuickShot(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen, owner)
         {
             arrows = new List<LineProjectile>();
@@ -32,7 +40,10 @@ namespace Vale.GameObjects.Skills
         {
             List<LineProjectile> toRemove = arrows.FindAll(LineProjectile.ProjectileIsDead);
 
-            foreach (var arrow in toRemove) {
+            chargingState.PreviousChargeState = chargingState.CurrentChargeState;
+
+            foreach (var arrow in toRemove)
+            {
                 arrows.Remove(arrow);
                 GameScreen.RemoveObject(arrow);
             }
@@ -47,8 +58,11 @@ namespace Vale.GameObjects.Skills
         /// <returns></returns>
         protected override bool DoAction(params object[] list)
         {
-            var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
-            CreateProjectile(targetPosition);
+            if (charging)
+            {
+                var targetPosition = (Vector2) list[0]; //assumes list[0] is the target
+                CreateProjectile(targetPosition);
+            }
             return true;
         }
 

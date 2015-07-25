@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Vale.Control;
 using Vale.GameObjects.Skills;
+using Vale.GameObjects.Skills.Hero.Archer;
 using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects.Actors
