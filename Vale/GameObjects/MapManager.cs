@@ -43,11 +43,24 @@ namespace Vale.GameObjects
             public State State { get; set; }
         }
 
+        // 2D array of Tile objects representing the playable area
+        private Tile[,] _map;
+
         const int TILE_WIDTH = 30;
         const int TILE_HEIGHT = 30;
 
-        // 2D array of Tile objects representing the playable area
-        private Tile[,] _map;
+        /// <summary>
+        ///     Gets the width of each Tile
+        /// </summary>
+        public int TileWidth { get { return TILE_WIDTH; } }
+        /// <summary>
+        ///     Gets the height of each Tile
+        /// </summary>
+        public int TileHeight { get { return TILE_HEIGHT; } }
+        /// <summary>
+        ///     Gets the dimensions of each Tile
+        /// </summary>
+        public Point TileDimensions { get { return new Point(TileWidth, TileHeight); } }
 
         /// <summary>
         ///     Gets the Tile X dimension of the current map
@@ -57,6 +70,10 @@ namespace Vale.GameObjects
         ///     Gets the Tile Y dimension of the current map
         /// </summary>
         public int Size_Y { get; private set; }
+        /// <summary>
+        ///     Gets the Tile dimensions of the current map
+        /// </summary>
+        public Point Size { get { return new Point(Size_X, Size_Y); } }
 
         /// <summary>
         ///     Gets the total pixel X dimension of the current map
@@ -66,6 +83,10 @@ namespace Vale.GameObjects
         ///     Gets the total pixel Y dimension of the current map
         /// </summary>
         public int Height { get { return Size_Y * TILE_HEIGHT; } }
+        /// <summary>
+        ///     Gets the total pixel dimensions of the current map
+        /// </summary>
+        public Point Dimensions { get { return new Point(Width, Height); } }
 
         private Texture2D floor;
         private Texture2D wall;
@@ -78,11 +99,11 @@ namespace Vale.GameObjects
         /// <summary>
         ///     Loads assets
         /// </summary>
-        public override void LoadContent(ContentManager content)
+        public override void LoadContent()
         {
-            floor = content.Load<Texture2D>("Art/whsq20x20.png");
-            wall = content.Load<Texture2D>("Art/bksq20x20.png");
-            font = content.Load<SpriteFont>("Art/test");
+            floor = Game.Content.Load<Texture2D>("Art/whsq20x20.png");
+            wall = Game.Content.Load<Texture2D>("Art/bksq20x20.png");
+            font = Game.Content.Load<SpriteFont>("Art/test");
             Tile.Height = TILE_WIDTH;
             Tile.Width = TILE_HEIGHT;
         }

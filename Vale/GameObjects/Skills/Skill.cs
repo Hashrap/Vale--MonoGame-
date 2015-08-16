@@ -34,11 +34,6 @@ namespace Vale.GameObjects.Skills
 
         public CombatUnit Owner { get; private set; }
 
-        protected GameplayScreen GameScreen
-        {
-            get { return Owner.Screen; }
-        }
-
         /// <summary>
         ///     Force children to use this constructor
         /// </summary>

@@ -50,43 +50,39 @@ namespace Vale.ScreenSystem.Screens
             DebugMap = false;
             DebugHeroBounds = false;
 
-            Actors = new ValeTree(this, new Vector2(20, 20), 5);
             MouseProvider = new MouseProvider(this);
             KeyboardProvider = new KeyboardProvider(this);
             Map = new MapManager(this);
             UnitCreator = new UnitFactory(this);
+
             AddObject(MouseProvider);
             AddObject(KeyboardProvider);
-            AddObject(Map);
-            AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
 
             //Create a playspace
             var gen = new Generator(0, "test");
-            gen.Cave(1, "2221111", 40, 100, 100);
+            gen.Cave(1, "2221111", 40, 128, 128);
+            Map.LoadContent();
             Map.Import(gen.exportVale(0));
+            Actors = new ValeTree(this, new Vector2(40, 40), 5, new AABB(Vector2.Zero, Map.Width, Map.Height));
 
             //Find a 40x40 spawn zone for the player to spawn in
             Random rng = new Random();
-            Vector2 spawn = new Vector2(rng.Next(Map.Width - spawnMin), rng.Next(Map.Height - spawnMin));
-            AABB spawnArea = new AABB(spawn, spawn + new Vector2(spawnMin, spawnMin));
-            while (!Map.Query(spawnArea))
-            {
+            Vector2 spawn;
+            AABB spawnArea;
+            do {
                 spawn = new Vector2(rng.Next(Map.Width), rng.Next(Map.Height));
                 spawnArea = new AABB(spawn, spawn + new Vector2(spawnMin, spawnMin));
-            }
+            } while (!Map.Query(spawnArea));
 
-            //Spawn the player
+            //Spawn the player and other units
             Player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
+            Player.LoadContent();
             AddObject(Player);
+            AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
 
             //Set camera
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(Map.Width, Map.Height));
             camera.SetTarget(Player);
-
-            foreach (var gameObject in objects)
-            {
-                gameObject.LoadContent(Content);
-            }
 
             ScreenManager.Game.ResetElapsedTime();
         }
@@ -130,11 +126,6 @@ namespace Vale.ScreenSystem.Screens
                 gameObj.Update(gameTime);
             }
 
-            foreach (GameActor actor in Actors.GetAllObjects())
-            {
-                
-            }
-
             camera.Update(gameTime);
 
             if (Input.Instance.KeyPress('c'))
@@ -150,17 +141,21 @@ namespace Vale.ScreenSystem.Screens
             // Camera draw needs to go first
             camera.Draw(gameTime, SpriteBatch);
 
+            // The level goes next
+            Map.Draw(gameTime, SpriteBatch);
+            if (DebugMap)
+                Map.DebugDraw(WhiteTexture, SpriteBatch, Player.Position);
+
+            // Everything else
             foreach (var gameObj in objects)
             {
                 gameObj.Draw(gameTime, SpriteBatch);
             }
-
             if (DebugValeTree)
                 Actors.DebugDraw(WhiteTexture, SpriteBatch);
-            if (DebugMap)
-                Map.DebugDraw(WhiteTexture, SpriteBatch, Player.Position);
             if (DebugHeroBounds)
-                Player.DebugDraw(WhiteTexture, SpriteBatch);
+                foreach (GameActor actor in Actors.GetAllObjects())
+                    actor.DebugDraw(WhiteTexture, SpriteBatch);
             
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
 

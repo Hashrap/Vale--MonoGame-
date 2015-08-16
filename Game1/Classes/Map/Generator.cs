@@ -47,39 +47,40 @@ namespace DungeonGen
                 while (good != true)
                 {
                     cl = new CaveLevel(size_y, size_x);
-                    cl.setWall();
-                    cl.randomFill(wall);
+                    cl.SetWall();
+                    cl.RandomFill(wall);
 
                     foreach (char ch in protocol)
                     {
                         if (ch == '1')
-                            cl.ageDungeon(1);
+                            cl.AgeDungeon(1);
                         if (ch == '2')
-                            cl.ageDungeon(2);
+                            cl.AgeDungeon(2);
                     }
 
                     arrayOfMaps[i] = cl;
 
                     /* These check the validity of the map, trashes "bad" maps until it gets a good one
                      * Will attempt to repair mildly disjointed rooms.*/
-                    arrayOfMaps[i].setInvalid();
-                    int[] fTile = arrayOfMaps[i].findFloor();
-                    arrayOfMaps[i].iterativeFloodSearch(fTile[0], fTile[1]);
-                    /*if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount > (size_x * size_y)/4)
+                    arrayOfMaps[i].RemoveValid();
+                    int[] fTile = arrayOfMaps[i].FindFloor();
+                    arrayOfMaps[i].IterativeFloodSearch(fTile[0], fTile[1]);
+                    saveInstance();
+                    if (arrayOfMaps[i].IsEverythingReachable() == false && arrayOfMaps[i].BadCount > (size_x * size_y)/8)
                     {
                         good = false; //Trashes the map
                         trashed++;
                         Console.WriteLine(trashed);
                     }
-                    else if (arrayOfMaps[i].isEverythingReachable() == false && arrayOfMaps[i].BadCount <= (size_x * size_y)/4)
+                    else if (arrayOfMaps[i].IsEverythingReachable() == false && arrayOfMaps[i].BadCount <= (size_x * size_y)/8)
                     {
-                        arrayOfMaps[i].fill(); //Repairs the map
+                        arrayOfMaps[i].Fill(); //Repairs the map
                         good = true;
                     }
-                    else*/
+                    else
                         good = true; //Map is fine as is
-                    arrayOfMaps[i].placeObjects();
-                    arrayOfMaps[i].setInvalid();
+                    //arrayOfMaps[i].placeObjects();
+                    arrayOfMaps[i].RemoveValid();
                     int waiter = 0;
                     while (waiter < 10000000)
                     {
@@ -89,13 +90,13 @@ namespace DungeonGen
             }
         }
 
-        public void Dungeon(int levels, double pos_min, double pos_max, int min_room, int iterations, int size_y, int size_x)
+        public void Dungeon(int levels, double pos_min, double pos_max, int min_x, int min_y, int size_y, int size_x)
         {
             arrayOfMaps = new DungeonLevel[levels];
             for (int i = 0; i < levels; i++)
             {
                 DungeonLevel dl = new DungeonLevel(size_y, size_x);
-                dl.dungeonGen(iterations, pos_min, pos_max, min_room);
+                dl.DungeonGen(pos_min, pos_max, min_x, min_y);
                 arrayOfMaps[i] = dl;
             }
         }
@@ -123,14 +124,14 @@ namespace DungeonGen
                     }
                     sr.WriteLine();
                 }
-                sr.WriteLine("[Items]");
+                /*sr.WriteLine("[Items]");
                 sr.WriteLine(arrayOfMaps[i].items.Length);
                 foreach (Item item in arrayOfMaps[i].items)
                     sr.WriteLine(item.ToString(true));
                 sr.WriteLine("[Monsters]");
                 sr.WriteLine(arrayOfMaps[i].monsters.Count());
                 foreach (Monster monster in arrayOfMaps[i].monsters)
-                    sr.WriteLine(monster.ToString(true));
+                    sr.WriteLine(monster.ToString(true));*/
             }
             sr.Close();
         }
@@ -205,7 +206,7 @@ namespace DungeonGen
 
         public int[,] exportVale(int index)
         {
-            return arrayOfMaps[index].exportMap();
+            return arrayOfMaps[index].ExportMap();
         }
     }
 }

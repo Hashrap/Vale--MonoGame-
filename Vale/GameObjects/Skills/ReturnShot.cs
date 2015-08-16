@@ -15,9 +15,9 @@ namespace Vale.GameObjects.Skills
         {
         }
 
-        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager content)
+        public override void LoadContent()
         {
-            texture = content.Load<Texture2D>("Art/return20x20");
+            texture = Game.Content.Load<Texture2D>("Art/return20x20");
         }
 
         /// <summary>
@@ -36,10 +36,11 @@ namespace Vale.GameObjects.Skills
         {
             var origin = Owner.Position;
             var rotation = Math.Atan2(targetPosition.Y - origin.Y, targetPosition.X - origin.X);
-            var arrow = new ReturnProjectile(Owner.Screen, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new ReturnProjectile(Owner.Game, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            arrow.LoadContent();
             arrow.Discharge();
             arrows.Add(arrow);
-            GameScreen.AddObject(arrow);
+            Game.AddObject(arrow);
         }
     }
 }

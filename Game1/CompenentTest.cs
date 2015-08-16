@@ -48,10 +48,10 @@ namespace DungeonGen
             //Create a dungeon
             
             test = new Generator(1, "Dungeon of Death");
-            test.Dungeon(1, .3, .7, 9, 3, 75, 75);
+            test.Dungeon(3, .45, .55, 6, 6, 128, 128);
             foreach (DungeonLevel dl in test.arrayOfMaps)
             {
-                dl.printMap();
+                dl.PrintMap();
             }
             
             /**************** THREADED ITEMS TEST ***************/
@@ -99,7 +99,7 @@ namespace DungeonGen
                     {
                         Console.WriteLine(m.ToString(false));
                     }
-                    cl.printMap();
+                    cl.PrintMap();
                 }
             }
         }

@@ -140,11 +140,30 @@ namespace Vale.GameObjects.Collision
         #endregion
 
         #region Constructor(s)
+        /// <summary>
+        /// ValeTree Constructor
+        /// </summary>
+        /// <param name="gs">GameplayScreen reference</param>
+        /// <param name="minLeafSize">Minimum dimensions for child nodes</param>
+        /// <param name="maxLeafObjs">Maximum objects in a node before split</param>
         public ValeTree(GameplayScreen gs, Vector2 minLeafSize, int maxLeafObjs)
             : base(gs)
         {
             this.minLeafSize = minLeafSize;
             this.maxLeafObjs = maxLeafObjs;
+        }
+        /// <summary>
+        /// ValeTree Constructor Overload
+        /// </summary>
+        /// <remarks>Useful for maps with predetermined boundaries</remarks>
+        /// <param name="gs">GameplayScreen reference</param>
+        /// <param name="minLeafSize">Minimum dimensions for child nodes</param>
+        /// <param name="maxLeafObjs">Maximum objects in a node before split</param>
+        /// <param name="rootBounds">Gameplay area</param>
+        public ValeTree(GameplayScreen gs, Vector2 minLeafSize, int maxLeafObjs, AABB rootBounds)
+            : this(gs, minLeafSize, maxLeafObjs)
+        {
+            root = new QuadNode(rootBounds);
         }
         #endregion
 

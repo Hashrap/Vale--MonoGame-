@@ -19,13 +19,9 @@ namespace Vale.GameObjects.Skills
         }
 
         private const int Duration = 1500;
-        private readonly float spriteHeight = 20;
-        private readonly float spriteWidth = 20;
         private readonly GameplayScreen gameScreen;
 
         public int ElapsedTime { get; private set; }
-
-        public Vector2 Origin { get; private set; }
 
         public GameActor Owner { get; private set; }
 
@@ -36,9 +32,9 @@ namespace Vale.GameObjects.Skills
         {
             this.gameScreen = gameScreen;
             this.texture = texture;
+            bounds = new AABB(new Vector2(origin.X-(SpriteWidth/2),origin.Y-(SpriteHeight/2)), SpriteWidth, SpriteHeight);
             State = ProjectileStates.Dormant;
             Owner = owner;
-            Origin = origin;
             Rotation = rotation;
             Speed = speed;
         }
@@ -55,7 +51,7 @@ namespace Vale.GameObjects.Skills
         {
             Velocity = Vector2.Zero;
             State = ProjectileStates.Dead;
-            Screen.Actors.Remove(this);
+            Game.Actors.Remove(this);
         }
 
         /// <summary>
@@ -63,9 +59,6 @@ namespace Vale.GameObjects.Skills
         /// </summary>
         public void Discharge()
         {
-            // start at the origin
-            Bounds.Set(Origin, spriteWidth, spriteHeight);
-
             Velocity = new Vector2((float)(Math.Cos(Rotation) * Speed), (float)(Math.Sin(Rotation) * Speed));
 
             State = ProjectileStates.Moving;

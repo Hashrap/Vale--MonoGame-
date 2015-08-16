@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -16,6 +17,8 @@ namespace Vale.GameObjects
             Neutral
         }
 
+        public Faction Alignment { set; get; }
+
         protected AABB bounds;
         public AABB Bounds { get { return bounds; } }
         public Vector2 Position { get { return Bounds.Center; } }
@@ -31,8 +34,8 @@ namespace Vale.GameObjects
         protected float speed;
 
         protected Texture2D texture;
-
-        private float spriteWidth = 20, spriteHeight = 20;
+        protected float SpriteHeight { get { return texture.Height; } }
+        protected float SpriteWidth { get { return texture.Width; } }
 
         public bool Enabled { get; private set; }
 
@@ -41,8 +44,6 @@ namespace Vale.GameObjects
             get { return rotation; }
             protected set { rotation = value % 360; }
         }
-
-        public GameplayScreen Screen { get; protected set; }
 
         /// <summary>
         ///     The magnitude of this game object's velocity
@@ -57,18 +58,20 @@ namespace Vale.GameObjects
 
         public bool Visible { get; set; }
 
-        protected GameActor(GameplayScreen screen, Faction alignment, Vector2 pos)
-            : base(screen)
+        protected GameActor(GameplayScreen game, Faction alignment, Vector2 pos)
+            : base(game)
         {
-            Screen = screen;
             Alignment = alignment;
-            bounds = new AABB(pos, spriteWidth, spriteHeight);
+            bounds = new AABB(pos, 0, 0);
             previousBounds = bounds;
             Visible = true;
-            Screen.Actors.Insert(this);
         }
 
-        public Faction Alignment { set; get; }
+        public override void LoadContent()
+        {
+            bounds = new AABB(Bounds.Origin, SpriteWidth, SpriteHeight);
+            Game.Actors.Insert(this);
+        }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
@@ -91,6 +94,7 @@ namespace Vale.GameObjects
         public override void Update(GameTime gameTime)
         {
             Move(gameTime);
+            OnObjectCollision(Game.Actors.Query(Bounds));
         }
 
         private Vector2 Move(GameTime gameTime)
@@ -100,11 +104,9 @@ namespace Vale.GameObjects
                 return Position;
 
             Vector2 distance = Velocity * gameTime.ElapsedGameTime.Milliseconds;
-            bounds = new AABB(Bounds.Origin + distance, spriteWidth, spriteHeight);
-            if (!Screen.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight);
-            if (!Screen.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), spriteWidth, spriteHeight)))
-                bounds = new AABB(new Vector2(Bounds.X, PreviousBounds.Y), spriteWidth, spriteHeight);
+            bounds = new AABB(Bounds.Origin + distance, SpriteWidth, SpriteHeight);
+            if (!Game.Map.Query(Bounds))
+                OnTerrainCollision();
 
             if (Bounds != PreviousBounds)
                 RaiseBoundsChanged();
@@ -119,7 +121,33 @@ namespace Vale.GameObjects
                 handler(this, new EventArgs());
         }
 
-        protected void OnObjectCollision() { }
-        protected void OnTerrainCollision() { }
+        protected virtual void OnObjectCollision(List<GameActor> collisions)
+        {
+            // Nothing~
+        }
+        protected virtual void OnTerrainCollision() 
+        {
+            Point nw = Game.Map.GetTileCoordinates(Bounds.Origin);
+            Point se = Game.Map.GetTileCoordinates(Bounds.Opposite);
+            Point pnw = Game.Map.GetTileCoordinates(PreviousBounds.Origin);
+            Point pse = Game.Map.GetTileCoordinates(PreviousBounds.Opposite);
+
+            // Check horizontal
+            if (!Game.Map.Query(new AABB(new Vector2(Bounds.X, PreviousBounds.Y), SpriteWidth, SpriteHeight)))
+                // Wall located East
+                if(se.X - pse.X > 0)
+                    bounds = new AABB(new Vector2(se.X * Game.Map.TileWidth - (SpriteWidth+1), Bounds.Y), SpriteWidth, SpriteHeight);
+                // Wall located West
+                else if(nw.X - pnw.X < 0)
+                    bounds = new AABB(new Vector2(pnw.X * Game.Map.TileWidth + 1, Bounds.Y), SpriteWidth, SpriteHeight);
+            // Check vertical
+            if (!Game.Map.Query(new AABB(new Vector2(PreviousBounds.X, Bounds.Y), SpriteWidth, SpriteHeight)))
+                // Wall located South
+                if (se.Y - pse.Y > 0)
+                    bounds = new AABB(new Vector2(Bounds.X, se.Y * Game.Map.TileHeight - (SpriteHeight+1)), SpriteWidth, SpriteHeight);
+                // Wall located North
+                else if (nw.Y - pnw.Y < 0)
+                    bounds = new AABB(new Vector2(Bounds.X, pnw.Y * Game.Map.TileHeight + 1), SpriteWidth, SpriteHeight);
+        }
     }
 }

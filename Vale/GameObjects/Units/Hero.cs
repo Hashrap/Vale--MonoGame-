@@ -31,14 +31,12 @@ namespace Vale.GameObjects.Actors
             SkillOne = new QuickShot(gameScreen, this);
             SkillTwo = new SplitShot(gameScreen, this);
             SkillThree = new ReturnShot(gameScreen, this);
+            SkillOne.LoadContent();
+            SkillTwo.LoadContent();
+            SkillThree.LoadContent();
             Game.AddObject(SkillOne);
             Game.AddObject(SkillTwo);
             Game.AddObject(SkillThree);
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-            this.texture = content.Load<Texture2D>("Art/arrow20x20.png");
         }
 
         public override void Update(GameTime gameTime)
@@ -46,11 +44,13 @@ namespace Vale.GameObjects.Actors
             if (Controllable)
             {
                 Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
+                // always call base
+                base.Update(gameTime);
 
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 if (MouseProvider.ButtonPress(MouseProvider.Button.LMB))
                 {
-                    SkillOne.Execute(MouseProvider.PointerPosition + Vector2.One);
+                    SkillOne.Execute(MouseProvider.PointerPosition);
                 }
 
                 if (MouseProvider.ButtonPress(MouseProvider.Button.RMB))
@@ -70,9 +70,6 @@ namespace Vale.GameObjects.Actors
 
             if (KeyboardProvider.KeyPress('P'))
                 Console.WriteLine("pX:" + Position.X + " pY:" + Position.Y);
-
-            // always call base
-            base.Update(gameTime);
         }
     }
 }
