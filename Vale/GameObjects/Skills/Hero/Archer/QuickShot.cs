@@ -13,22 +13,32 @@ namespace Vale.GameObjects.Skills.Hero.Archer
     /// </summary>
     internal class QuickShot : Skill
     {
-        public struct ChargeState
+        public struct ChargeInfo
         {
             public bool PreviousChargeState, CurrentChargeState;
+            public double ElapsedChargeTime, MaxChargeTime;
+
+            public ChargeInfo(double maxChargeTime)
+            {
+                PreviousChargeState = false;
+                CurrentChargeState = false;
+                ElapsedChargeTime = 0;
+                MaxChargeTime = maxChargeTime;
+            }
         }
-        
+
         public readonly float ProjectileSpeed = .75f;
         // this should be read in from a parsed file
         protected readonly List<LineProjectile> arrows;
         protected Texture2D texture;
 
-        private ChargeState chargingState;
+        private ChargeInfo chargeInfo;
 
         public QuickShot(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen, owner)
         {
             arrows = new List<LineProjectile>();
+            chargeInfo = new ChargeInfo();
         }
 
         public override void LoadContent()
@@ -40,7 +50,7 @@ namespace Vale.GameObjects.Skills.Hero.Archer
         {
             List<LineProjectile> toRemove = arrows.FindAll(LineProjectile.ProjectileIsDead);
 
-            chargingState.PreviousChargeState = chargingState.CurrentChargeState;
+            chargeInfo.PreviousChargeState = chargeInfo.CurrentChargeState;
 
             foreach (var arrow in toRemove)
             {
@@ -58,9 +68,12 @@ namespace Vale.GameObjects.Skills.Hero.Archer
         /// <returns></returns>
         protected override bool DoAction(params object[] list)
         {
-            if (charging)
+            if (Status == SkillState.Available)
             {
-                var targetPosition = (Vector2) list[0]; //assumes list[0] is the target
+                // begin charging
+
+
+                var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
                 CreateProjectile(targetPosition);
             }
             return true;

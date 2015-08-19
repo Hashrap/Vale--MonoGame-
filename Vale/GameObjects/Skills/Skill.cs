@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Vale.GameObjects.Actors;
 using Vale.ScreenSystem.Screens;
 
@@ -11,28 +10,65 @@ namespace Vale.GameObjects.Skills
     /// </summary>
     internal abstract class Skill : GameObject
     {
-        private enum SkillTimeline
+            private int cooldownTimeRemaining;
+            public int CooldownTime { get; private set; }
+            
+        public bool IsReady
+            {
+                get { return cooldownTimeRemaining <= 0; }
+            }
+
+            /// <summary>
+            /// Gets the remaining cooldown time of the ability, in milliseconds.
+            /// </summary>
+            public int CooldownTimeRemaining
+            {
+                get { return cooldownTimeRemaining; }
+                private set { cooldownTimeRemaining = Math.Max(0, value); }
+            }
+
+            public bool StartCooldown()
+            {
+                CooldownTimeRemaining = CooldownTime;
+            }
+
+            public bool ResetCooldown()
+            {
+                CooldownTimeRemaining = 0;
+            }
+        
+        
+            public bool IsChanneling { get; private set; }
+            public bool IsInteruptable { get; private set; }
+            public bool IsCancellable { get; private set; }
+            public int MaxChannelDuration { get; set; }
+            private int elapsedChannelTime;
+
+            public void ChannelStarted()
+            {
+                IsChanneling = true;
+                elapsedChannelTime = 0;
+            }
+        
+
+            public void ChannelEnded()
+            {
+                IsChanneling = false;
+            }
+        
+
+        public enum SkillState
         {
             Available,
-            InUse,
+            Charging,
             OnCooldown
         }
 
-        private const int Ready = 0;
-        private readonly int cooldown;
-        private int cooldownRecharge;
-        private SkillTimeline Status;
-
-        /// <summary>
-        ///     Is this skill still recharging?
-        /// </summary>
-        /// <returns></returns>
-        public bool OnCooldown
-        {
-            get { return cooldownRecharge > Ready; }
-        }
+        public SkillState Status { get; private set; }
 
         public CombatUnit Owner { get; private set; }
+
+
 
         /// <summary>
         ///     Force children to use this constructor
@@ -42,12 +78,10 @@ namespace Vale.GameObjects.Skills
         protected Skill(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen)
         {
-            Status = SkillTimeline.Available;
+            Status = SkillState.Available;
             Owner = owner;
-            cooldown = 5;
-            //can set default cooldown here?
         }
-
+        
         /// <summary>
         ///     Begins the action. Disables other commands while using this action (channeling for shots).
         /// </summary>
@@ -62,24 +96,17 @@ namespace Vale.GameObjects.Skills
         /// <returns>Returns success.</returns>
         public bool Execute(params object[] list)
         {
-            if (OnCooldown || !Owner.Controllable)
+            if (!IsReady || !Owner.Controllable)
                 return false;
 
 
-            Status = SkillTimeline.InUse;
+            Status = SkillState.Charging;
             DoAction(list);
-            BeginCooldown();
-
+            //StartCooldown();
             return true;
         }
 
-        /// <summary>
-        ///     Resets the cooldown, making the skill instantly available for use.
-        /// </summary>
-        public void ResetCooldown()
-        {
-            cooldownRecharge = Ready;
-        }
+
 
         /// <summary>
         ///     Updates the skill's recharge time based on elapsed gametime.
@@ -87,23 +114,24 @@ namespace Vale.GameObjects.Skills
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            CooldownTimeRemaining -= gameTime.ElapsedGameTime.Milliseconds;
+
+            elapsedChannelTime += gameTime.ElapsedGameTime.Milliseconds;
+
+            if (elapsedChannelTime >= MaxChannelDuration)
+            {
+                ChannelEnded();
+            }
+
             if (cooldownRecharge > Ready)
             {
                 cooldownRecharge -= gameTime.ElapsedGameTime.Milliseconds;
                 if (cooldownRecharge == Ready)
-                    Status = SkillTimeline.Available;
+                    Status = SkillState.Available;
             }
         }
 
         protected abstract bool DoAction(params object[] list);
 
-        /// <summary>
-        ///     Puts the skill on cooldown.
-        /// </summary>
-        private void BeginCooldown()
-        {
-            Status = SkillTimeline.OnCooldown;
-            cooldownRecharge = cooldown;
-        }
     }
 }

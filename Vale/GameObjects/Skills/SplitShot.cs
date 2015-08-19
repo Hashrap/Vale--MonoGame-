@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Vale.GameObjects.Actors;
 using Vale.GameObjects.Skills.Hero.Archer;
 using Vale.ScreenSystem.Screens;
 
@@ -8,7 +9,7 @@ namespace Vale.GameObjects.Skills
     {
         private readonly double spread = .174;
 
-        public SplitShot(GameplayScreen gameScreen, GameActor owner)
+        public SplitShot(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen, owner)
         {
         }

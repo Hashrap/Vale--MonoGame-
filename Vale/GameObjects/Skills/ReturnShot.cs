@@ -10,7 +10,7 @@ namespace Vale.GameObjects.Skills
 {
     internal class ReturnShot : QuickShot
     {
-        public ReturnShot(GameplayScreen gameScreen, GameActor owner)
+        public ReturnShot(GameplayScreen gameScreen, CombatUnit owner)
             : base(gameScreen, owner)
         {
         }
