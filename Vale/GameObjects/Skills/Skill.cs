@@ -30,11 +30,13 @@ namespace Vale.GameObjects.Skills
             public bool StartCooldown()
             {
                 CooldownTimeRemaining = CooldownTime;
+                return true;
             }
 
             public bool ResetCooldown()
             {
                 CooldownTimeRemaining = 0;
+                return true;
             }
         
         
@@ -123,11 +125,11 @@ namespace Vale.GameObjects.Skills
                 ChannelEnded();
             }
 
-            if (cooldownRecharge > Ready)
+           // if (cooldownTimeRemaining > Ready)
             {
-                cooldownRecharge -= gameTime.ElapsedGameTime.Milliseconds;
-                if (cooldownRecharge == Ready)
-                    Status = SkillState.Available;
+               // cooldownRecharge -= gameTime.ElapsedGameTime.Milliseconds;
+                //if (cooldownRecharge == Ready)
+                 //   Status = SkillState.Available;
             }
         }
 
