@@ -29,8 +29,12 @@ namespace Vale
             Content.RootDirectory = "Content";
 
             //UnitParser.Instance.ParseUnits();
-            JsonParser.Instance.ParseData<UnitInfo>("..\\..\\..\\Content\\Data\\units.txt");
-            JsonParser.Instance.ParseData<AbilityInfo>("..\\..\\..\\Content\\Data\\abilities.txt");
+            char sep = System.IO.Path.DirectorySeparatorChar;
+            string dataPath = ".." + sep + ".." + sep + ".." + sep + "Content" + sep + "Data";
+            string unitsPath = dataPath + sep + "units.txt";
+            JsonParser.Instance.ParseData<UnitInfo>(unitsPath);
+            string abilititesPath = dataPath + sep + "abilities.txt";
+            JsonParser.Instance.ParseData<AbilityInfo>(abilititesPath);
             
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
