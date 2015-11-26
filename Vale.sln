@@ -1,12 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
+# Visual Studio 2012
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vale", "Vale\Vale.csproj", "{38736B93-BC0A-4CC9-8229-C9DDA3E61643}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B23695C9-9781-489D-90F1-A21FD6E331F7} = {B23695C9-9781-489D-90F1-A21FD6E331F7}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen", "Game1\DungeonGen.csproj", "{B23695C9-9781-489D-90F1-A21FD6E331F7}"
 EndProject
@@ -21,11 +18,13 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|Any CPU.Build.0 = Debug|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|x86.ActiveCfg = Debug|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Debug|x86.Build.0 = Debug|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Release|Any CPU.ActiveCfg = Release|x86
+		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Release|Any CPU.Build.0 = Release|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Release|Mixed Platforms.Build.0 = Release|x86
 		{38736B93-BC0A-4CC9-8229-C9DDA3E61643}.Release|x86.ActiveCfg = Release|x86
