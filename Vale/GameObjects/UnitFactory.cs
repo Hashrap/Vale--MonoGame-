@@ -14,17 +14,17 @@ namespace Vale.GameObjects
             this.game = game;
         }
 
-        public CombatUnit CreateUnit(string name, GameActor.Faction alignment, Vector2 spawnPosition)
+        public CombatUnit CreateUnit(string name, CombatUnit.Faction alignment, Vector2 spawnPosition)
         {
             CombatUnit unit;
 
             if (name.StartsWith("hero_"))
             {
-                unit = new Hero(game, new MouseProvider(game), new KeyboardProvider(game), spawnPosition, alignment: alignment);
+                unit = new Hero(game, new MouseProvider(game), new KeyboardProvider(game), spawnPosition, new Vector2(10,10), alignment: alignment);
             }
             else
             {
-                unit = new CombatUnit(game, alignment, spawnPosition);
+                unit = new CombatUnit(game, alignment, spawnPosition, new Vector2(10,10));
             }
 
             SetupUnit(unit, name);

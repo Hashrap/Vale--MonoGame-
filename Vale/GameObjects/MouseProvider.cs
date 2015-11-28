@@ -10,7 +10,7 @@ namespace Vale.GameObjects
     /// coordinates. This could be extended to be a "pointer provider" which can
     /// be updated by either the mouse or by a gamepad-controlled cursor.
     /// </summary>
-    public class MouseProvider : GameObject
+    public class MouseProvider : IUpdate
     {
         public enum Button {
             LMB,
@@ -24,9 +24,11 @@ namespace Vale.GameObjects
         /// <value>The pointer position in world-space coordinates.</value>
         public Vector2 PointerPosition { get; private set; }
 
+        private GameplayScreen game;
+
         public MouseProvider(GameplayScreen game)
-            : base(game)
         {
+            this.game = game;
         }
 
         public bool ButtonPress(Button button)
@@ -53,9 +55,9 @@ namespace Vale.GameObjects
         /// Update the pointer position.
         /// </summary>
         /// <param name="gameTime">Game time.</param>
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            PointerPosition = Game.camera.ScreenToWorldCoords(Control.Input.Instance.MousePosition);
+            PointerPosition = game.camera.ScreenToWorldCoords(Control.Input.Instance.MousePosition);
         }
     }
 }

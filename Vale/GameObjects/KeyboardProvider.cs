@@ -5,10 +5,9 @@ using Vale.ScreenSystem.Screens;
 
 namespace Vale.GameObjects
 {
-    public class KeyboardProvider : GameObject
+    public class KeyboardProvider : IUpdate
     {
         public KeyboardProvider(GameplayScreen game)
-            : base(game)
         {
         }
 
@@ -17,8 +16,9 @@ namespace Vale.GameObjects
             return Vale.Control.Input.Instance.KeyPress((Keys)char.ToUpper(key));
         }
 
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
+            //throw new NotImplementedException();
         }
     }
 }

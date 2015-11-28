@@ -15,7 +15,7 @@ namespace Vale.GameObjects.Actors
     /// Represents a GameActor that engages in combat.
     /// Notably, a CombatUnit has health, can receive and deal damage
     /// </summary>
-    public class CombatUnit : GameActor
+    public class CombatUnit : MoveableGameObject
     {
         /* events to consider
          * ModifierAdded
@@ -26,6 +26,15 @@ namespace Vale.GameObjects.Actors
          * UsedSkill
          */
         private UnitInfo defaultInfo;
+
+        public enum Faction
+        {
+            Player,
+            Hostile,
+            Neutral
+        }
+
+        public Faction Alignment { set; get; }
 
         public enum ActorState
         {
@@ -40,6 +49,18 @@ namespace Vale.GameObjects.Actors
         {
             get { return true; } // eventually loop through and check for Stun modifiers?
         }
+
+        private float speed;
+
+        /// <summary>
+        ///     The magnitude of this game object's velocity
+        /// </summary>
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = Math.Max(0.0f, value); }
+        }
+
 
         private float health;
 
@@ -73,7 +94,7 @@ namespace Vale.GameObjects.Actors
             }
         }
 
-        public double ReceiveDamage(GameActor source, float rawDamage)
+        public double ReceiveDamage(CombatUnit source, float rawDamage)
         //maybe there should be a "Damage" struct which holds raw damage value, damage type, modifiers?
         {
             //apply modifers: damage increase/decrease %
@@ -83,9 +104,10 @@ namespace Vale.GameObjects.Actors
             return rawDamage; //eventually return actual damage after mitigations/modifiers
         }
 
-        public CombatUnit(GameplayScreen gameScreen, Faction alignment, Vector2 spawn)
-            : base(gameScreen, alignment, spawn)
+        public CombatUnit(GameplayScreen gameScreen, Faction alignment, Vector2 spawn, Vector2 size)
+            : base(gameScreen, spawn, size)
         {
+            this.Alignment = alignment;
         }
 
         public void LoadUnitInfo(UnitInfo info)
@@ -98,13 +120,13 @@ namespace Vale.GameObjects.Actors
         {
             this.Health = defaultInfo.Health;
             this.Speed = defaultInfo.Speed;
-            
+
             //set-up abilities here
         }
 
         public override void LoadContent()
         {
-            this.texture = Game.Content.Load<Texture2D>("Art/arrow20x20.png");
+            this.Texture = Game.Content.Load<Texture2D>("Art/arrow20x20.png");
             base.LoadContent();
         }
     }

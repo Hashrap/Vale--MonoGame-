@@ -66,7 +66,7 @@ namespace Vale.GameObjects.Skills.Hero.Archer
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        protected override bool DoAction(params object[] list)
+        protected override bool DoAction(SkillArgs args, params object[] list)
         {
             if (Status == SkillState.Available)
             {
@@ -89,7 +89,7 @@ namespace Vale.GameObjects.Skills.Hero.Archer
 
         protected void CreateProjectile(double rotation)
         {
-            var arrow = new LineProjectile(Owner.Game, texture, Owner, Owner.Position, (float)rotation, ProjectileSpeed);
+            var arrow = new LineProjectile(Owner.Game, texture, Owner, Owner.Position, new Vector2(10,10),  (float)rotation, ProjectileSpeed);
             arrow.LoadContent();
             arrow.Discharge();
             arrows.Add(arrow);

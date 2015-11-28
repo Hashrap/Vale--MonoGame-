@@ -19,7 +19,7 @@ namespace Vale.GameObjects.Skills
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        protected override bool DoAction(params object[] list)
+        protected override bool DoAction(SkillArgs args, params object[] list)
         {
             var targetPosition = (Vector2)list[0]; //assumes list[0] is the target
             var rotation = CreateProjectile(targetPosition);

@@ -20,7 +20,7 @@ namespace Vale
 
         AABB Bounds { get; set; }
 
-        GameActor target;
+        GameObject target;
 
         Matrix TransformMatrix
         {
@@ -52,7 +52,7 @@ namespace Vale
         /// <summary>
         /// Sets the target that the camera is going to focus on.
         /// </summary>
-        public void SetTarget(GameActor target)
+        public void SetTarget(GameObject target)
         {
             this.target = target;
         }

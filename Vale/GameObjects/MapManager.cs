@@ -10,7 +10,7 @@ using Vale.GameObjects.Collision;
 
 namespace Vale.GameObjects
 {
-    public class MapManager : GameObject
+    public class MapManager //: GameObject
     {
         [FlagsAttribute]
         ///<summary>
@@ -92,14 +92,18 @@ namespace Vale.GameObjects
         private Texture2D wall;
         private SpriteFont font;
 
+        private GameplayScreen Game;
+
         public MapManager(GameplayScreen gs)
-            : base(gs)
-        { }
+            //   : base(gs)
+        {
+            Game = gs;
+        }
 
         /// <summary>
         ///     Loads assets
         /// </summary>
-        public override void LoadContent()
+        public void LoadContent()
         {
             floor = Game.Content.Load<Texture2D>("Art/whsq20x20.png");
             wall = Game.Content.Load<Texture2D>("Art/bksq20x20.png");
@@ -162,7 +166,7 @@ namespace Vale.GameObjects
         /// Is called every graphical frame
         /// </summary>
         /// <param name="gameTime">GameTime information</param>
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             for (int x = 0; x < Size_X; x++)
             {

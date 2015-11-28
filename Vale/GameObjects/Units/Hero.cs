@@ -19,11 +19,14 @@ namespace Vale.GameObjects.Actors
         public KeyboardProvider KeyboardProvider { get; private set; }
 
         public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, float spawnX = 0, float spawnY = 0, Faction alignment = Faction.Player)
-            : this(gameScreen, mouseProvider, keyboardProvider, new Vector2(spawnX, spawnY), alignment) { }
+            : this(gameScreen, mouseProvider, keyboardProvider, new Vector2(spawnX, spawnY), new Vector2(10, 10), alignment) { }
 
-        public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, Vector2 spawnPoint, Faction alignment = Faction.Player)
-            : base(gameScreen, alignment, spawnPoint)
+        public Hero(GameplayScreen gameScreen, MouseProvider mouseProvider, KeyboardProvider keyboardProvider, Vector2 spawnPoint, Vector2 size, Faction alignment = Faction.Player)
+            : base(gameScreen, alignment, spawnPoint, size)
         {
+            SpriteWidth = 10;
+            SpriteHeight = 10;
+
             MouseProvider = mouseProvider;
             KeyboardProvider = keyboardProvider;
             Speed = 0.3f;
@@ -41,26 +44,33 @@ namespace Vale.GameObjects.Actors
 
         public override void Update(GameTime gameTime)
         {
+            //SkillOne.Update(gameTime);
+            //SkillTwo.Update(gameTime);
+            //SkillThree.Update(gameTime);
+
             if (Controllable)
             {
                 Velocity = Vector2.Multiply(Input.Instance.NormalizedInput, Speed);
                 // always call base
                 base.Update(gameTime);
 
+                SkillArgs skillArgs = new SkillArgs();
+
+
                 //make Player handle this. map skills to Commands "XCommand triggers attack1", "BCommand triggers attack 2" etc.
                 if (MouseProvider.ButtonPress(MouseProvider.Button.LMB))
                 {
-                    SkillOne.Execute(MouseProvider.PointerPosition);
+                    SkillOne.TryExecute(skillArgs, MouseProvider.PointerPosition);
                 }
 
                 if (MouseProvider.ButtonPress(MouseProvider.Button.RMB))
                 {
-                    SkillTwo.Execute(MouseProvider.PointerPosition);
+                    SkillTwo.TryExecute(skillArgs, MouseProvider.PointerPosition);
                 }
 
                 if (KeyboardProvider.KeyPress(' '))
                 {
-                    SkillThree.Execute(MouseProvider.PointerPosition);
+                    SkillThree.TryExecute(skillArgs, MouseProvider.PointerPosition);
                 }
 
                 Rotation = (float)Math.Atan2(

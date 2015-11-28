@@ -21,10 +21,10 @@ namespace Vale.GameObjects.Collision
     #endregion
 
     /// <summary>
-    /// Data structure for spatially organizing GameActors
+    /// Data structure for spatially organizing GameObjects
     /// </summary>
     /// <remarks>Used to optimize collision detection by reducing necessary pairwise tests</remarks>
-    public class ValeTree : GameObject
+    public class ValeTree
     {
         #region Definitions
         /// <summary>
@@ -100,9 +100,9 @@ namespace Vale.GameObjects.Collision
             public bool HasChildren { get { return _nodes[0] != null; } }
 
             /// <summary>Internal list of objects located in this node</summary>
-            internal List<GameActor> _nodeObjs = new List<GameActor>();
+            internal List<GameObject> _nodeObjs = new List<GameObject>();
             /// <summary>Read-only wrapper for the _nodeObjs attribute</summary>
-            public ReadOnlyCollection<GameActor> Objects;
+            public ReadOnlyCollection<GameObject> Objects;
             #endregion
 
             #region Constructor(s)
@@ -114,7 +114,7 @@ namespace Vale.GameObjects.Collision
             {
                 Bounds = bounds;
                 Nodes = new ReadOnlyCollection<QuadNode>(_nodes);
-                Objects = new ReadOnlyCollection<GameActor>(_nodeObjs);
+                Objects = new ReadOnlyCollection<GameObject>(_nodeObjs);
             }
 
             /// <summary>
@@ -133,7 +133,7 @@ namespace Vale.GameObjects.Collision
         private QuadNode root = null;
         public QuadNode Root { get { return root; } }
 
-        private Dictionary<GameActor, QuadNode> objectToNodeLookup = new Dictionary<GameActor, QuadNode>();
+        private Dictionary<GameObject, QuadNode> objectToNodeLookup = new Dictionary<GameObject, QuadNode>();
 
         private readonly Vector2 minLeafSize;
         private readonly int maxLeafObjs;
@@ -147,7 +147,7 @@ namespace Vale.GameObjects.Collision
         /// <param name="minLeafSize">Minimum dimensions for child nodes</param>
         /// <param name="maxLeafObjs">Maximum objects in a node before split</param>
         public ValeTree(GameplayScreen gs, Vector2 minLeafSize, int maxLeafObjs)
-            : base(gs)
+           // : base(gs)
         {
             this.minLeafSize = minLeafSize;
             this.maxLeafObjs = maxLeafObjs;
@@ -172,7 +172,7 @@ namespace Vale.GameObjects.Collision
         /// Insert an object into the tree
         /// </summary>
         /// <param name="obj">Object to be inserted</param>
-        public void Insert(GameActor obj)
+        public void Insert(GameObject obj)
         {
             AABB bounds = obj.Bounds;
             if(root == null)
@@ -196,7 +196,7 @@ namespace Vale.GameObjects.Collision
         /// Remove an object from the tree
         /// </summary>
         /// <param name="obj">Object to be removed</param>
-        public void Remove(GameActor obj)
+        public void Remove(GameObject obj)
         {
             if (!objectToNodeLookup.ContainsKey(obj))
                 return; //oops
@@ -211,25 +211,25 @@ namespace Vale.GameObjects.Collision
         /// Query all objects intersecting an area
         /// </summary>
         /// <param name="bounds">Area to query</param>
-        /// <returns>List of all GameActors intersecting with <paramref name="bounds"/></returns>
-        public List<GameActor> Query(AABB bounds) 
+        /// <returns>List of all GameObjects intersecting with <paramref name="bounds"/></returns>
+        public List<GameObject> Query(AABB bounds) 
         {
-            List<GameActor> results = new List<GameActor>();
+            List<GameObject> results = new List<GameObject>();
             if (root != null)
                 Query(bounds, root, results);
             return results;
         }
 
         /// <summary>
-        /// Query all objects of a different alignment intersecting a GameActor
+        /// Query all objects of a different alignment intersecting a GameObject
         /// </summary>
-        /// <param name="target">GameActor to query for</param>
-        /// <returns>List of all GameActors of a different alignment intersecting with target GameActor </returns>
-        public List<GameActor> Query(GameActor target)
+        /// <param name="target">GameObject to query for</param>
+        /// <returns>List of all GameObjects of a different alignment intersecting with target GameObject </returns>
+        public List<GameObject> Query(GameObject target)
         {
-            List<GameActor> results = new List<GameActor>();
+            List<GameObject> results = new List<GameObject>();
             if (root != null)
-                Query(target.Bounds, root, results, (int)target.Alignment);
+                Query(target.Bounds, root, results); //faction?
             return results;
         }
 
@@ -258,12 +258,12 @@ namespace Vale.GameObjects.Collision
         }
 
         /// <summary>
-        /// Get a list of all GameActors in the tree
+        /// Get a list of all GameObjects in the tree
         /// </summary>
-        /// <returns>a list of every GameActor in the tree</returns>
-        public List<GameActor> GetAllObjects()
+        /// <returns>a list of every GameObject in the tree</returns>
+        public List<GameObject> GetAllObjects()
         {
-            List<GameActor> results = new List<GameActor>();
+            List<GameObject> results = new List<GameObject>();
             if(root != null)
                 GetChildObjects(root, results);
             return results;
@@ -289,10 +289,10 @@ namespace Vale.GameObjects.Collision
         /// <summary>
         /// Inserts an object into the correct node
         /// </summary>
-        /// <remarks>Recursive helper method for public void Insert(GameActor)</remarks>
+        /// <remarks>Recursive helper method for public void Insert(GameObject)</remarks>
         /// <param name="node">Node to check for viability</param>
         /// <param name="obj">Object to insert</param>
-        private void InsertNodeObject(QuadNode node, GameActor obj)
+        private void InsertNodeObject(QuadNode node, GameObject obj)
         {
             if (!node.Bounds.Contains(obj.Bounds))
                 return; //oops, object is out of node bounds.  this cannot happen if implemented correctly
@@ -304,11 +304,11 @@ namespace Vale.GameObjects.Collision
                 SetupChildNodes(node);
 
                 //we need to relocate objects into the new children
-                List<GameActor> childObjects = new List<GameActor>(node.Objects);
-                List<GameActor> childrenToRelocate = new List<GameActor>();
+                List<GameObject> childObjects = new List<GameObject>(node.Objects);
+                List<GameObject> childrenToRelocate = new List<GameObject>();
 
                 //Count objects that fit entirely into a child
-                foreach (GameActor childObject in childObjects)
+                foreach (GameObject childObject in childObjects)
                 {
                     foreach (QuadNode child in node.Nodes)
                     {
@@ -320,7 +320,7 @@ namespace Vale.GameObjects.Collision
                 }
 
                 //Then move those objects into the appropriate child node
-                foreach (GameActor childObject in childrenToRelocate)
+                foreach (GameObject childObject in childrenToRelocate)
                 {
                     RemoveObjectFromNode(childObject);
                     InsertNodeObject(node, childObject);
@@ -388,21 +388,21 @@ namespace Vale.GameObjects.Collision
         /// <param name="bounds">Target area</param>
         /// <param name="node">Node to check</param>
         /// <param name="results">List reference to populate</param>
-        private void Query(AABB bounds, QuadNode node, List<GameActor> results, int layer = -1)
+        private void Query(AABB bounds, QuadNode node, List<GameObject> results, int layer = -1)
         {
             if (node == null) return;
 
             //The target area intersects the current node
             if (bounds.Intersects(node.Bounds))
             {
-                foreach (GameActor quadObject in node.Objects)
+                foreach (GameObject quadObject in node.Objects)
                 {
                     // NOTE: currently adds object to list ONLY in the case of object bounds intersecting with the target
                     //bounds & faction mismatch. We may wish to instead to have it just return all potential collisions
                     //and let the GameplayScreen or the ICollide object handle it themselves.
 
                     // If the compared object is of a different alignment and has intersecting bounds, add it to the results
-                    if ((int)quadObject.Alignment != layer && bounds.Intersects(quadObject.Bounds))
+                    if ( /*(int)quadObject.Alignment != layer &&*/ bounds.Intersects(quadObject.Bounds))
                         results.Add(quadObject);
                 }
 
@@ -445,9 +445,9 @@ namespace Vale.GameObjects.Collision
             if(GetObjectCount(node) <= maxLeafObjs)
             {
                 // Merge children
-                List<GameActor> childObjects = new List<GameActor>();
+                List<GameObject> childObjects = new List<GameObject>();
                 GetChildObjects(node, childObjects);
-                foreach (GameActor childObject in childObjects)
+                foreach (GameObject childObject in childObjects)
                 {
                     if(!node.Objects.Contains(childObject))
                     {
@@ -546,7 +546,7 @@ namespace Vale.GameObjects.Collision
         /// </summary>
         /// <param name="node">Node to check</param>
         /// <param name="results">List to store all objects in <paramref name="node"/>'s children</param>
-        private void GetChildObjects(QuadNode node, List<GameActor> results)
+        private void GetChildObjects(QuadNode node, List<GameObject> results)
         {
             results.AddRange(node._nodeObjs);
             foreach(QuadNode child in node.Nodes)
@@ -581,7 +581,7 @@ namespace Vale.GameObjects.Collision
         /// object lookup dictionary, and adds an event listener to the object</remarks>
         /// <param name="node">Node to add <paramref name="obj"/> to</param>
         /// <param name="obj">Object to add to <paramref name="node"/></param>
-        private void AddObjectToNode(QuadNode node, GameActor obj)
+        private void AddObjectToNode(QuadNode node, GameObject obj)
         {
             node._nodeObjs.Add(obj);
             objectToNodeLookup.Add(obj, node);
@@ -594,7 +594,7 @@ namespace Vale.GameObjects.Collision
         /// <remarks>Removes an object from its node's records, removes its dictionary
         /// entry, and removes the event listener from the object</remarks>
         /// <param name="obj">Object to remove</param>
-        private void RemoveObjectFromNode(GameActor obj)
+        private void RemoveObjectFromNode(GameObject obj)
         {
             QuadNode node = objectToNodeLookup[obj];
             node._nodeObjs.Remove(obj);
@@ -606,12 +606,12 @@ namespace Vale.GameObjects.Collision
         /// Remove all objects from a QuadNode
         /// </summary>
         /// <remarks>Iterates through all objects held in <paramref name="node"/> and
-        /// calls RemoveObjectFromNode(GameActor) on each one</remarks>
+        /// calls RemoveObjectFromNode(GameObject) on each one</remarks>
         /// <param name="node">Node to clear objects from</param>
         private void ClearObjectsFromNode(QuadNode node)
         {
-            List<GameActor> quadObjects = new List<GameActor>(node.Objects);
-            foreach (GameActor quadObject in quadObjects)
+            List<GameObject> quadObjects = new List<GameObject>(node.Objects);
+            foreach (GameObject quadObject in quadObjects)
             {
                 RemoveObjectFromNode(quadObject);
             }
@@ -625,7 +625,7 @@ namespace Vale.GameObjects.Collision
         /// <param name="e">EventArgs</param>
         void collider_BoundsChanged(object sender, EventArgs e)
         {
-            GameActor quadObject = sender as GameActor;
+            GameObject quadObject = sender as GameObject;
             if (quadObject != null)
             {
                 //Check if the object can remain in its current node

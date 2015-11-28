@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Vale.GameObjects.Actors;
 
 namespace Vale.GameObjects.Modifiers
 {
@@ -21,7 +22,7 @@ namespace Vale.GameObjects.Modifiers
         // THIS SHOULD PROBABLY BE A LIST SO THAT MODIFIERS CAN DO MORE THAN ONE THING?
         private EffectState state;
 
-        public GameActor.Faction Alignment { get; private set; }
+        public CombatUnit.Faction Alignment { get; private set; }
 
         //Event when expired?
         public bool Expired
@@ -29,7 +30,7 @@ namespace Vale.GameObjects.Modifiers
             get { return state == EffectState.Expired; }
         }
 
-        public Buff(int duration, GameActor.Faction alignment)
+        public Buff(int duration, CombatUnit.Faction alignment)
         {
             this.duration = duration;
             this.Alignment = alignment;

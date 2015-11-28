@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Vale.GameObjects
 {
-    interface IUpdate
+    public interface IUpdate
     {
         void Update(GameTime gameTime);
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Vale.GameObjects.Actors;
 using Vale.GameObjects.Collision;
 using Vale.ScreenSystem.Screens;
 
@@ -9,7 +10,7 @@ namespace Vale.GameObjects.Skills
     /// <summary>
     ///     A projectile that moves in a line
     /// </summary>
-    internal class LineProjectile : GameActor
+    internal class LineProjectile : MoveableGameObject
     {
         public enum ProjectileStates
         {
@@ -18,20 +19,34 @@ namespace Vale.GameObjects.Skills
             Dead
         }
 
+        private float speed;
+
+        /// <summary>
+        ///     The magnitude of this game object's velocity
+        /// </summary>
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = Math.Max(0.0f, value); }
+        }
+
         private const int Duration = 1500;
         private readonly GameplayScreen gameScreen;
 
         public int ElapsedTime { get; private set; }
 
-        public GameActor Owner { get; private set; }
+        public CombatUnit Owner { get; private set; }
 
         public ProjectileStates State { get; private set; }
 
-        public LineProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
-            : base(gameScreen, owner.Alignment, origin)
+
+
+
+        public LineProjectile(GameplayScreen gameScreen, Texture2D texture, CombatUnit owner, Vector2 origin, Vector2 size, float rotation, float speed)
+            : base(gameScreen, origin, size)
         {
             this.gameScreen = gameScreen;
-            this.texture = texture;
+            this.Texture = texture;
             bounds = new AABB(new Vector2(origin.X-(SpriteWidth/2),origin.Y-(SpriteHeight/2)), SpriteWidth, SpriteHeight);
             State = ProjectileStates.Dormant;
             Owner = owner;
@@ -69,7 +84,7 @@ namespace Vale.GameObjects.Skills
         {
             if (State == LineProjectile.ProjectileStates.Moving)
             {
-                spriteBatch.Draw(texture, Position, null, Color.White, Rotation, new Vector2(Bounds.HalfWidth, Bounds.HalfHeight), 1f,
+                spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, new Vector2(Bounds.HalfWidth, Bounds.HalfHeight), 1f,
                     SpriteEffects.None, 0f);
             }
         }
@@ -91,7 +106,7 @@ namespace Vale.GameObjects.Skills
             base.Update(gameTime);
         }
 
-        protected virtual void OnCollision(GameActor collided)
+        protected virtual void OnCollision(GameObject collided)
         {
             if (State == ProjectileStates.Moving)
             {

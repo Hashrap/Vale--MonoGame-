@@ -16,8 +16,8 @@ namespace Vale.GameObjects.Skills.Projectiles
         private bool returning = false;
 
         public int timeLeft { get { return travelDuration * 2 - elapsedTime; } }
-        public ReturnProjectile(GameplayScreen gameScreen, Texture2D texture, GameActor owner, Vector2 origin, float rotation, float speed)
-            : base(gameScreen, texture, owner, origin, rotation, speed)
+        public ReturnProjectile(GameplayScreen gameScreen, Texture2D texture, CombatUnit owner, Vector2 origin, Vector2 size, float rotation, float speed)
+            : base(gameScreen, texture, owner, origin, size, rotation, speed)
         {
         }
 

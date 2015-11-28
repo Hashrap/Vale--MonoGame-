@@ -24,8 +24,8 @@ namespace Vale.ScreenSystem.Screens
         public UnitFactory UnitCreator { get; private set; }
         public CombatUnit Player { get; private set; }
 
-        List<GameObject> objects = new List<GameObject>();
-        List<GameObject> objectQueue = new List<GameObject>();
+        List<IUpdate> objects = new List<IUpdate>();
+        List<IUpdate> objectQueue = new List<IUpdate>();
         
         private Texture2D WhiteTexture { get; set; }
         private bool DebugValeTree { get; set; }
@@ -75,10 +75,10 @@ namespace Vale.ScreenSystem.Screens
             } while (!Map.Query(spawnArea));
 
             //Spawn the player and other units
-            Player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2));
+            Player = new Hero(this, MouseProvider, KeyboardProvider, spawn + new Vector2(spawnMin/2, spawnMin/2), new Vector2(10,10));
             Player.LoadContent();
             AddObject(Player);
-            AddObject(UnitCreator.CreateUnit("unit_grunt", GameActor.Faction.Hostile, new Vector2(100, 100)));
+            AddObject(UnitCreator.CreateUnit("unit_grunt", CombatUnit.Faction.Hostile, new Vector2(100, 100)));
 
             //Set camera
             camera = new Camera(this, ScreenManager.Game.GraphicsDevice.Viewport, new Vector2(Map.Width, Map.Height));
@@ -92,7 +92,7 @@ namespace Vale.ScreenSystem.Screens
             Content.Unload();
         }
 
-        public void AddObject(GameObject gameObject)
+        public void AddObject(IUpdate gameObject)
         {
             objects.Add(gameObject);
         }
@@ -119,7 +119,7 @@ namespace Vale.ScreenSystem.Screens
             // that if something is removed we don't get confused.
             while (objectQueue.Count > 0)
             {
-                GameObject gameObj = objectQueue[objectQueue.Count - 1];
+                IUpdate gameObj = objectQueue[objectQueue.Count - 1];
                 objectQueue.RemoveAt(objectQueue.Count - 1);
 
                 // Update the object
@@ -149,12 +149,17 @@ namespace Vale.ScreenSystem.Screens
             // Everything else
             foreach (var gameObj in objects)
             {
-                gameObj.Draw(gameTime, SpriteBatch);
+                if (gameObj is IDraw)
+                {
+                    IDraw draw = gameObj as IDraw;
+
+                    draw.Draw(gameTime, SpriteBatch);
+                }
             }
             if (DebugValeTree)
                 Actors.DebugDraw(WhiteTexture, SpriteBatch);
             if (DebugHeroBounds)
-                foreach (GameActor actor in Actors.GetAllObjects())
+                foreach (GameObject actor in Actors.GetAllObjects())
                     actor.DebugDraw(WhiteTexture, SpriteBatch);
             
             SpriteBatch.Draw(cursorTexture, MouseProvider.PointerPosition, Color.White);
